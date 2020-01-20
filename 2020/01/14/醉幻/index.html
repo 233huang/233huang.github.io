@@ -17,7 +17,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/2020/01/14/%E9%86%89%E5%B9%BB/01.png">
 <meta property="article:published_time" content="2020-01-14T09:07:05.000Z">
-<meta property="article:modified_time" content="2020-01-15T14:09:54.509Z">
+<meta property="article:modified_time" content="2020-01-16T14:03:11.448Z">
 <meta property="article:author" content="醉幻_d落叶">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/2020/01/14/%E9%86%89%E5%B9%BB/01.png">
@@ -183,12 +183,24 @@
         <h2 id="CLR与C-概况"><a href="#CLR与C-概况" class="headerlink" title="CLR与C#概况"></a>CLR与C#概况</h2><p>参考书籍：CLR via C# 第四版</p>
 <p>CLR：公共语言运行库（Common Language Runtime,CLR）是整个.NET框架的核心，它为.NET应用程序提供了一个托管的代码执行环境。</p>
 <p>C#：微软公司发布的一种面向对象的、运行于[.NET Framework](<a href="https://baike.baidu.com/item/.NET" target="_blank" rel="noopener">https://baike.baidu.com/item/.NET</a> Framework)和.NET Core(完全开源，跨平台)之上的高级程序设计语言。</p>
+<a id="more"></a>
+
 <p>CLR是一个可由多种编程语言使用的“运行时”。CLR的核心功能可由面向CLR的所有语言使用，只要编译器是面向CLR的，可用任何编程语言开发代码，然后用对应的编译器检查语法和分析源代码，无论是哪个编译器，结果都是托管模块。</p>
 <p>托管模块：标准的32（64）位Microsoft Windows可移植执行体（PE32或PE32+）文件，它们都需要CLR才能执行。（PE是Portable Executable可移植执行体的简称）</p>
 <p>托管程序集总是利用Windows的数据执行保护（Date Execution Prevention,DEP）和地址空间布局随机化（Addresss Space Layout Randomization，ASLR），这两个功能旨在增强整个系统的安全性。</p>
 <p>Microsoft创建了好几个面向“运行时”的语言编译器，其中就包括C#。</p>
 <p>总而言之，就是这么一个流程：</p>
 <p><img src="/2020/01/14/%E9%86%89%E5%B9%BB/01.png" alt></p>
+<p>托管模块的各个组成部分：</p>
+<p>​    ·PE32或PE32+头：标准Windows PE文件头，标识文件类型，包括GUI，CUI或者DLL，包括一个时间标记来指出文件的生成时间。对于只包含IL代码的模块，PE32（+）头的大多数信息会被忽略，如果包含本机CPU代码的模块，这个头包含与本机CPU代码有关的信息。</p>
+<p>​    ·CLR头：包含使这个模块成为托管模块的信息，头中包含要求的CLR版本，一些标志，托管模块入口方法（Main方法）的MethodDef元数据token以及模块的元数据，资源，强名称，一些标记和其他不太重要的数据项的位置和大小。</p>
+<p>​    ·元数据：主要有两种表：一种表述源代码中定义的类型和成员，另一种描述源代码引用的类型和成员。元数据避免了编译时对原生C/C++头和库文件的需求，允许垃圾回收器追踪对象生存期，只执行“类型安全”的操作。</p>
+<p>​    ·IL（中间语言）代码：编译器编译代码时生成的代码。运行时，CLR将IL编译成本机CPU指令，IL代码有时被称为托管代码，因为CLR管理它的执行。</p>
+<p>CLR实际不和模块工作，它和程序集工作。</p>
+<p>程序集：抽象概念，是一个或多个模块/资源文件的逻辑性分组。是重用，安全性以及版本控制的最小单元。取决于你选择的编译器或工具，既可生成单文件程序集，也可生成多文件程序集。在CLR中，程序集相当于“组件”。</p>
+<p>理解程序集：托管模块+资源（数据）文件——通过工具处理——带清单的程序集。编译器默认将生成的托管模块转换成程序集。</p>
+<hr>
+<h3 id="加载公共语言运行时"><a href="#加载公共语言运行时" class="headerlink" title="加载公共语言运行时"></a>加载公共语言运行时</h3><p>生成的每一个程序集既可以是可执行应用程序，也可以是DLL（其中包含一组可执行程序使用的类型）。</p>
 
       
 
@@ -286,7 +298,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          欢迎！
+          Unity 重要API分析
         
       </div>
     </a>
