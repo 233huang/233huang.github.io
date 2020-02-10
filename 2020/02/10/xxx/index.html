@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Unity_实用技巧 | 小赖的博客</title>
+  <title>Unity JSON分析与运用 | 小赖的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="对象池（Object Pool）目的：频繁使用Instantiate和Destroy会使系统内存溢出，为了减少资源消耗，使用对象池不失为一个好办法。 逻辑思路：">
+  <meta name="description" content="什么是Json？JSON(JavaScript Object Notation, JS 对象简谱) 是一种轻量级的数据交换格式。 JSON是基于JS的一个子集，易于编写阅读以及机械解析，并采取完全独立于语言的文本形式，但是也使用了类似于C语言家族的习惯。 JSON官网http:&#x2F;&#x2F;www.json.org&#x2F;json-zh.html Json语法规则JSON建构于两种结构：  对象：“名称&#x2F;值”的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity_实用技巧">
-<meta property="og:url" content="http://yoursite.com/2020/01/18/Unity-%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:title" content="Unity JSON分析与运用">
+<meta property="og:url" content="http://yoursite.com/2020/02/10/xxx/index.html">
 <meta property="og:site_name" content="小赖的博客">
-<meta property="og:description" content="对象池（Object Pool）目的：频繁使用Instantiate和Destroy会使系统内存溢出，为了减少资源消耗，使用对象池不失为一个好办法。 逻辑思路：">
+<meta property="og:description" content="什么是Json？JSON(JavaScript Object Notation, JS 对象简谱) 是一种轻量级的数据交换格式。 JSON是基于JS的一个子集，易于编写阅读以及机械解析，并采取完全独立于语言的文本形式，但是也使用了类似于C语言家族的习惯。 JSON官网http:&#x2F;&#x2F;www.json.org&#x2F;json-zh.html Json语法规则JSON建构于两种结构：  对象：“名称&#x2F;值”的">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-01-18T08:31:51.000Z">
-<meta property="article:modified_time" content="2020-01-18T08:55:18.088Z">
+<meta property="article:published_time" content="2020-02-10T09:39:27.000Z">
+<meta property="article:modified_time" content="2020-02-10T09:56:16.620Z">
 <meta property="article:author" content="醉幻_d落叶">
 <meta name="twitter:card" content="summary">
   
@@ -158,20 +158,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Unity-实用技巧" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-xxx" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Unity_实用技巧
+      Unity JSON分析与运用
     </h1>
   
 
         
-        <a href="/2020/01/18/Unity-%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" class="archive-article-date">
-  	<time datetime="2020-01-18T08:31:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-18</time>
+        <a href="/2020/02/10/xxx/" class="archive-article-date">
+  	<time datetime="2020-02-10T09:39:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-10</time>
 </a>
         
       </header>
@@ -179,8 +179,20 @@
     <div class="article-entry" itemprop="articleBody">
       
         <hr>
-<h3 id="对象池（Object-Pool）"><a href="#对象池（Object-Pool）" class="headerlink" title="对象池（Object Pool）"></a>对象池（Object Pool）</h3><p>目的：频繁使用Instantiate和Destroy会使系统内存溢出，为了减少资源消耗，使用对象池不失为一个好办法。</p>
-<p>逻辑思路：</p>
+<h2 id="什么是Json？"><a href="#什么是Json？" class="headerlink" title="什么是Json？"></a>什么是Json？</h2><p><a href="https://baike.baidu.com/item/JSON" target="_blank" rel="noopener">JSON</a>(<a href="https://baike.baidu.com/item/JavaScript" target="_blank" rel="noopener">JavaScript</a> Object Notation, JS 对象简谱) 是一种轻量级的数据交换格式。</p>
+<p>JSON是基于JS的一个子集，易于编写阅读以及机械解析，并采取完全独立于语言的文本形式，但是也使用了类似于C语言家族的习惯。</p>
+<p>JSON官网<a href="http://www.json.org/json-zh.html" target="_blank" rel="noopener">http://www.json.org/json-zh.html</a></p>
+<h2 id="Json语法规则"><a href="#Json语法规则" class="headerlink" title="Json语法规则"></a>Json语法规则</h2><p><strong>JSON建构于两种结构</strong>：</p>
+<ul>
+<li><p>对象：“名称/值”的集合。</p>
+</li>
+<li><p>数组：值的有序列表。</p>
+</li>
+</ul>
+<p><strong>例子</strong>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"blogName"</span>: <span class="string">"小赖的博客"</span>,</span><br><span class="line">  <span class="attr">"blog"</span>: </span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">" Unity JSON分析与运用"</span>,</span><br><span class="line">    <span class="attr">"time"</span>: <span class="string">"2020-2-10"</span>,</span><br><span class="line">    <span class="attr">"type"</span>:[</span><br><span class="line">        <span class="string">"hello"</span>,</span><br><span class="line">        <span class="string">"world"</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>在线校验格式化工具</strong>：<a href="https://link.zhihu.com/?target=http%3A//www.bejson.com">校验格式化工具</a></p>
 
       
 
@@ -260,7 +272,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/01/18/Unity-%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/02/10/xxx/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -274,18 +286,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/01/20/UI/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/02/10/Unity-%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          UI
+          Unity_实用技巧
         
       </div>
     </a>
   
   
-    <a href="/2020/01/15/xxx/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Unity 重要API分析</div>
+    <a href="/2020/01/20/UI/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">UI</div>
       <i class="icon-circle-right"></i>
     </a>
   
