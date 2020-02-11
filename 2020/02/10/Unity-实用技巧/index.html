@@ -16,7 +16,7 @@
 <meta property="og:description" content="脚本模板一般来说，脚本创建完毕后，会自动生成一套模板，我们最熟悉的就是以下的形式： 12345678void Start()&amp;#123;    &#x2F;&#x2F;----&amp;#125;void Updata()&amp;#123;    &#x2F;&#x2F;----&amp;#125;  有些情况下，我们需要修改脚本模板的格式，这样以后创建脚本后，就会按照修改后的格式来。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-10T13:45:00.000Z">
-<meta property="article:modified_time" content="2020-02-10T14:54:59.928Z">
+<meta property="article:modified_time" content="2020-02-11T12:03:56.581Z">
 <meta property="article:author" content="醉幻_d落叶">
 <meta name="twitter:card" content="summary">
   
@@ -64,19 +64,19 @@
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
-    		
-    			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
-    			
-            
-    			
-    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
-    			
-            
-    			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
-    			
-            
+			
+				
+				<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+				
+	        
+				
+				<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+				
+	        
+				
+				<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+				
+	        
 		</nav>
 		<nav class="header-nav">
 			<div class="social">
@@ -91,6 +91,9 @@
 		        
 					<a class="twitter" target="_blank" href="https://twitter.com/514cry" title="twitter"><i class="icon-twitter"></i></a>
 		        
+			</div>
+			<div style="position:absolute; bottom:120px left:auto; width:85%">
+			<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=688176&auto=1&height=66">				</iframe>
 			</div>
 		</nav>
 	</header>		
@@ -188,7 +191,7 @@
 <p><strong>方法</strong>：在<strong>ScriptTemplates</strong>目录下，有<strong>C#，Testing，Playables</strong>脚本以及<strong>Shader</strong>的脚本模板，模板文件名前面的数字代表菜单栏的排序，如果想新增一套模板，可以按照这个格式加一套新的。</p>
 <hr>
 <h3 id="脚本生命周期方法"><a href="#脚本生命周期方法" class="headerlink" title="脚本生命周期方法"></a>脚本生命周期方法</h3><p>Unity脚本具有一套完整的生命周期，看以下代码<strong>自行理解</strong>（待后续补充）：</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public class C#Scrip:MonBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"Awake用于初始化并且永远只会执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnEnable</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnEnable在脚本每次激活时执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">         Debug.Log(<span class="string">"Start在初始化后的下一帧执行，并且永远只会执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"每一帧执行时，都会立即调用Update方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">LateUpdate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"Update方法执行后，都会调用此方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">FixedUpdate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"固定更新，默认情况下，系统每0.02s调用一次"</span>);</span><br><span class="line">        <span class="comment">//具体时间间隔可以在导航菜单栏：Editor-&gt;Project Settings-		  	           &gt;Time-&gt;TimeManager中配置。</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDisable</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">         Debug.Log(<span class="string">"OnDisable在脚本每次反激活后，执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDestroy</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">         Debug.Log(<span class="string">"OnDestroy用于脚本反初始化并且永远只会执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnApplicationQuit</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">         Debug.Log(<span class="string">"OnApplicationQuit在应用程序退出时执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public class C#Scrip:MonBehaviour</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"Awake用于初始化并且永远只会执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnEnable</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnEnable在脚本每次激活时执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">         Debug.Log(<span class="string">"Start在初始化后的下一帧执行，并且永远只会执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"每一帧执行时，都会立即调用Update方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">LateUpdate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"Update方法执行后，都会调用此方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">FixedUpdate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"固定更新，默认情况下，系统每0.02s调用一次"</span>);</span><br><span class="line">        <span class="comment">//具体时间间隔可以在导航菜单栏：Editor-&gt;Project Settings-&gt;Time-&gt;TimeManager中配置。</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDisable</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">         Debug.Log(<span class="string">"OnDisable在脚本每次反激活后，执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnDestroy</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">         Debug.Log(<span class="string">"OnDestroy用于脚本反初始化并且永远只会执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnApplicationQuit</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">         Debug.Log(<span class="string">"OnApplicationQuit在应用程序退出时执行一次"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>总结：</p>
 <ol>
@@ -204,12 +207,14 @@
 <p>如果代码逻辑都写在脚本中，那么出现切换场景一类的情形时，脚本的逻辑就走不了，除非使用<strong>DontDestroyOnLoad()</strong>方法，它可以在切换场景时不卸载游戏对象，但不可能将所有的对象都添加这个方法。</p>
 <p>有些功能比较单一且需要用到脚本生命周期方法的类，就比较适合单例脚本了，单例脚本的特点是它必须依赖游戏对象，并且必须保证这个游戏对象不能被卸载掉。</p>
 <p>如以下代码，构造方法只会执行一次。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Global</span>:<span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Global instance;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="title">Global</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        GameObject go = <span class="keyword">new</span> GameObject(<span class="string">"#Globa#"</span>);</span><br><span class="line">        DontDestroyOnLoad(go);</span><br><span class="line">        instance = go.AddComponent&lt;Global&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">pblic <span class="keyword">void</span> <span class="title">DoSomeThings</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"DoSomeThings"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Global脚本不需要再编辑模式下绑定在某个对象上。运行时直接获取它的实例就能操作它了：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Global.instance.DoSomeThings();</span><br></pre></td></tr></table></figure>
 
 
 
 <hr>
-<h3 id="对象池（Object-Pool）"><a href="#对象池（Object-Pool）" class="headerlink" title="对象池（Object Pool）"></a>对象池（Object Pool）</h3><p>目的：频繁使用Instantiate和Destroy会使系统内存溢出，为了减少资源消耗，使用对象池不失为一个好办法。</p>
 
       
 
@@ -302,6 +307,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2020/02/11/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          软件设计模式
+        
+      </div>
+    </a>
   
   
     <a href="/2020/02/10/xxx/" id="article-nav-older" class="article-nav-link-wrap">

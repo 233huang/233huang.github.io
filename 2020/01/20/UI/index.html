@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>UI | 小赖的博客</title>
+  <title>Unity UI的详解和运用 | 小赖的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="UIUI即User Interface（用户界面）的简称，泛指用户的操作界面。 Unity中的UI有以下三类： 1.GUI：Unity本身自带的GUI，是Unity4.6版本之前的UI系统，已经被UGUI替代，但如果想显示一些辅助信息或调试按钮等，大多还会使用它。 2.NGUI：以前在Unity中广泛来做2D的，是第三方的包，需要安装 3.UGUI：Unity5.X后(其实是Unity4.6以后">
+  <meta name="description" content="Unity UI分类UI即User Interface（用户界面）的简称，泛指用户的操作界面。 Unity中的UI有以下三类： 1.GUI：Unity本身自带的GUI，是Unity4.6版本之前的UI系统，已经被UGUI替代，但如果想显示一些辅助信息或调试按钮等，大多还会使用它。 2.NGUI：以前在Unity中广泛来做2D的，是第三方的包，需要安装 3.UGUI：Unity5.X后(其实是Un">
 <meta property="og:type" content="article">
-<meta property="og:title" content="UI">
+<meta property="og:title" content="Unity UI的详解和运用">
 <meta property="og:url" content="http://yoursite.com/2020/01/20/UI/index.html">
 <meta property="og:site_name" content="小赖的博客">
-<meta property="og:description" content="UIUI即User Interface（用户界面）的简称，泛指用户的操作界面。 Unity中的UI有以下三类： 1.GUI：Unity本身自带的GUI，是Unity4.6版本之前的UI系统，已经被UGUI替代，但如果想显示一些辅助信息或调试按钮等，大多还会使用它。 2.NGUI：以前在Unity中广泛来做2D的，是第三方的包，需要安装 3.UGUI：Unity5.X后(其实是Unity4.6以后">
+<meta property="og:description" content="Unity UI分类UI即User Interface（用户界面）的简称，泛指用户的操作界面。 Unity中的UI有以下三类： 1.GUI：Unity本身自带的GUI，是Unity4.6版本之前的UI系统，已经被UGUI替代，但如果想显示一些辅助信息或调试按钮等，大多还会使用它。 2.NGUI：以前在Unity中广泛来做2D的，是第三方的包，需要安装 3.UGUI：Unity5.X后(其实是Un">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-20T09:49:04.000Z">
-<meta property="article:modified_time" content="2020-02-10T14:04:46.543Z">
+<meta property="article:modified_time" content="2020-02-11T15:11:01.052Z">
 <meta property="article:author" content="醉幻_d落叶">
 <meta name="twitter:card" content="summary">
   
@@ -64,19 +64,19 @@
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
-    		
-    			
-    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
-    			
-            
-    			
-    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
-    			
-            
-    			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
-    			
-            
+			
+				
+				<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+				
+	        
+				
+				<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+				
+	        
+				
+				<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
+				
+	        
 		</nav>
 		<nav class="header-nav">
 			<div class="social">
@@ -91,6 +91,9 @@
 		        
 					<a class="twitter" target="_blank" href="https://twitter.com/514cry" title="twitter"><i class="icon-twitter"></i></a>
 		        
+			</div>
+			<div style="position:absolute; bottom:120px left:auto; width:85%">
+			<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=688176&auto=1&height=66">				</iframe>
 			</div>
 		</nav>
 	</header>		
@@ -165,7 +168,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      UI
+      Unity UI的详解和运用
     </h1>
   
 
@@ -179,15 +182,22 @@
     <div class="article-entry" itemprop="articleBody">
       
         <hr>
-<h1 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h1><p><strong>UI</strong>即User Interface（用户界面）的简称，泛指用户的操作界面。</p>
+<h2 id="Unity-UI分类"><a href="#Unity-UI分类" class="headerlink" title="Unity UI分类"></a>Unity UI分类</h2><p><strong>UI</strong>即User Interface（用户界面）的简称，泛指用户的操作界面。</p>
 <p>Unity中的UI有以下三类：</p>
 <p>1.<strong>GUI</strong>：Unity本身自带的GUI，是Unity4.6版本之前的UI系统，<strong>已经被UGUI替代</strong>，但如果想显示一些<strong>辅助信息或调试按钮等</strong>，大多还会使用它。</p>
 <p>2.<strong>NGUI</strong>：以前在Unity中广泛来做2D的，是第三方的包，需要安装</p>
 <p>3.<strong>UGUI</strong>：Unity5.X后(其实是Unity4.6以后)，Unity找到NGUI的作者，用了一年开发了UGUI，变成内置于Unity中的包，官方主推。</p>
 <a id="more"></a>
 
-<h2 id="UGUI"><a href="#UGUI" class="headerlink" title="UGUI"></a>UGUI</h2><hr>
-<h2 id="NUGI"><a href="#NUGI" class="headerlink" title="NUGI"></a>NUGI</h2>
+<hr>
+<h3 id="UGUI"><a href="#UGUI" class="headerlink" title="UGUI"></a>UGUI</h3><p><strong>基础元素</strong>：</p>
+<p><strong>Text</strong>：文本需要使用TIF字体。（可以使用FontCreator软件精简一下字体库），可以在Text游戏对象上添加Outline和Shadow进行描边和阴影。</p>
+<p><strong>Image</strong>:显示图片，分4种格式。</p>
+<p><strong>注意</strong>：</p>
+<ol>
+<li>如果UI元素不需要点击事件，请不要勾选Raycast Target 复选框，因为这样会带来不必要的开销。</li>
+</ol>
+
       
 
       
