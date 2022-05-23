@@ -152,6 +152,115 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-游戏AI" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/">游戏AI</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/" class="archive-article-date">
+  	<time datetime="2022-05-23T12:36:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是游戏AI？"><a href="#什么是游戏AI？" class="headerlink" title="什么是游戏AI？"></a>什么是游戏AI？</h2><p>游戏AI主要关注实体根据当前条件采取的行动，在传统人工智能文献中被称为“智能代理”，智能代理需要观察环境，做出决策，采取行动，即“感知/思考/行动”循环：</p>
+<ul>
+<li>感知：代理侦测或被告知环境中可能影响其行为的事物。</li>
+<li>思考：代理决定采取的应对措施。</li>
+<li>行动：代理将先前的决定付诸行动。<br>游戏世界中的AI，大部分情况是模拟，“感知”部分会较为简单。</li>
+</ul>
+<h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>即通过感知获得到的输入，经过各个节点进行判断，最后来到叶节点，找到要做出的最终决定。<br>简单来说，可能就是一堆if。<br>这方面最好做到代码和数据分离，给策划或设计师提供好工具。</p>
+<h2 id="有限状态机（FSM）"><a href="#有限状态机（FSM）" class="headerlink" title="有限状态机（FSM）"></a>有限状态机（FSM）</h2><p>某个AI代理目前可能处在几种可能的状态当中，它可以从一个状态转移到另一个状态，而且这些状态的数量有限。<br>可以用状态转换表或者绘制图表来表示各个状态到其它状态的转换条件。<br>可以对有限状态机进行分层优化，即分层有限状态机（HFSM），对状态进行分组，归类出主状态和子状态，避免过多的重复“思考”。<br>缺陷：</p>
+<ul>
+<li>状态类之间互相依赖很严重，耦合度高。（后期可能会变成一张乱成线团的大网）</li>
+<li>结构不灵活，可扩展性不高，难以脚本化/可视化。</li>
+</ul>
+<h2 id="行为树（BT）"><a href="#行为树（BT）" class="headerlink" title="行为树（BT）"></a>行为树（BT）</h2><p>行为树是一棵用于控制 AI 决策行为的、包含了层级节点的树结构。<br>行为树的开发过程是高度可迭代的。<br>一个理想的系统应该将决策过程和状态本身分离，这样你只需要在一个位置进行更改，仍然能够正确转换状态，这就是行为树的应用场景。</p>
+<ul>
+<li><p>节点的返回值：true，false，running</p>
+</li>
+<li><p>行为树(Behavior Tree)具有有4大类型的Node：</p>
+<ul>
+<li>Composite Node　　组合节点</li>
+<li>Decorator Node　　 修饰节点</li>
+<li>Condition Node　　 条件节点（叶节点）</li>
+<li>Action Node　　　　动作节点（叶节点）</li>
+</ul>
+</li>
+<li><p>优点： </p>
+</li>
+</ul>
+<ol>
+<li>行为逻辑和状态数据分离，任何节点写好以后可以反复利用 </li>
+<li>重用性高，可用通过重组不同的节点来实现不同的行为树 </li>
+<li>呈线性的方式扩展，易于扩展 </li>
+<li>可配置，把工作交给designer </li>
+</ol>
+<ul>
+<li>缺点： </li>
+</ul>
+<ol>
+<li>每一帧都从root开始，有可能会访问到所以的节点，相对State Machine消耗更多的cpu </li>
+<li>任何一个简单的操作都必须要使用节点</li>
+</ol>
+<h2 id="A-寻路算法"><a href="#A-寻路算法" class="headerlink" title="A*寻路算法"></a>A*寻路算法</h2><ul>
+<li>当前代价：即来到“该点”所需要的最短步数。</li>
+<li>预估代价：即“该点”到目的的距离</li>
+<li>有两种求法：欧拉距离（两点之间直线距离），曼哈顿距离（水平和竖直距离的相加）</li>
+<li>总代价：即当前代价加上预估代价。</li>
+<li>步骤：先遍历周围网格（即先进行一次广度），存入数组中，随后求min最小总代价的其中一个，如果相同则选择预估代价最小的一个（可以优先队列一次性解决），再以这个作为新的起点，重复以上步骤。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-游戏编程模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -280,7 +389,16 @@
 <li>TAA：静态场景，相邻两帧同一像素用不同的位置来采样，会借助前面帧的信息。</li>
 </ul>
 </li>
-<li>光栅化算法<br>  直线光栅化算法<br>  三角形光栅化算法</li>
+<li>光栅化算法<br>  直线光栅化算法<ul>
+<li>DDA数值微分算法：通过判断斜率，来确定主要前进方向是x轴还是y轴。</li>
+<li>中点Bresenham算法：根据接下来可能要画的几个像素的中点和直线的位置关系判断。<br>三角形光栅化算法</li>
+<li>简单粗暴：对屏幕中的每一个像素进行采样，如果这个像素点在三角形之中那么这个像素点就应该被采用。（叉乘判断）</li>
+<li>优化：ABB包围盒</li>
+</ul>
+</li>
+</ul>
+<h2 id="抗锯齿算法和Z-Buffer算法"><a href="#抗锯齿算法和Z-Buffer算法" class="headerlink" title="抗锯齿算法和Z-Buffer算法"></a>抗锯齿算法和Z-Buffer算法</h2><ul>
+<li>超采样反走样（Super Sampling AA）</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] GAMES101-现代计算机图形学入门-闫令琪</p>
 

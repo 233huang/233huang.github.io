@@ -17,7 +17,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/_images/mvp.jpg">
 <meta property="article:published_time" content="2022-05-23T02:25:55.000Z">
-<meta property="article:modified_time" content="2022-05-23T04:55:41.055Z">
+<meta property="article:modified_time" content="2022-05-23T10:21:48.838Z">
 <meta property="article:author" content="iamsb">
 <meta property="article:tag" content="图形学">
 <meta name="twitter:card" content="summary">
@@ -207,7 +207,16 @@
 <li>TAA：静态场景，相邻两帧同一像素用不同的位置来采样，会借助前面帧的信息。</li>
 </ul>
 </li>
-<li>光栅化算法<br>  直线光栅化算法<br>  三角形光栅化算法</li>
+<li>光栅化算法<br>  直线光栅化算法<ul>
+<li>DDA数值微分算法：通过判断斜率，来确定主要前进方向是x轴还是y轴。</li>
+<li>中点Bresenham算法：根据接下来可能要画的几个像素的中点和直线的位置关系判断。<br>三角形光栅化算法</li>
+<li>简单粗暴：对屏幕中的每一个像素进行采样，如果这个像素点在三角形之中那么这个像素点就应该被采用。（叉乘判断）</li>
+<li>优化：ABB包围盒</li>
+</ul>
+</li>
+</ul>
+<h2 id="抗锯齿算法和Z-Buffer算法"><a href="#抗锯齿算法和Z-Buffer算法" class="headerlink" title="抗锯齿算法和Z-Buffer算法"></a>抗锯齿算法和Z-Buffer算法</h2><ul>
+<li>超采样反走样（Super Sampling AA）</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] GAMES101-现代计算机图形学入门-闫令琪</p>
 
