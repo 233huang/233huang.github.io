@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Unity 数据存储与读取 | 武哥的博客</title>
+  <title>Unity 热更新 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="存读档机制PlayerPrefs 数据持久化方法 存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。 储存类型：仅支持int、float、string三种 储存地址：详见官方文档 PlayerPrefs - Unity Documentation 优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资">
+  <meta name="description" content="什么是热更新？热更新是指当游戏出现bug，或者需要修改，增加某个功能的时候，我们不需要重新下载安装包，就可以更新游戏内容。 游戏上线后，遇见bug或者需要更新内容，一般有两种做法：第一种：重新打包上传一个新的安装包到应用商店（需要审核，费时间），然后让玩家下载新的客户端安装包（需要重新下载，费流量）第二种：在游戏内更新，游戏启动时去下载需要更新的资源，即热更新 实现热更新方案 ILRuntime：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity 数据存储与读取">
-<meta property="og:url" content="http://example.com/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/index.html">
+<meta property="og:title" content="Unity 热更新">
+<meta property="og:url" content="http://example.com/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/index.html">
 <meta property="og:site_name" content="武哥的博客">
-<meta property="og:description" content="存读档机制PlayerPrefs 数据持久化方法 存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。 储存类型：仅支持int、float、string三种 储存地址：详见官方文档 PlayerPrefs - Unity Documentation 优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资">
+<meta property="og:description" content="什么是热更新？热更新是指当游戏出现bug，或者需要修改，增加某个功能的时候，我们不需要重新下载安装包，就可以更新游戏内容。 游戏上线后，遇见bug或者需要更新内容，一般有两种做法：第一种：重新打包上传一个新的安装包到应用商店（需要审核，费时间），然后让玩家下载新的客户端安装包（需要重新下载，费流量）第二种：在游戏内更新，游戏启动时去下载需要更新的资源，即热更新 实现热更新方案 ILRuntime：">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-23T14:27:12.000Z">
-<meta property="article:modified_time" content="2022-05-23T14:43:41.156Z">
+<meta property="article:published_time" content="2022-05-26T07:48:52.000Z">
+<meta property="article:modified_time" content="2022-05-26T09:10:52.526Z">
 <meta property="article:author" content="iamsb">
-<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="热更新">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
@@ -155,34 +155,60 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Unity-数据存储与读取" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Unity-热更新" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Unity 数据存储与读取
+      Unity 热更新
     </h1>
   
 
         
-        <a href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" class="archive-article-date">
-  	<time datetime="2022-05-23T14:27:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
+        <a href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/" class="archive-article-date">
+  	<time datetime="2022-05-26T07:48:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="存读档机制"><a href="#存读档机制" class="headerlink" title="存读档机制"></a>存读档机制</h2><h4 id="PlayerPrefs-数据持久化方法"><a href="#PlayerPrefs-数据持久化方法" class="headerlink" title="PlayerPrefs 数据持久化方法"></a>PlayerPrefs 数据持久化方法</h4><ul>
-<li>存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。</li>
-<li>储存类型：仅支持int、float、string三种</li>
-<li>储存地址：详见官方文档 <a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/PlayerPrefs.html">PlayerPrefs - Unity Documentation</a></li>
-<li>优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资源的浪费。因此，只建议对一些基础数据，例如图像设置、声音设置等采用该方法存储。</li>
+        <h2 id="什么是热更新？"><a href="#什么是热更新？" class="headerlink" title="什么是热更新？"></a>什么是热更新？</h2><p>热更新是指当游戏出现bug，或者需要修改，增加某个功能的时候，我们不需要重新下载安装包，就可以更新游戏内容。</p>
+<p>游戏上线后，遇见bug或者需要更新内容，一般有两种做法：<br>第一种：重新打包上传一个新的安装包到应用商店（需要审核，费时间），然后让玩家下载新的客户端安装包（需要重新下载，费流量）<br>第二种：在游戏内更新，游戏启动时去下载需要更新的资源，即热更新</p>
+<h2 id="实现热更新方案"><a href="#实现热更新方案" class="headerlink" title="实现热更新方案"></a>实现热更新方案</h2><ul>
+<li>ILRuntime：<br>是掌趣科技开发的开源unity热更框架，这个框架打破了C#不能做ios平台热更的规则(在ios平台中是以ILRuntime+dll的方式解释执行，当然是在IL2CPP下)。有了这个框架，开发者只需使用C#这一种语言即可，而不用在C#和lua之间切换。</li>
+<li>xLua：<br>腾讯开发的Lua插件，目前比较主流。</li>
 </ul>
-<h4 id="Serialization-序列化方法"><a href="#Serialization-序列化方法" class="headerlink" title="Serialization 序列化方法"></a>Serialization 序列化方法</h4><p>存储原理：将对象(Object)转换为数据流(stream of bytes)，再经过文件流存储到本地的方法。<br>对象(Object)：可以是Unity中的任何文件或是脚本<br>数据流(stream of bytes)：<br>序列化反序列化：<br>    Serialization：对象–&gt;数据流<br>    Deserialization：数据流–&gt;对象<br>序列化的方法：<br>    二进制方法<br>    JSON方法<br>    XML方法</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/SouthBegonia/p/11616825.html">Unity - 存读档机制用法</a></p>
+<h2 id="热更新原理"><a href="#热更新原理" class="headerlink" title="热更新原理"></a>热更新原理</h2><p>客户端和服务器上分别保存有配置文件，程序启动时使用http协议下载服务器的配置文件来与客户端的进行逐行对比，通过比较（比如md5码）找出不同的资源和脚本代码（需要更新的部分），把对应的资源和代码下载下来并将本地的覆盖。</p>
+<h2 id="Lua-一些要点"><a href="#Lua-一些要点" class="headerlink" title="Lua 一些要点"></a>Lua 一些要点</h2><h4 id="理解面向对象的实现"><a href="#理解面向对象的实现" class="headerlink" title="理解面向对象的实现"></a>理解面向对象的实现</h4><p>本质上就是用表当作类，然后用元表及其元方法实现各种套娃操作。</p>
+<h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4><p>简单来说，一个函数内部的局部变量，通过函数返回值延续其寿命（生命周期），这就是闭包。</p>
+<h4 id="lua和C-是怎么进行交互的？"><a href="#lua和C-是怎么进行交互的？" class="headerlink" title="lua和C#是怎么进行交互的？"></a>lua和C#是怎么进行交互的？</h4><ul>
+<li>过程：<br>C# Call Lua：由C#文件先调用Lua解析器底层dll库（由C语言编写），再由dll文件执行相应的Lua文件。<br>Lua Call C#：</li>
+</ul>
+<ol>
+<li>Wrap方式:首先生成C#源文件所对应的Wrap文件，由Lua文件调用Wrap文件，再由Wrap文件调用C#文件。</li>
+<li>反射方式：当索引系统API、dll库或者第三方库时，如果无法将代码的具体实现进行代码生成，可采用此方式实现交互，就是执行效率低。</li>
+</ol>
+<ul>
+<li>原理：<br>C#与Lua进行交互主要通过虚拟栈实现，栈的索引分为正数与负数，若果索引为正数，则1表示栈底，若果索引为负数，则-1表示栈顶。<br>C# Call Lua:由C#先将数据放入栈中，由lua去栈中获取数据，然后返回数据对应的值到栈顶，再由栈顶返回至C#。<br>Lua Call C#:先生成C#源文件所对应的Wrap文件或者编写C#源文件所对应的c模块，然后将源文件内容通过Wrap文件或者C模块注册到Lua解释器中，然后由Lua去调用这个模块的函数。</li>
+</ul>
+<h4 id="Lua的GC垃圾回收机制算法"><a href="#Lua的GC垃圾回收机制算法" class="headerlink" title="Lua的GC垃圾回收机制算法"></a>Lua的GC垃圾回收机制算法</h4><p>Lua的GC使用了标记清除算法Mark and Sweep。</p>
+<h2 id="XLua"><a href="#XLua" class="headerlink" title="XLua"></a>XLua</h2><p>xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。</p>
+<h2 id="ILruntime"><a href="#ILruntime" class="headerlink" title="ILruntime"></a>ILruntime</h2><p>ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新。</p>
+<p>同市面上的其他热更方案相比，ILRuntime主要有以下优点：</p>
+<ol>
+<li>无缝访问C#工程的现成代码，无需额外抽象脚本API</li>
+<li>执行效率是L#的10-20倍</li>
+<li>选择性的CLR绑定使跨域调用更快速，绑定后跨域调用的性能能达到slua的2倍左右（从脚本调用GameObject之类的接口）</li>
+<li>支持跨域继承</li>
+<li>完整的泛型支持</li>
+<li>拥有Visual Studio的调试插件，可以实现真机源码级调试。</li>
+</ol>
+<p>原理：<br>ILRuntime借助Mono.Cecil库来读取DLL的PE信息，以及当中类型的所有信息，最终得到方法的IL汇编码，然后通过内置的IL解译执行虚拟机来执行DLL中的代码。</p>
+<p>IL托管栈和托管对象栈：<br>为了高性能进行运算，尤其是栈上的基础类型运算，如int,float,long之类类型的运算，直接借助C#的Stack类实现IL托管栈肯定是个非常糟糕的做法。因为这意味着每次读取和写入这些基础类型的值，都需要将他们进行装箱和拆箱操作，这个过程会非常耗时并且会产生巨量的GC Alloc，使得整个运行时执行效率非常低下。</p>
+<p>因此ILRuntime使用unsafe代码以及非托管内存，实现了自己的IL托管栈。</p>
 
       
 
@@ -217,7 +243,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">热更新</a>
         		</li>
       		
 		</ul>
@@ -273,7 +299,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -287,18 +313,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/05/24/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          C# 一些要点
-        
-      </div>
-    </a>
   
-  
-    <a href="/2022/05/23/Unity-UGUI%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Unity UGUI分析</div>
+    <a href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Unity 性能优化</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -6,19 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Unity 数据存储与读取 | 武哥的博客</title>
+  <title>武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="存读档机制PlayerPrefs 数据持久化方法 存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。 储存类型：仅支持int、float、string三种 储存地址：详见官方文档 PlayerPrefs - Unity Documentation 优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Unity 数据存储与读取">
-<meta property="og:url" content="http://example.com/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="武哥的博客">
+<meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="武哥的博客">
-<meta property="og:description" content="存读档机制PlayerPrefs 数据持久化方法 存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。 储存类型：仅支持int、float、string三种 储存地址：详见官方文档 PlayerPrefs - Unity Documentation 优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-23T14:27:12.000Z">
-<meta property="article:modified_time" content="2022-05-23T14:43:41.156Z">
 <meta property="article:author" content="iamsb">
-<meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
@@ -155,58 +150,42 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Unity-数据存储与读取" class="article article-type-post " itemscope itemprop="blogPost">
+            
+  
+    <article id="post-Unity 协程分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      Unity 数据存储与读取
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/">Unity 协程分析</a>
     </h1>
   
 
         
-        <a href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" class="archive-article-date">
-  	<time datetime="2022-05-23T14:27:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
+        <a href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2022-05-22T09:38:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-22</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="存读档机制"><a href="#存读档机制" class="headerlink" title="存读档机制"></a>存读档机制</h2><h4 id="PlayerPrefs-数据持久化方法"><a href="#PlayerPrefs-数据持久化方法" class="headerlink" title="PlayerPrefs 数据持久化方法"></a>PlayerPrefs 数据持久化方法</h4><ul>
-<li>存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。</li>
-<li>储存类型：仅支持int、float、string三种</li>
-<li>储存地址：详见官方文档 <a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/PlayerPrefs.html">PlayerPrefs - Unity Documentation</a></li>
-<li>优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资源的浪费。因此，只建议对一些基础数据，例如图像设置、声音设置等采用该方法存储。</li>
-</ul>
-<h4 id="Serialization-序列化方法"><a href="#Serialization-序列化方法" class="headerlink" title="Serialization 序列化方法"></a>Serialization 序列化方法</h4><p>存储原理：将对象(Object)转换为数据流(stream of bytes)，再经过文件流存储到本地的方法。<br>对象(Object)：可以是Unity中的任何文件或是脚本<br>数据流(stream of bytes)：<br>序列化反序列化：<br>    Serialization：对象–&gt;数据流<br>    Deserialization：数据流–&gt;对象<br>序列化的方法：<br>    二进制方法<br>    JSON方法<br>    XML方法</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/SouthBegonia/p/11616825.html">Unity - 存读档机制用法</a></p>
+        <h2 id="什么是协程？"><a href="#什么是协程？" class="headerlink" title="什么是协程？"></a>什么是协程？</h2><p>在Unity中，协程用于在主线程运行的同时开启另一段逻辑处理，来协助当前程序的执行。<br>协程看起来有点像是轻量级线程，但是本质上协程还是运行在主线程上，它在每帧结束之后去检测yield的条件是否满足，协程不是线程，也不是异步执行的。<br>协程和MonoBehaviour的Update函数一样也是在主线程中执行的，因此不用考虑同步和锁的问题。</p>
+<p>简单的说，协程就是一种特殊的函数，它可以主动的请求暂停自身并提交一个唤醒条件，Unity会在唤醒条件满足的时候去重新唤醒协程。<br>协程能做的Update都能做，那为什么我们需要协程呢？ 因为使用协程，我们可以把一个跨越多帧的操作封装到一个方法内部，代码会更清晰。</p>
+<h2 id="Unity中的协程原理"><a href="#Unity中的协程原理" class="headerlink" title="Unity中的协程原理"></a>Unity中的协程原理</h2><p>Unity的协程开启后，会挂在当前的MonoBehaviour下，在MonoBehaviour生命周期的Update和LateUpdate之间，会检查这个MonoBehaviour下挂载的所有协程，并唤醒其中满足唤醒条件的协程。<br>要想使用协程，只需要以IEnumerator为返回值，并且在函数体里面用yield return语句来暂停协程并提交一个唤醒条件。然后使用StartCoroutine来开启协程。</p>
+<p>协程分为两部分，协程与协程调度器：协程仅仅是一个能够中间暂停返回的函数，而协程调度是在MonoBehaviour的生命周期中实现的。 准确的说，Unity只实现了协程调度部分，而协程本身其实就是用了C#原生的“迭代器方法”。</p>
+<p>协程本体是C#的迭代器函数，可以使用yield来暂停，使用MoveNext()来继续执行。<br>翻阅Unity官方文档中介绍MonoBehaviour生命周期的部分，会发现有很多yield阶段，在这些阶段中，Unity会检查MonoBehaviour中是否挂载了可以被唤醒的协程，如果有则唤醒它。</p>
+<h2 id="进程，线程与协程"><a href="#进程，线程与协程" class="headerlink" title="进程，线程与协程"></a>进程，线程与协程</h2><p>进程是操作系统资源分配的基本单位 线程是处理器调度与执行的基本单位。</p>
+<p>每一个进程都独立拥有自己的指令和数据，所以称为资源分配的基本单位。其中数据又分布在内存的不同区域，我们在C语言课程中学习过内存四区的概念，一个运行中的进程所占有的内存大体可以分为四个区域：栈区、堆区、数据区、代码区。其中代码区存储指令，另外三个区存储数据。</p>
+<p>线程是处理器调度和执行的基本单位，一个线程往往和一个函数调用栈绑定，一个进程有多个线程，每个线程拥有自己的函数调用栈，同时共用进程的堆区，数据区，代码区。操作系统会不停地在不同线程之间切换来营造出一个并行的效果，这个策略称为时间片轮转法。</p>
+<p>而协程，可以简单理解为，一切用户自己实现的，类似于线程的轮子，都可以称之为是协程。</p>
+<p>协程调度是非抢占式的，线程调度是抢占式的：<br>操作系统会主动中断当前执行中的线程，然后把CPU控制权交给别的线程，就好像有很多线程去争抢CPU的控制权一样。<br>协程需要主动调用yield来释放CPU控制权，协程的运行中间不会被系统中断打断。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Coroutines.html">Unity官方的协程文档</a><br>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/279383752">Unity协程的原理与应用 by宇亓</a></p>
 
       
 
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -226,84 +205,16 @@
       
 
       
-
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/">展开全文 >></a>
+        </p>
       
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
-        </div>
-      </div>
-    </span>
-  </div>
-</div>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2022/05/24/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          C# 一些要点
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2022/05/23/Unity-UGUI%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Unity UGUI分析</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -323,14 +234,87 @@
 
 
 
-  
-  
-  
 
   
-
+    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/22/hello-world/">Hello World</a>
+    </h1>
   
 
+        
+        <a href="/2022/05/22/hello-world/" class="archive-article-date">
+  	<time datetime="2022-05-22T09:36:37.692Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/22/hello-world/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </nav>
   
 
 
@@ -353,8 +337,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: false,
-		isPost: true,
+		isHome: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

@@ -6,20 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Unity 数据存储与读取 | 武哥的博客</title>
+  <title>Unity 性能优化 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="存读档机制PlayerPrefs 数据持久化方法 存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。 储存类型：仅支持int、float、string三种 储存地址：详见官方文档 PlayerPrefs - Unity Documentation 优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资">
+  <meta name="description" content="图集什么是图集？首先，Unity会为场景中的每个纹理发出一次绘制调用，即DrawCall（CPU发出命令让GUP开始渲染）一个个纹理进行绘制，那性能必须大消耗，所以，把多个纹理合并成一个，那么DrawCall也只会有一个，这就是合并纹理，即图集。（补充一下Unity的Batches，即DrawCall的封装，代表每帧有多少DrawCall） 关于图集的渲染Unity的Canvas会按照深度Dept">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity 数据存储与读取">
-<meta property="og:url" content="http://example.com/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/index.html">
+<meta property="og:title" content="Unity 性能优化">
+<meta property="og:url" content="http://example.com/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
 <meta property="og:site_name" content="武哥的博客">
-<meta property="og:description" content="存读档机制PlayerPrefs 数据持久化方法 存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。 储存类型：仅支持int、float、string三种 储存地址：详见官方文档 PlayerPrefs - Unity Documentation 优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资">
+<meta property="og:description" content="图集什么是图集？首先，Unity会为场景中的每个纹理发出一次绘制调用，即DrawCall（CPU发出命令让GUP开始渲染）一个个纹理进行绘制，那性能必须大消耗，所以，把多个纹理合并成一个，那么DrawCall也只会有一个，这就是合并纹理，即图集。（补充一下Unity的Batches，即DrawCall的封装，代表每帧有多少DrawCall） 关于图集的渲染Unity的Canvas会按照深度Dept">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-23T14:27:12.000Z">
-<meta property="article:modified_time" content="2022-05-23T14:43:41.156Z">
+<meta property="og:image" content="http://example.com/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/FindObject.jpg">
+<meta property="article:published_time" content="2022-05-26T06:30:15.000Z">
+<meta property="article:modified_time" content="2022-05-26T07:47:26.232Z">
 <meta property="article:author" content="iamsb">
 <meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/FindObject.jpg">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
   
@@ -155,34 +157,77 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Unity-数据存储与读取" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Unity-性能优化" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Unity 数据存储与读取
+      Unity 性能优化
     </h1>
   
 
         
-        <a href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" class="archive-article-date">
-  	<time datetime="2022-05-23T14:27:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
+        <a href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="archive-article-date">
+  	<time datetime="2022-05-26T06:30:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="存读档机制"><a href="#存读档机制" class="headerlink" title="存读档机制"></a>存读档机制</h2><h4 id="PlayerPrefs-数据持久化方法"><a href="#PlayerPrefs-数据持久化方法" class="headerlink" title="PlayerPrefs 数据持久化方法"></a>PlayerPrefs 数据持久化方法</h4><ul>
-<li>存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。</li>
-<li>储存类型：仅支持int、float、string三种</li>
-<li>储存地址：详见官方文档 <a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/PlayerPrefs.html">PlayerPrefs - Unity Documentation</a></li>
-<li>优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资源的浪费。因此，只建议对一些基础数据，例如图像设置、声音设置等采用该方法存储。</li>
+        <h2 id="图集"><a href="#图集" class="headerlink" title="图集"></a>图集</h2><h4 id="什么是图集？"><a href="#什么是图集？" class="headerlink" title="什么是图集？"></a>什么是图集？</h4><p>首先，Unity会为场景中的每个纹理发出一次绘制调用，即DrawCall（CPU发出命令让GUP开始渲染）<br>一个个纹理进行绘制，那性能必须大消耗，所以，把多个纹理合并成一个，那么DrawCall也只会有一个，这就是合并纹理，即图集。<br>（补充一下Unity的Batches，即DrawCall的封装，代表每帧有多少DrawCall）</p>
+<h4 id="关于图集的渲染"><a href="#关于图集的渲染" class="headerlink" title="关于图集的渲染"></a>关于图集的渲染</h4><p>Unity的Canvas会按照深度Depth从下向上渲染，所以最下面的UI一般会渲染在最前面。 但是如果UI之间产生了交叉重叠的情况，图集的合批会在不同图集重叠的地方被打断（如果两个相同图集之间穿插了另一个不同的图集，则合批会被打断）</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h4 id="Unity-API"><a href="#Unity-API" class="headerlink" title="Unity API"></a>Unity API</h4><ul>
+<li><p>SendMessage：用反射，费性能，低效率，垃圾玩意，观察者模式取而代之。</p>
+</li>
+<li><p>Extern Call Caching：把transform、gameobject之类的属性访问器进行缓存使用，指的就是外部调用缓存，我们把一些常用或者频繁使用到的外部组件以全局变量或者局部变量缓存起来可以减少外部调用的次数。</p>
+</li>
+<li><p>FindObjects：<br>FindObjectsOfType比FindGameObjectsWithTag更耗时，是最耗性能以及效率最低的一种。<br>Transform.Find():用这个方法查找物体时，根节点一定要处于“显示”状态。<br>GameObject.Find():使用简单，不会因为重名报错，但是不能查找被隐藏的物体，全局查找，所以效率低，很耗性能。<br><img src="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/FindObject.jpg" alt="FindObject"></p>
+</li>
+<li><p>Physics.OverlapSphere VS Physics.OverlapSphereNonAlloc<br>Physics.OverlapSphere: 计算并存储接触球体或位于球体内部的碰撞体，会产生GC Alloc。<br>Physics.OverlapSphereNonAlloc: 计算与球体接触或位于球体内部的碰撞体，并将它们存储到提供的缓冲区中，耗时比在OverlapSphere长。</p>
+</li>
 </ul>
-<h4 id="Serialization-序列化方法"><a href="#Serialization-序列化方法" class="headerlink" title="Serialization 序列化方法"></a>Serialization 序列化方法</h4><p>存储原理：将对象(Object)转换为数据流(stream of bytes)，再经过文件流存储到本地的方法。<br>对象(Object)：可以是Unity中的任何文件或是脚本<br>数据流(stream of bytes)：<br>序列化反序列化：<br>    Serialization：对象–&gt;数据流<br>    Deserialization：数据流–&gt;对象<br>序列化的方法：<br>    二进制方法<br>    JSON方法<br>    XML方法</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/SouthBegonia/p/11616825.html">Unity - 存读档机制用法</a></p>
+<h4 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h4><ul>
+<li><p>GameObject的SpawnPool应支持“移出屏幕”功能<br>GameObject（比如特效）可能会被频繁的在“使用中”、“不使用”的状态间切换。我们的SpawnPool不应过快地把“刚刚不使用”的GameObject立刻Deactivate掉，否则会引起不必要的Deactivate/Activate的性能消耗。应有一个“从热变冷”的过程：“刚刚不使用”只是移出屏幕；只有“不使用一段时间”的GameObject，才会得以Deactivate。可能的实现方式如下</p>
+</li>
+<li><p>Transform的孩子不应过多<br>当Transform包含不该有的孩子Transform或其他组件时，为该Transform进行position、rotation赋值，会引起消耗，特别是包含粒子系统的时候。</p>
+</li>
+<li><p>应减少粒子系统的Play()的调用次数<br>每次调用ParticleSystem.Play()都会有消耗，如果粒子系统本身没有明显“前摇”阶段，应先检查ParticleSystem.isPlaying。</p>
+</li>
+<li><p>应减少每帧Material.GetXX()/Material.SetXX()的次数<br>每次调用Material.GetXX()或Material.SetXX()都会有消耗，应减少调用该API的频率。比如使用C#对象变量来记录Material的变量状态，从而规避Material.GetXX()；<br>在Shader里把多个uniform half变量合并为uniform half 4，从而把4个Material.SetXX()调用合并为1个Material.SetXX()。</p>
+</li>
+<li><p>应使用支持Conditional的日志输出机制<br>简单使用 Debug.Log(ToString() + “hello “ + “world”); 其实参会造成CPU消耗及GC。使用支持Conditional的日志输出机制，则无此问题，只需在构建时，取消对应的编译参数即可。</p>
+</li>
+<li><p>减少GetComponent()的频率<br>GetComponent()会有一定的GC产生，有少量的CPU消耗。</p>
+</li>
+<li><p>减少UnityEngine.Object的null比较<br>因为Unity overwrite掉了Object.Equals()，<a target="_blank" rel="noopener" href="https://blog.unity.com/technology/custom-operator-should-we-keep-it">《CUSTOM == OPERATOR, SHOULD WE KEEP IT?》</a>也说过unityEngineObject==null事实上和GetComponent()的消耗类似，都涉及到Engine层面的机制调用，所以UnityEngine.Object的null比较，都会有少许的性能消耗。对于基础功能、调用栈叶子节点逻辑、高频功能，我们应少null比较，使用assertion来处理。只有在调用栈根节点逻辑，有必要的时候，才进行null比较。</p>
+</li>
+<li><p>减少不必要的Transform.position/rotation等访问<br>每次访问Transform.position/rotation都有相应的消耗。应能cache就cache其返回结果。</p>
+</li>
+<li><p>减少创建C#堆内存对象<br>建议使用成员变量，或者Pool来规避高频创建C#堆内存对象的创建。而且堆内存对象创建本身就是个相对较慢的过程。</p>
+</li>
+<li><p>应为struct对象重载所有object函数<br>为了普适性，C#的struct的默认Equals()、GetHashCode()和ToString()都是较慢实现，甚至涉及反射。用户自定义的struct，都应重载上述3个函数。</p>
+</li>
+<li><p>尽量用Queue/Stack来代替List<br>我们会习惯用List来实现数据集合的需求。但好一些情况下，我们事实上是不需对其进行随机访问，而仅仅是“增加”、“删除”操作。此时，我们应该使用增删复杂度都是O(1)的Queue或者Stack。</p>
+</li>
+<li><p>注意容器的初始化capacity<br>Capacity增长时，除了O(n)的复杂度，也有GC消耗。</p>
+</li>
+<li><p>尽量为类或函数声明为sealed<br>IL2CPP就sealed的类或函数会有优化，变虚函数调用为直接函数调用。</p>
+</li>
+<li><p>减少Dictionary的冗余访问<br>myDictionary.Contains(oneKey) ==&gt; myDictionary.TryGetValue(oneKey, out myValue)</p>
+</li>
+</ul>
+<h2 id="Profiler工具"><a href="#Profiler工具" class="headerlink" title="Profiler工具"></a>Profiler工具</h2><ul>
+<li><p>长期性能数据监控工具<br>长期性能数据监控工具会至少每天都对游戏单局、或游戏资源进行自动化性能测试，并上报结果到服务器。能从“整体”去对比不同时段、不同版本间的性能差别。</p>
+</li>
+<li><p>Unity Profiler<br>Unity Profiler能定量地找到C#的GC Alloc问题；其Timeline视图也能从地整体（但不太定量）找到CPU瓶颈。</p>
+</li>
+<li><p>XCode<br>XCode的GPU Report视图能从整体（但不太定量）找到游戏的瓶颈阶段。当Frame Time中CPU大于GPU时，表示CPU是瓶颈，否则表示GPU是瓶颈；当Utilization中的TILER比RENDERER高时，表示顶点处理是GPU的瓶颈，否则表示像素处理是GPU的瓶颈。帧率受限于瓶颈，应优先优化瓶颈阶段，非瓶颈阶段优化得再快都无法提高帧率。</p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1401256820485259264">Unity性能优化 -劳烦叫我小小泽</a><br>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24392681">Unity游戏项目性能优化总结 -DonaldW</a></p>
 
       
 
@@ -273,7 +318,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -287,18 +332,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/05/24/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          C# 一些要点
+          Unity 热更新
         
       </div>
     </a>
   
   
-    <a href="/2022/05/23/Unity-UGUI%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Unity UGUI分析</div>
+    <a href="/2022/05/25/Unity-%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Unity 资源加载</div>
       <i class="icon-circle-right"></i>
     </a>
   

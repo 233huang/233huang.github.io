@@ -6,24 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>计算机图形学 | 武哥博客</title>
+  <title>计算机图形学 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="概论 什么是计算机图形学？  使用数学算法将三维或二维图像转化为计算机显示器的栅格形式。 计算机图形学的四大组成部分  光栅化成像、几何表示、光的传播理论、动画与模拟  基本的数学知识 点乘：用于计算向量投影，判断物体之间的方位 叉乘：用于判断两个向量的相对位置，以及点是否在三角形内部（在光栅化阶段很重要） 左手、右手坐标系：不同软件、图形接口用的是不同的坐标系，一般是右手坐标系。（OpenGL为">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机图形学">
 <meta property="og:url" content="http://example.com/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/index.html">
-<meta property="og:site_name" content="武哥博客">
+<meta property="og:site_name" content="武哥的博客">
 <meta property="og:description" content="概论 什么是计算机图形学？  使用数学算法将三维或二维图像转化为计算机显示器的栅格形式。 计算机图形学的四大组成部分  光栅化成像、几何表示、光的传播理论、动画与模拟  基本的数学知识 点乘：用于计算向量投影，判断物体之间的方位 叉乘：用于判断两个向量的相对位置，以及点是否在三角形内部（在光栅化阶段很重要） 左手、右手坐标系：不同软件、图形接口用的是不同的坐标系，一般是右手坐标系。（OpenGL为">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/_images/mvp.jpg">
+<meta property="og:image" content="http://example.com/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/mvp.jpg">
 <meta property="article:published_time" content="2022-05-23T02:25:55.000Z">
-<meta property="article:modified_time" content="2022-05-25T15:19:36.251Z">
+<meta property="article:modified_time" content="2022-05-26T07:27:47.744Z">
 <meta property="article:author" content="iamsb">
 <meta property="article:tag" content="图形学">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/_images/mvp.jpg">
+<meta name="twitter:image" content="http://example.com/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/mvp.jpg">
   
-    <link rel="alternative" href="/atom.xml" title="武哥博客" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -61,6 +61,8 @@
 			<ul>
 			
 				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
 	        
 			</ul>
 		</nav>
@@ -116,6 +118,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -136,7 +140,9 @@
 				<ul style="width: 50%">
 				
 				
-					<li style="width: 100%"><a href="/">主页</a></li>
+					<li style="width: 50%"><a href="/">主页</a></li>
+		        
+					<li style="width: 50%"><a href="/archives">归档</a></li>
 		        
 				</ul>
 			</nav>
@@ -186,7 +192,7 @@
 <li>仿射变换：位移</li>
 <li>齐次坐标：由于位移无法用单一矩阵实现，因此为了使基础变换矩阵都能用单一矩阵描述，引入齐次坐标，即多加入一个维度，1表示点，0表示向量。</li>
 </ul>
-<h2 id="视图变换"><a href="#视图变换" class="headerlink" title="视图变换"></a>视图变换</h2><p>即将虚拟世界中的物体，从它的模型坐标，一步步转化到屏幕坐标系。（通过MVP矩阵）。<br><img src="/../_images/mvp.jpg" alt="MVP"></p>
+<h2 id="视图变换"><a href="#视图变换" class="headerlink" title="视图变换"></a>视图变换</h2><p>即将虚拟世界中的物体，从它的模型坐标，一步步转化到屏幕坐标系。（通过MVP矩阵）。<br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/mvp.jpg" alt="MVP"></p>
 <ul>
 <li><p>模型变换（modeling tranformation）<br>  将虚拟世界（游戏场景）中的物体，调整至它们应该在的位置。（模型空间转化到世界空间）。<br>  用基础变换矩阵简单调整。</p>
 </li>
@@ -485,15 +491,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">C#</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">热更新</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">AI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
              
               <li class="article-tag-list-item">

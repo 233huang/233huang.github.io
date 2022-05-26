@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>武哥博客</title>
+  <title>武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="武哥博客">
+<meta property="og:title" content="武哥的博客">
 <meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="武哥博客">
+<meta property="og:site_name" content="武哥的博客">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="iamsb">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternative" href="/atom.xml" title="武哥博客" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -54,6 +54,8 @@
 			<ul>
 			
 				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/archives">归档</a></li>
 	        
 			</ul>
 		</nav>
@@ -109,6 +111,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,7 +133,9 @@
 				<ul style="width: 50%">
 				
 				
-					<li style="width: 100%"><a href="/">主页</a></li>
+					<li style="width: 50%"><a href="/">主页</a></li>
+		        
+					<li style="width: 50%"><a href="/archives">归档</a></li>
 		        
 				</ul>
 			</nav>
@@ -145,6 +151,237 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-Unity-热更新" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/">Unity 热更新</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/" class="archive-article-date">
+  	<time datetime="2022-05-26T07:48:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是热更新？"><a href="#什么是热更新？" class="headerlink" title="什么是热更新？"></a>什么是热更新？</h2><p>热更新是指当游戏出现bug，或者需要修改，增加某个功能的时候，我们不需要重新下载安装包，就可以更新游戏内容。</p>
+<p>游戏上线后，遇见bug或者需要更新内容，一般有两种做法：<br>第一种：重新打包上传一个新的安装包到应用商店（需要审核，费时间），然后让玩家下载新的客户端安装包（需要重新下载，费流量）<br>第二种：在游戏内更新，游戏启动时去下载需要更新的资源，即热更新</p>
+<h2 id="实现热更新方案"><a href="#实现热更新方案" class="headerlink" title="实现热更新方案"></a>实现热更新方案</h2><ul>
+<li>ILRuntime：<br>是掌趣科技开发的开源unity热更框架，这个框架打破了C#不能做ios平台热更的规则(在ios平台中是以ILRuntime+dll的方式解释执行，当然是在IL2CPP下)。有了这个框架，开发者只需使用C#这一种语言即可，而不用在C#和lua之间切换。</li>
+<li>xLua：<br>腾讯开发的Lua插件，目前比较主流。</li>
+</ul>
+<h2 id="热更新原理"><a href="#热更新原理" class="headerlink" title="热更新原理"></a>热更新原理</h2><p>客户端和服务器上分别保存有配置文件，程序启动时使用http协议下载服务器的配置文件来与客户端的进行逐行对比，通过比较（比如md5码）找出不同的资源和脚本代码（需要更新的部分），把对应的资源和代码下载下来并将本地的覆盖。</p>
+<h2 id="Lua-一些要点"><a href="#Lua-一些要点" class="headerlink" title="Lua 一些要点"></a>Lua 一些要点</h2><h4 id="理解面向对象的实现"><a href="#理解面向对象的实现" class="headerlink" title="理解面向对象的实现"></a>理解面向对象的实现</h4><p>本质上就是用表当作类，然后用元表及其元方法实现各种套娃操作。</p>
+<h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4><p>简单来说，一个函数内部的局部变量，通过函数返回值延续其寿命（生命周期），这就是闭包。</p>
+<h4 id="lua和C-是怎么进行交互的？"><a href="#lua和C-是怎么进行交互的？" class="headerlink" title="lua和C#是怎么进行交互的？"></a>lua和C#是怎么进行交互的？</h4><ul>
+<li>过程：<br>C# Call Lua：由C#文件先调用Lua解析器底层dll库（由C语言编写），再由dll文件执行相应的Lua文件。<br>Lua Call C#：</li>
+</ul>
+<ol>
+<li>Wrap方式:首先生成C#源文件所对应的Wrap文件，由Lua文件调用Wrap文件，再由Wrap文件调用C#文件。</li>
+<li>反射方式：当索引系统API、dll库或者第三方库时，如果无法将代码的具体实现进行代码生成，可采用此方式实现交互，就是执行效率低。</li>
+</ol>
+<ul>
+<li>原理：<br>C#与Lua进行交互主要通过虚拟栈实现，栈的索引分为正数与负数，若果索引为正数，则1表示栈底，若果索引为负数，则-1表示栈顶。<br>C# Call Lua:由C#先将数据放入栈中，由lua去栈中获取数据，然后返回数据对应的值到栈顶，再由栈顶返回至C#。<br>Lua Call C#:先生成C#源文件所对应的Wrap文件或者编写C#源文件所对应的c模块，然后将源文件内容通过Wrap文件或者C模块注册到Lua解释器中，然后由Lua去调用这个模块的函数。</li>
+</ul>
+<h4 id="Lua的GC垃圾回收机制算法"><a href="#Lua的GC垃圾回收机制算法" class="headerlink" title="Lua的GC垃圾回收机制算法"></a>Lua的GC垃圾回收机制算法</h4><p>Lua的GC使用了标记清除算法Mark and Sweep。</p>
+<h2 id="XLua"><a href="#XLua" class="headerlink" title="XLua"></a>XLua</h2><p>xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。</p>
+<h2 id="ILruntime"><a href="#ILruntime" class="headerlink" title="ILruntime"></a>ILruntime</h2><p>ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新。</p>
+<p>同市面上的其他热更方案相比，ILRuntime主要有以下优点：</p>
+<ol>
+<li>无缝访问C#工程的现成代码，无需额外抽象脚本API</li>
+<li>执行效率是L#的10-20倍</li>
+<li>选择性的CLR绑定使跨域调用更快速，绑定后跨域调用的性能能达到slua的2倍左右（从脚本调用GameObject之类的接口）</li>
+<li>支持跨域继承</li>
+<li>完整的泛型支持</li>
+<li>拥有Visual Studio的调试插件，可以实现真机源码级调试。</li>
+</ol>
+<p>原理：<br>ILRuntime借助Mono.Cecil库来读取DLL的PE信息，以及当中类型的所有信息，最终得到方法的IL汇编码，然后通过内置的IL解译执行虚拟机来执行DLL中的代码。</p>
+<p>IL托管栈和托管对象栈：<br>为了高性能进行运算，尤其是栈上的基础类型运算，如int,float,long之类类型的运算，直接借助C#的Stack类实现IL托管栈肯定是个非常糟糕的做法。因为这意味着每次读取和写入这些基础类型的值，都需要将他们进行装箱和拆箱操作，这个过程会非常耗时并且会产生巨量的GC Alloc，使得整个运行时执行效率非常低下。</p>
+<p>因此ILRuntime使用unsafe代码以及非托管内存，实现了自己的IL托管栈。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">热更新</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Unity-性能优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">Unity 性能优化</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="archive-article-date">
+  	<time datetime="2022-05-26T06:30:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="图集"><a href="#图集" class="headerlink" title="图集"></a>图集</h2><h4 id="什么是图集？"><a href="#什么是图集？" class="headerlink" title="什么是图集？"></a>什么是图集？</h4><p>首先，Unity会为场景中的每个纹理发出一次绘制调用，即DrawCall（CPU发出命令让GUP开始渲染）<br>一个个纹理进行绘制，那性能必须大消耗，所以，把多个纹理合并成一个，那么DrawCall也只会有一个，这就是合并纹理，即图集。<br>（补充一下Unity的Batches，即DrawCall的封装，代表每帧有多少DrawCall）</p>
+<h4 id="关于图集的渲染"><a href="#关于图集的渲染" class="headerlink" title="关于图集的渲染"></a>关于图集的渲染</h4><p>Unity的Canvas会按照深度Depth从下向上渲染，所以最下面的UI一般会渲染在最前面。 但是如果UI之间产生了交叉重叠的情况，图集的合批会在不同图集重叠的地方被打断（如果两个相同图集之间穿插了另一个不同的图集，则合批会被打断）</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h4 id="Unity-API"><a href="#Unity-API" class="headerlink" title="Unity API"></a>Unity API</h4><ul>
+<li><p>SendMessage：用反射，费性能，低效率，垃圾玩意，观察者模式取而代之。</p>
+</li>
+<li><p>Extern Call Caching：把transform、gameobject之类的属性访问器进行缓存使用，指的就是外部调用缓存，我们把一些常用或者频繁使用到的外部组件以全局变量或者局部变量缓存起来可以减少外部调用的次数。</p>
+</li>
+<li><p>FindObjects：<br>FindObjectsOfType比FindGameObjectsWithTag更耗时，是最耗性能以及效率最低的一种。<br>Transform.Find():用这个方法查找物体时，根节点一定要处于“显示”状态。<br>GameObject.Find():使用简单，不会因为重名报错，但是不能查找被隐藏的物体，全局查找，所以效率低，很耗性能。<br><img src="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/FindObject.jpg" alt="FindObject"></p>
+</li>
+<li><p>Physics.OverlapSphere VS Physics.OverlapSphereNonAlloc<br>Physics.OverlapSphere: 计算并存储接触球体或位于球体内部的碰撞体，会产生GC Alloc。<br>Physics.OverlapSphereNonAlloc: 计算与球体接触或位于球体内部的碰撞体，并将它们存储到提供的缓冲区中，耗时比在OverlapSphere长。</p>
+</li>
+</ul>
+<h4 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h4><ul>
+<li><p>GameObject的SpawnPool应支持“移出屏幕”功能<br>GameObject（比如特效）可能会被频繁的在“使用中”、“不使用”的状态间切换。我们的SpawnPool不应过快地把“刚刚不使用”的GameObject立刻Deactivate掉，否则会引起不必要的Deactivate/Activate的性能消耗。应有一个“从热变冷”的过程：“刚刚不使用”只是移出屏幕；只有“不使用一段时间”的GameObject，才会得以Deactivate。可能的实现方式如下</p>
+</li>
+<li><p>Transform的孩子不应过多<br>当Transform包含不该有的孩子Transform或其他组件时，为该Transform进行position、rotation赋值，会引起消耗，特别是包含粒子系统的时候。</p>
+</li>
+<li><p>应减少粒子系统的Play()的调用次数<br>每次调用ParticleSystem.Play()都会有消耗，如果粒子系统本身没有明显“前摇”阶段，应先检查ParticleSystem.isPlaying。</p>
+</li>
+<li><p>应减少每帧Material.GetXX()/Material.SetXX()的次数<br>每次调用Material.GetXX()或Material.SetXX()都会有消耗，应减少调用该API的频率。比如使用C#对象变量来记录Material的变量状态，从而规避Material.GetXX()；<br>在Shader里把多个uniform half变量合并为uniform half 4，从而把4个Material.SetXX()调用合并为1个Material.SetXX()。</p>
+</li>
+<li><p>应使用支持Conditional的日志输出机制<br>简单使用 Debug.Log(ToString() + “hello “ + “world”); 其实参会造成CPU消耗及GC。使用支持Conditional的日志输出机制，则无此问题，只需在构建时，取消对应的编译参数即可。</p>
+</li>
+<li><p>减少GetComponent()的频率<br>GetComponent()会有一定的GC产生，有少量的CPU消耗。</p>
+</li>
+<li><p>减少UnityEngine.Object的null比较<br>因为Unity overwrite掉了Object.Equals()，<a target="_blank" rel="noopener" href="https://blog.unity.com/technology/custom-operator-should-we-keep-it">《CUSTOM == OPERATOR, SHOULD WE KEEP IT?》</a>也说过unityEngineObject==null事实上和GetComponent()的消耗类似，都涉及到Engine层面的机制调用，所以UnityEngine.Object的null比较，都会有少许的性能消耗。对于基础功能、调用栈叶子节点逻辑、高频功能，我们应少null比较，使用assertion来处理。只有在调用栈根节点逻辑，有必要的时候，才进行null比较。</p>
+</li>
+<li><p>减少不必要的Transform.position/rotation等访问<br>每次访问Transform.position/rotation都有相应的消耗。应能cache就cache其返回结果。</p>
+</li>
+<li><p>减少创建C#堆内存对象<br>建议使用成员变量，或者Pool来规避高频创建C#堆内存对象的创建。而且堆内存对象创建本身就是个相对较慢的过程。</p>
+</li>
+<li><p>应为struct对象重载所有object函数<br>为了普适性，C#的struct的默认Equals()、GetHashCode()和ToString()都是较慢实现，甚至涉及反射。用户自定义的struct，都应重载上述3个函数。</p>
+</li>
+<li><p>尽量用Queue/Stack来代替List<br>我们会习惯用List来实现数据集合的需求。但好一些情况下，我们事实上是不需对其进行随机访问，而仅仅是“增加”、“删除”操作。此时，我们应该使用增删复杂度都是O(1)的Queue或者Stack。</p>
+</li>
+<li><p>注意容器的初始化capacity<br>Capacity增长时，除了O(n)的复杂度，也有GC消耗。</p>
+</li>
+<li><p>尽量为类或函数声明为sealed<br>IL2CPP就sealed的类或函数会有优化，变虚函数调用为直接函数调用。</p>
+</li>
+<li><p>减少Dictionary的冗余访问<br>myDictionary.Contains(oneKey) ==&gt; myDictionary.TryGetValue(oneKey, out myValue)</p>
+</li>
+</ul>
+<h2 id="Profiler工具"><a href="#Profiler工具" class="headerlink" title="Profiler工具"></a>Profiler工具</h2><ul>
+<li><p>长期性能数据监控工具<br>长期性能数据监控工具会至少每天都对游戏单局、或游戏资源进行自动化性能测试，并上报结果到服务器。能从“整体”去对比不同时段、不同版本间的性能差别。</p>
+</li>
+<li><p>Unity Profiler<br>Unity Profiler能定量地找到C#的GC Alloc问题；其Timeline视图也能从地整体（但不太定量）找到CPU瓶颈。</p>
+</li>
+<li><p>XCode<br>XCode的GPU Report视图能从整体（但不太定量）找到游戏的瓶颈阶段。当Frame Time中CPU大于GPU时，表示CPU是瓶颈，否则表示GPU是瓶颈；当Utilization中的TILER比RENDERER高时，表示顶点处理是GPU的瓶颈，否则表示像素处理是GPU的瓶颈。帧率受限于瓶颈，应优先优化瓶颈阶段，非瓶颈阶段优化得再快都无法提高帧率。</p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1401256820485259264">Unity性能优化 -劳烦叫我小小泽</a><br>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24392681">Unity游戏项目性能优化总结 -DonaldW</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-Unity-资源加载" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -170,7 +407,8 @@
 <h2 id="资源加载的多种方式"><a href="#资源加载的多种方式" class="headerlink" title="资源加载的多种方式"></a>资源加载的多种方式</h2><h4 id="阻塞型（同步）"><a href="#阻塞型（同步）" class="headerlink" title="阻塞型（同步）"></a>阻塞型（同步）</h4><ul>
 <li>Resource.Load<br>Unity3D以Resources这个名字的文件夹作为根目录来加载资源其下面的资源文件。</li>
 </ul>
-<p>当Unity3D的项目被Build构建时，Unity3D打包了Resources文件夹的所有资源文件成为1个或几个资源文件(将资源文件合并成了1个或几个资源包文件)放入包内。当我们在程序中调用Resource.Load时则从这几个资源文件中查找并从中提取数据作为资源放入内存。</p>
+<p>当Unity3D的项目被Build构建时，会根据Resources文件夹中的内容产生序列化文件，这个序列化文件包括了metadata和indexing information。</p>
+<p>indexing information包括了一个平衡的搜索树，可以通过Resources API 传递路径名字去找到资源在Resources下的位置，时间复杂度在O(n log(n))。</p>
 <p>缺点：增加包体大小，加载时需要解压，消耗时间和性能。</p>
 <ul>
 <li>File read + AssetBundle.CreateFromMemory + AssetBundle.Load</li>
@@ -334,6 +572,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -929,7 +1178,7 @@
 <li>仿射变换：位移</li>
 <li>齐次坐标：由于位移无法用单一矩阵实现，因此为了使基础变换矩阵都能用单一矩阵描述，引入齐次坐标，即多加入一个维度，1表示点，0表示向量。</li>
 </ul>
-<h2 id="视图变换"><a href="#视图变换" class="headerlink" title="视图变换"></a>视图变换</h2><p>即将虚拟世界中的物体，从它的模型坐标，一步步转化到屏幕坐标系。（通过MVP矩阵）。<br><img src="/../_images/mvp.jpg" alt="MVP"></p>
+<h2 id="视图变换"><a href="#视图变换" class="headerlink" title="视图变换"></a>视图变换</h2><p>即将虚拟世界中的物体，从它的模型坐标，一步步转化到屏幕坐标系。（通过MVP矩阵）。<br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/mvp.jpg" alt="MVP"></p>
 <ul>
 <li><p>模型变换（modeling tranformation）<br>  将虚拟世界（游戏场景）中的物体，调整至它们应该在的位置。（模型空间转化到世界空间）。<br>  用基础变换矩阵简单调整。</p>
 </li>
@@ -1040,165 +1289,10 @@
 
 
   
-    <article id="post-Unity 协程分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/">Unity 协程分析</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2022-05-22T09:38:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是协程？"><a href="#什么是协程？" class="headerlink" title="什么是协程？"></a>什么是协程？</h2><p>在Unity中，协程用于在主线程运行的同时开启另一段逻辑处理，来协助当前程序的执行。<br>协程看起来有点像是轻量级线程，但是本质上协程还是运行在主线程上，它在每帧结束之后去检测yield的条件是否满足，协程不是线程，也不是异步执行的。<br>协程和MonoBehaviour的Update函数一样也是在主线程中执行的，因此不用考虑同步和锁的问题。</p>
-<p>简单的说，协程就是一种特殊的函数，它可以主动的请求暂停自身并提交一个唤醒条件，Unity会在唤醒条件满足的时候去重新唤醒协程。<br>协程能做的Update都能做，那为什么我们需要协程呢？ 因为使用协程，我们可以把一个跨越多帧的操作封装到一个方法内部，代码会更清晰。</p>
-<h2 id="Unity中的协程原理"><a href="#Unity中的协程原理" class="headerlink" title="Unity中的协程原理"></a>Unity中的协程原理</h2><p>Unity的协程开启后，会挂在当前的MonoBehaviour下，在MonoBehaviour生命周期的Update和LateUpdate之间，会检查这个MonoBehaviour下挂载的所有协程，并唤醒其中满足唤醒条件的协程。<br>要想使用协程，只需要以IEnumerator为返回值，并且在函数体里面用yield return语句来暂停协程并提交一个唤醒条件。然后使用StartCoroutine来开启协程。</p>
-<p>协程分为两部分，协程与协程调度器：协程仅仅是一个能够中间暂停返回的函数，而协程调度是在MonoBehaviour的生命周期中实现的。 准确的说，Unity只实现了协程调度部分，而协程本身其实就是用了C#原生的“迭代器方法”。</p>
-<p>协程本体是C#的迭代器函数，可以使用yield来暂停，使用MoveNext()来继续执行。<br>翻阅Unity官方文档中介绍MonoBehaviour生命周期的部分，会发现有很多yield阶段，在这些阶段中，Unity会检查MonoBehaviour中是否挂载了可以被唤醒的协程，如果有则唤醒它。</p>
-<h2 id="进程，线程与协程"><a href="#进程，线程与协程" class="headerlink" title="进程，线程与协程"></a>进程，线程与协程</h2><p>进程是操作系统资源分配的基本单位 线程是处理器调度与执行的基本单位。</p>
-<p>每一个进程都独立拥有自己的指令和数据，所以称为资源分配的基本单位。其中数据又分布在内存的不同区域，我们在C语言课程中学习过内存四区的概念，一个运行中的进程所占有的内存大体可以分为四个区域：栈区、堆区、数据区、代码区。其中代码区存储指令，另外三个区存储数据。</p>
-<p>线程是处理器调度和执行的基本单位，一个线程往往和一个函数调用栈绑定，一个进程有多个线程，每个线程拥有自己的函数调用栈，同时共用进程的堆区，数据区，代码区。操作系统会不停地在不同线程之间切换来营造出一个并行的效果，这个策略称为时间片轮转法。</p>
-<p>而协程，可以简单理解为，一切用户自己实现的，类似于线程的轮子，都可以称之为是协程。</p>
-<p>协程调度是非抢占式的，线程调度是抢占式的：<br>操作系统会主动中断当前执行中的线程，然后把CPU控制权交给别的线程，就好像有很多线程去争抢CPU的控制权一样。<br>协程需要主动调用yield来释放CPU控制权，协程的运行中间不会被系统中断打断。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Coroutines.html">Unity官方的协程文档</a><br>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/279383752">Unity协程的原理与应用 by宇亓</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/22/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/22/hello-world/" class="archive-article-date">
-  	<time datetime="2022-05-22T09:36:37.692Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/22/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    </nav>
   
 
 
@@ -1292,15 +1386,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">C#</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">热更新</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">AI</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
              
               <li class="article-tag-list-item">
