@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>C# 一些要点 | 武哥的博客</title>
+  <title>算法 解题思路与模板 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="List 实现原理：List内部是用数组实现的，而不是链表，并且当没有给予指定容量时，初始的容量为0，每次容量不够的时候，整个数组的容量都会扩充一倍。 Add：每次增加一个元素的数据，Add接口都会首先检查的是容量还够不够，如果不够则用 EnsureCapacity 来增加容量。 Remove：元素删除的原理其实就是用 Array.Copy 对数组进行覆盖。IndexOf 启用的是 Array.I">
+  <meta name="description" content="链表递归反转整个链表12345678ListNode reverse(ListNode head)&amp;#123;	if(head &#x3D;&#x3D; null|| head.next &#x3D;&#x3D; null)        return head;    ListNode last &#x3D; reverse(head.next);    head.next.next &#x3D; head;    head.next &#x3D; null;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C# 一些要点">
-<meta property="og:url" content="http://example.com/2022/05/24/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/index.html">
+<meta property="og:title" content="算法 解题思路与模板">
+<meta property="og:url" content="http://example.com/2022/05/20/%E7%AE%97%E6%B3%95-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E6%9D%BF/index.html">
 <meta property="og:site_name" content="武哥的博客">
-<meta property="og:description" content="List 实现原理：List内部是用数组实现的，而不是链表，并且当没有给予指定容量时，初始的容量为0，每次容量不够的时候，整个数组的容量都会扩充一倍。 Add：每次增加一个元素的数据，Add接口都会首先检查的是容量还够不够，如果不够则用 EnsureCapacity 来增加容量。 Remove：元素删除的原理其实就是用 Array.Copy 对数组进行覆盖。IndexOf 启用的是 Array.I">
+<meta property="og:description" content="链表递归反转整个链表12345678ListNode reverse(ListNode head)&amp;#123;	if(head &#x3D;&#x3D; null|| head.next &#x3D;&#x3D; null)        return head;    ListNode last &#x3D; reverse(head.next);    head.next.next &#x3D; head;    head.next &#x3D; null;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-24T04:22:40.000Z">
-<meta property="article:modified_time" content="2022-05-25T04:20:05.867Z">
+<meta property="article:published_time" content="2022-05-20T08:36:26.000Z">
+<meta property="article:modified_time" content="2022-05-29T12:46:57.765Z">
 <meta property="article:author" content="iamsb">
-<meta property="article:tag" content="C#">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
@@ -155,64 +155,103 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-C-一些要点" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-算法-解题思路与模板" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      C# 一些要点
+      算法 解题思路与模板
     </h1>
   
 
         
-        <a href="/2022/05/24/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" class="archive-article-date">
-  	<time datetime="2022-05-24T04:22:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-24</time>
+        <a href="/2022/05/20/%E7%AE%97%E6%B3%95-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E6%9D%BF/" class="archive-article-date">
+  	<time datetime="2022-05-20T08:36:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-20</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><ul>
-<li>实现原理：<br>List内部是用数组实现的，而不是链表，并且当没有给予指定容量时，初始的容量为0，每次容量不够的时候，整个数组的容量都会扩充一倍。</li>
-<li>Add：每次增加一个元素的数据，Add接口都会首先检查的是容量还够不够，如果不够则用 EnsureCapacity 来增加容量。</li>
-<li>Remove：元素删除的原理其实就是用 Array.Copy 对数组进行覆盖。IndexOf 启用的是 Array.IndexOf 接口来查找元素的索引位置，这个接口本身内部实现是就是按索引顺序从0到n对每个位置的比较，复杂度为O(n)。</li>
-<li>Insert：Insert 插入元素时，使用的用拷贝数组的形式，将数组里的指定元素后面的元素向后移动一个位置。</li>
-<li>Contains：Contains 接口使用的是线性查找方式比较元素，对数组进行迭代，比较每个元素与参数的实例是否一致，如果一致则返回true，全部比较结束还没有找到，则认为查找失败。</li>
-<li>Enumerator枚举迭代：每次获取迭代器时，Enumerator 每次都是被new出来，如果大量使用迭代器的话，比如foreach就会造成大量的垃圾对象，所以尽量不要用 foreach，因为 List 的 foreach 会增加有新的 Enumerator 实例，最后由GC垃圾回收掉。</li>
-<li>Sort：Array.Sort 使用的是快速排序方式进行排序，从而我们明白了 List 的 Sort 排序的效率为O(nlogn)。</li>
-<li>总结：List 的效率并不高，只是通用性强而已，大部分的算法都使用的是线性复杂度的算法，这种线性算法当遇到规模比较大的计算量级时就会导致CPU的大量损耗。可以提前告知 List 对象最多会有多少元素在里面，这样的话 List 就不会因为空间不够而抛弃原有的数组，去重新申请数组了。</li>
-</ul>
-<h2 id="Dictionary"><a href="#Dictionary" class="headerlink" title="Dictionary"></a>Dictionary</h2><ul>
-<li>实现原理：<br>健值对的映射关系通过Hash函数（算法）来实现，但由于不同的key可能映射到相同的value，这种情况称为哈希冲突。<br>解决哈希冲突的方法有：开放定址法、再哈希法、链地址法、建立一个公共溢出区等，Dictionary用的便是拉链法。<br>拉链法的原理：将所有关键字为同义词的结点链接在同一个单链表中。若选定的散列表长度为n，则可将散列表定义为一个由n个头指针组成的指针数 组T[0..n-1]。凡是散列地址为i的结点，均插入到以T[i]为头指针的单链表中。T中各分量的初值均应为空指针。</li>
-<li>总结：从效率上看，同List一样最好在实例化对象时，即 new 时尽量确定大致数量会更加高效，另外用数值方式做Key比用类实例方式作为Key值更加高效率。<br>从内存操作上看，大小以3-&gt;7-&gt;17-&gt;37-&gt;….的速度，每次增加2倍多的顺序进行，删除时，并不缩减内存。</li>
-</ul>
-<h2 id="委托-delegate-与事件-Event"><a href="#委托-delegate-与事件-Event" class="headerlink" title="委托(delegate)与事件(Event)"></a>委托(delegate)与事件(Event)</h2><ul>
-<li><p>委托：<br>可以被视为一个更高级的函数指针，它不仅仅能把地址指向另一个函数，而且还能传递参数、获得返回值等多个信息，系统还为委托对象自动生成了同步、异步的调用方式，开发人员使用 BeginInvoke、EndInvoke 方法就可以避开 Thread类 从而直接使用多线程调用。<br>Delegate类中有个变量是用来存储函数地址的，当变量操作 =(等号) 时，把函数地址赋值给变量存起来。不过这个存储函数地址的变量是个可变数组，你可以认为是个链表，每次直接赋值时会换一个链表。<br>Delegate委托类还重写了 +=，-= 这两个操作符，其实就是对应 MulticastDelegate（其父类） 的 Combine 和 Remove 方法，当对函数操作 += 和 -= 时，相当于把函数地址推入了链表尾部，或者移出了链表。</p>
-</li>
-<li><p>事件：<br>事件就是在委托delegate上，又做了一次封装，这次封装的意义是，限制用户直接操作delegate委托实例中变量的权限。<br>封装后，用户不再能够直接用赋值(即使用 = 等号操作符)操作来改变委托变量了，只能通过注册或者注销委托的方法来增减委托函数的数量，更好的维护了delegate的秩序。</p>
-</li>
-</ul>
-<h2 id="装箱和拆箱"><a href="#装箱和拆箱" class="headerlink" title="装箱和拆箱"></a>装箱和拆箱</h2><ul>
-<li><p>值类型和引用类型：值类型的变量会直接存储数据，如byte，short，int，long，float，double，decimal，char，bool 和 struct 统称为值类型，而引用类型的变量持有的是数据的引用，其真实数据存储在数据堆中，</p>
-</li>
-<li><p>栈和堆：<br>栈是本着先进后出的数据结构(LIFO)原则的存储机制，它是一段连续的内存，所以对栈数据的定位比较快速, 而堆则是随机分配的空间, 处理的数据比较多, 无论如何, 至少要两次定位。堆内存的创建和删除节点的时间复杂度是O(logn)。栈创建和删除的时间复杂度则是O(1)，栈速度更快。<br>栈中的生命周期是必须确定的，销毁时必须按次序销毁，从最后分配的块部分开始销毁，创建后什么时候销毁必须是一个定量，所以在分配和销毁时不灵活，基本都用于函数调用和递归调用中，这些生命周期比较确定的地方。相反堆内存可以存放生命周期不确定的内存块，满足当需要删除时再删除的需求，所以堆内存相对于全局类型的内存块更适合，分配和销毁更灵活。（托管堆会GC）</p>
-</li>
-<li><p>装箱步骤<br>第一步：在堆内存中新分配一个内存块(大小为值类型实例大小加上一个方法表指针和一个SyncBlockIndex)。<br>第二步：将值类型的实例字段拷贝到新分配的内存块中。<br>第三步：返回内存堆中新分配对象的地址。这个地址就是一个指向对象的引用了。</p>
-</li>
-<li><p>装箱拆箱的问题：<br>装箱、拆箱时生成的是全新的对象，不断得分配和销毁内存会不但大量消耗CPU，也同时增加了内存碎片，降低了性能。</p>
-</li>
-<li><p>优化：</p>
-</li>
-</ul>
-<ol>
-<li>通过泛型来避免拆箱、装箱。</li>
-<li>通过继承统一的接口提前拆箱、装箱，避免多次重复拆箱、装箱。</li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] Unity3D高级编程: 主程手记 陆泽西</p>
+        <h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><h4 id="递归反转整个链表"><a href="#递归反转整个链表" class="headerlink" title="递归反转整个链表"></a>递归反转整个链表</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ListNode <span class="title function_">reverse</span><span class="params">(ListNode head)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(head == <span class="literal">null</span>|| head.next == <span class="literal">null</span>)</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">last</span> <span class="operator">=</span> reverse(head.next);</span><br><span class="line">    head.next.next = head;</span><br><span class="line">    head.next = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> last;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h4 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h4><ul>
+<li><p>求倒数N个：一个先走N步，然后同时走。</p>
+</li>
+<li><p>求中点：快慢指针。</p>
+</li>
+<li><p>合并链表：一个指当前已合并链表的末尾，一个指向待处理的节点。</p>
+</li>
+<li><p>求环起点：当快慢指针相遇时，让其中任一个指针指向头节点，然后让它俩以相同速度前进，再次相遇时所在的节点位置就是环开始的位置。</p>
+</li>
+<li><p>是否相交：让 <code>p1</code> 遍历完链表 <code>A</code> 之后开始遍历链表 <code>B</code>，让 <code>p2</code> 遍历完链表 <code>B</code> 之后开始遍历链表 <code>A</code>，这样相当于「逻辑上」两条链表接在了一起。如果这样进行拼接，就可以让 <code>p1</code> 和 <code>p2</code> 同时进入公共部分，也就是同时到达相交节点 <code>c1</code>。</p>
+</li>
+<li><p>回文：递归，或者中点-反转。</p>
+</li>
+</ul>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h4 id="双指针-1"><a href="#双指针-1" class="headerlink" title="双指针"></a>双指针</h4><ul>
+<li><p>去重、修改：快慢指针</p>
+</li>
+<li><p>二分：左右指针</p>
+</li>
+<li><p>反转：左右指针</p>
+</li>
+<li><p>回文：左右指针</p>
+</li>
+<li><p>最长回文：左右指针从中心向两端扩展</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在 s 中寻找以 s[l] 和 s[r] 为中心的最长回文串   应对奇偶长度的情况</span></span><br><span class="line">String <span class="title function_">palindrome</span><span class="params">(String s, <span class="type">int</span> l, <span class="type">int</span> r)</span> &#123;</span><br><span class="line">    <span class="comment">// 防止索引越界</span></span><br><span class="line">	<span class="keyword">while</span> (l &gt;= <span class="number">0</span> &amp;&amp; r &lt; s.length()&amp;&amp; s.charAt(l) == s.charAt(r)) &#123;       </span><br><span class="line">       <span class="comment">// 双指针，向两边展开        </span></span><br><span class="line">		l--; r++;    </span><br><span class="line">	&#125;     </span><br><span class="line">    <span class="keyword">return</span> s.substring(l + <span class="number">1</span>, r); <span class="comment">// 返回以 s[l] 和 s[r] 为中心的最长回文串</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="差分数组"><a href="#差分数组" class="headerlink" title="差分数组"></a>差分数组</h4><p><strong>差分数组的主要适用场景是频繁对原始数组的某个区间的元素进行增减</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[] res = <span class="keyword">new</span> <span class="title class_">int</span>[diff.length];</span><br><span class="line"><span class="comment">// 根据差分数组构造结果数组</span></span><br><span class="line">res[<span class="number">0</span>] = diff[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; diff.length; i++) &#123;</span><br><span class="line">    res[i] = res[i - <span class="number">1</span>] + diff[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>构造差分数组 <code>diff</code>，就可以快速进行区间增减的操作</strong>，如果你想对区间 <code>nums[i..j]</code> 的元素全部加 3，那么只需要让 <code>diff[i] += 3</code>，然后再让 <code>diff[j+1] -= 3</code> 即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 差分数组工具类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Difference</span> &#123;</span><br><span class="line">    <span class="comment">// 差分数组</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span>[] diff;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* 输入一个初始数组，区间操作将在这个数组上进行 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Difference</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="keyword">assert</span> nums.length &gt; <span class="number">0</span>;</span><br><span class="line">        diff = <span class="keyword">new</span> <span class="title class_">int</span>[nums.length];</span><br><span class="line">        <span class="comment">// 根据初始数组构造差分数组</span></span><br><span class="line">        diff[<span class="number">0</span>] = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            diff[i] = nums[i] - nums[i - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 给闭区间 [i, j] 增加 val（可以是负数）*/</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">increment</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> j, <span class="type">int</span> val)</span> &#123;</span><br><span class="line">        diff[i] += val;</span><br><span class="line">        <span class="keyword">if</span> (j + <span class="number">1</span> &lt; diff.length) &#123;</span><br><span class="line">            diff[j + <span class="number">1</span>] -= val;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 返回结果数组 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] result() &#123;</span><br><span class="line">        <span class="type">int</span>[] res = <span class="keyword">new</span> <span class="title class_">int</span>[diff.length];</span><br><span class="line">        <span class="comment">// 根据差分数组构造结果数组</span></span><br><span class="line">        res[<span class="number">0</span>] = diff[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; diff.length; i++) &#123;</span><br><span class="line">            res[i] = res[i - <span class="number">1</span>] + diff[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><h4 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h4><ul>
+<li>动态规划的一般形式是求最值</li>
+<li>求解动态规划的核心问题是穷举</li>
+<li>状态转移方程+最优子结构</li>
+<li>动态规划的核心设计思想是数学归纳法。</li>
+<li>明确base case -&gt; 明确状态 -&gt; 明确选择 -&gt; 定义DP</li>
+</ul>
+<h2 id="数学运算技巧"><a href="#数学运算技巧" class="headerlink" title="数学运算技巧"></a>数学运算技巧</h2><h4 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h4><ol>
+<li><p><strong>利用或操作 <code>|</code> 和空格将英文字符转换为小写</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">&#x27;a&#x27;</span> | <span class="string">&#x27; &#x27;</span>) = <span class="string">&#x27;a&#x27;</span></span><br><span class="line">(<span class="string">&#x27;A&#x27;</span> | <span class="string">&#x27; &#x27;</span>) = <span class="string">&#x27;a&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>利用与操作 <code>&amp;</code> 和下划线将英文字符转换为大写</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">&#x27;b&#x27;</span> &amp; <span class="string">&#x27;_&#x27;</span>) = <span class="string">&#x27;B&#x27;</span></span><br><span class="line">(<span class="string">&#x27;B&#x27;</span> &amp; <span class="string">&#x27;_&#x27;</span>) = <span class="string">&#x27;B&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>利用异或操作 <code>^</code> 和空格进行英文字符大小写互换</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">&#x27;d&#x27;</span> ^ <span class="string">&#x27; &#x27;</span>) = <span class="string">&#x27;D&#x27;</span></span><br><span class="line">(<span class="string">&#x27;D&#x27;</span> ^ <span class="string">&#x27; &#x27;</span>) = <span class="string">&#x27;d&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>判断两个数是否异号</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> -<span class="number">1</span>, y = <span class="number">2</span>;</span><br><span class="line"><span class="type">boolean</span> <span class="variable">f</span> <span class="operator">=</span> ((x ^ y) &lt; <span class="number">0</span>); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">3</span>, y = <span class="number">2</span>;</span><br><span class="line"><span class="type">boolean</span> <span class="variable">f</span> <span class="operator">=</span> ((x ^ y) &lt; <span class="number">0</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>不用临时变量交换两个数</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">1</span>, b = <span class="number">2</span>;</span><br><span class="line">a ^= b;</span><br><span class="line">b ^= a;</span><br><span class="line">a ^= b;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>加一</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">n = -~n;</span><br><span class="line"><span class="comment">// 现在 n = 2</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>消除数字 <code>n</code> 的二进制表示中的最后一个 1</strong></p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">n = -~n;</span><br><span class="line"><span class="comment">// 现在 n = 2</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="阶乘算法题"><a href="#阶乘算法题" class="headerlink" title="阶乘算法题"></a>阶乘算法题</h4><p><strong>计算阶乘 <code>n!</code> 的结果末尾有几个 0</strong></p>
+<p><strong>解题思路：问题转化为：<code>n!</code> 最多可以分解出多少个因子 5</strong>？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">trailingZeroes</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">long</span> <span class="variable">divisor</span> <span class="operator">=</span> <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">while</span> (divisor &lt;= n) &#123;</span><br><span class="line">        res += n / divisor;</span><br><span class="line">        divisor *= <span class="number">5</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="高效寻找素数"><a href="#高效寻找素数" class="headerlink" title="高效寻找素数"></a>高效寻找素数</h4><p><strong>Sieve of Eratosthenes算法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">countPrimes</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">boolean</span>[] isPrime = <span class="keyword">new</span> <span class="title class_">boolean</span>[n];</span><br><span class="line">    Arrays.fill(isPrime, <span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>; i * i &lt; n; i++) </span><br><span class="line">        <span class="keyword">if</span> (isPrime[i]) </span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i * i; j &lt; n; j += i) </span><br><span class="line">                isPrime[j] = <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>; i &lt; n; i++)</span><br><span class="line">        <span class="keyword">if</span> (isPrime[i]) count++;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="模幂运算"><a href="#模幂运算" class="headerlink" title="模幂运算"></a>模幂运算</h4><ol>
+<li><strong>Mod运算</strong></li>
+</ol>
+<p><strong>对乘法的结果求模，等价于先对每个因子都求模，然后对因子相乘的结果再求模</strong>。</p>
+<ol start="2">
+<li><p><strong>求幂（快速幂）</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">f</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> n)</span>&#123;</span><br><span class="line"><span class="number">2</span>     <span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"><span class="number">3</span>     <span class="keyword">if</span>(n==<span class="number">1</span>) <span class="keyword">return</span> x;</span><br><span class="line"><span class="number">4</span>     <span class="keyword">if</span>(n&amp;<span class="number">1</span>) <span class="keyword">return</span> f(x,n&gt;&gt;<span class="number">1</span>)*f(x,n&gt;&gt;<span class="number">1</span>)*x;  <span class="comment">//如果n是奇数</span></span><br><span class="line"><span class="number">5</span>     <span class="keyword">else</span> <span class="keyword">return</span> f(x,n&gt;&gt;<span class="number">1</span>)*f(x,n&gt;&gt;<span class="number">1</span>);   <span class="comment">//如果n是偶数</span></span><br><span class="line"><span class="number">6</span> &#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="字典树-前缀树"><a href="#字典树-前缀树" class="headerlink" title="字典树/前缀树"></a>字典树/前缀树</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">TireNode</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">boolean</span> isEnd;</span><br><span class="line">        TireNode[] next;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">TireNode</span><span class="params">()</span> &#123;</span><br><span class="line">            isEnd = <span class="literal">false</span>;</span><br><span class="line">            next = <span class="keyword">new</span> <span class="title class_">TireNode</span>[<span class="number">26</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> TireNode root;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Trie</span><span class="params">()</span> &#123;</span><br><span class="line">        root = <span class="keyword">new</span> <span class="title class_">TireNode</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insert</span><span class="params">(String word)</span> &#123;</span><br><span class="line">        <span class="type">TireNode</span> <span class="variable">node</span> <span class="operator">=</span> root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c : word.toCharArray()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (node.next[c - <span class="string">&#x27;a&#x27;</span>] == <span class="literal">null</span>) &#123;</span><br><span class="line">                node.next[c - <span class="string">&#x27;a&#x27;</span>] = <span class="keyword">new</span> <span class="title class_">TireNode</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            node = node.next[c - <span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        node.isEnd = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">search</span><span class="params">(String word)</span> &#123;</span><br><span class="line">        <span class="type">TireNode</span> <span class="variable">node</span> <span class="operator">=</span> root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c : word.toCharArray()) &#123;</span><br><span class="line">            node = node.next[c - <span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">            <span class="keyword">if</span> (node == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> node.isEnd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">startsWith</span><span class="params">(String prefix)</span> &#123;</span><br><span class="line">        <span class="type">TireNode</span> <span class="variable">node</span> <span class="operator">=</span> root;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c : prefix.toCharArray()) &#123;</span><br><span class="line">            node = node.next[c - <span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">            <span class="keyword">if</span> (node == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
       
 
       
@@ -246,7 +285,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">C#</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
         		</li>
       		
 		</ul>
@@ -302,7 +341,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/24/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/20/%E7%AE%97%E6%B3%95-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E6%9D%BF/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -316,18 +355,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/05/25/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/05/22/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          网络编程
+          Hello World
         
       </div>
     </a>
   
   
-    <a href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Unity 数据存储与读取</div>
+    <a href="/2022/05/18/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C# 一些要点</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -453,11 +492,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">C#</a>
+                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
+                <a href="javascript:void(0)" class="js-tag color3">C#</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -473,11 +512,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
             
             <div class="clearfix"></div>

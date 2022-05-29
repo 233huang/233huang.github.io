@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>网络编程 | 武哥的博客</title>
+  <title>C# 一些要点 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="网络基础计算机网络是指多台计算机连接起来，以实现资源共享和信息传递。 TCP和UDPTCP（Transmission Control Protocol，传输控制协议）是面向连接、面向字节流的协议，也就是说在收发数据前，必须和对方建立可靠的连接。（3握4挥）UDP（User Data Protocol，用户数据报协议）是非连接、面向数据报的协议，不能保证可靠传输。  如何选择？对系统资源开销，TCP">
+  <meta name="description" content="List 实现原理：List内部是用数组实现的，而不是链表，并且当没有给予指定容量时，初始的容量为0，每次容量不够的时候，整个数组的容量都会扩充一倍。 Add：每次增加一个元素的数据，Add接口都会首先检查的是容量还够不够，如果不够则用 EnsureCapacity 来增加容量。 Remove：元素删除的原理其实就是用 Array.Copy 对数组进行覆盖。IndexOf 启用的是 Array.I">
 <meta property="og:type" content="article">
-<meta property="og:title" content="网络编程">
-<meta property="og:url" content="http://example.com/2022/05/25/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:title" content="C# 一些要点">
+<meta property="og:url" content="http://example.com/2022/05/18/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/index.html">
 <meta property="og:site_name" content="武哥的博客">
-<meta property="og:description" content="网络基础计算机网络是指多台计算机连接起来，以实现资源共享和信息传递。 TCP和UDPTCP（Transmission Control Protocol，传输控制协议）是面向连接、面向字节流的协议，也就是说在收发数据前，必须和对方建立可靠的连接。（3握4挥）UDP（User Data Protocol，用户数据报协议）是非连接、面向数据报的协议，不能保证可靠传输。  如何选择？对系统资源开销，TCP">
+<meta property="og:description" content="List 实现原理：List内部是用数组实现的，而不是链表，并且当没有给予指定容量时，初始的容量为0，每次容量不够的时候，整个数组的容量都会扩充一倍。 Add：每次增加一个元素的数据，Add接口都会首先检查的是容量还够不够，如果不够则用 EnsureCapacity 来增加容量。 Remove：元素删除的原理其实就是用 Array.Copy 对数组进行覆盖。IndexOf 启用的是 Array.I">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-25T04:21:49.000Z">
-<meta property="article:modified_time" content="2022-05-26T07:52:38.224Z">
+<meta property="article:published_time" content="2022-05-18T04:22:40.000Z">
+<meta property="article:modified_time" content="2022-05-29T12:46:29.174Z">
 <meta property="article:author" content="iamsb">
-<meta property="article:tag" content="网络">
+<meta property="article:tag" content="C#">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
@@ -155,103 +155,63 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-网络编程" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-C-一些要点" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      网络编程
+      C# 一些要点
     </h1>
   
 
         
-        <a href="/2022/05/25/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2022-05-25T04:21:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-25</time>
+        <a href="/2022/05/18/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" class="archive-article-date">
+  	<time datetime="2022-05-18T04:22:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-18</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="网络基础"><a href="#网络基础" class="headerlink" title="网络基础"></a>网络基础</h2><p>计算机网络是指多台计算机连接起来，以实现资源共享和信息传递。</p>
-<h4 id="TCP和UDP"><a href="#TCP和UDP" class="headerlink" title="TCP和UDP"></a>TCP和UDP</h4><p>TCP（Transmission Control Protocol，传输控制协议）是面向连接、面向字节流的协议，也就是说在收发数据前，必须和对方建立可靠的连接。（3握4挥）<br>UDP（User Data Protocol，用户数据报协议）是非连接、面向数据报的协议，不能保证可靠传输。</p>
-<ul>
-<li>如何选择？<br>对系统资源开销，TCP开销较多，UDP开销少。<br>UDP只使用一个socket进行通信，不像TCP需要为每一个客户端建立一个socket连接，但UDP不能保证数据包的先后次序，以及传输时的可靠性。<br>容易造成巨大的延迟问题是TCP的性质决定的，在发生丢包的时候，会产生巨大的延迟，因为TCP首先会去检测哪些包发生了丢失，然后重发所有丢失的包，直到他们都被接收到。虽然UDP也是有延迟的，但是由于它是在UDP的基础之上建立的通信协议，所以可以通过多种方式来减少延迟，不像TCP，所有的东西都要依赖于TCP协议本身而无法被更改。<br>总结：<br>如果是由客户端间歇性的发起无状态的查询，并且偶尔发生延迟是可以容忍，那么使用HTTP/HTTPS吧。<br>如果客户端和服务器都可以独立发包，但是偶尔发生延迟可以容忍（比如：在线的纸牌游戏，许多MMO类的游戏），那么使用TCP长连接吧。<br>如果客户端和服务器都可以独立发包，而且无法忍受延迟（比如：大多数的多人动作类游戏，以及少部分MMO类游戏），那么使用UDP吧。</li>
+        <h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><ul>
+<li>实现原理：<br>List内部是用数组实现的，而不是链表，并且当没有给予指定容量时，初始的容量为0，每次容量不够的时候，整个数组的容量都会扩充一倍。</li>
+<li>Add：每次增加一个元素的数据，Add接口都会首先检查的是容量还够不够，如果不够则用 EnsureCapacity 来增加容量。</li>
+<li>Remove：元素删除的原理其实就是用 Array.Copy 对数组进行覆盖。IndexOf 启用的是 Array.IndexOf 接口来查找元素的索引位置，这个接口本身内部实现是就是按索引顺序从0到n对每个位置的比较，复杂度为O(n)。</li>
+<li>Insert：Insert 插入元素时，使用的用拷贝数组的形式，将数组里的指定元素后面的元素向后移动一个位置。</li>
+<li>Contains：Contains 接口使用的是线性查找方式比较元素，对数组进行迭代，比较每个元素与参数的实例是否一致，如果一致则返回true，全部比较结束还没有找到，则认为查找失败。</li>
+<li>Enumerator枚举迭代：每次获取迭代器时，Enumerator 每次都是被new出来，如果大量使用迭代器的话，比如foreach就会造成大量的垃圾对象，所以尽量不要用 foreach，因为 List 的 foreach 会增加有新的 Enumerator 实例，最后由GC垃圾回收掉。</li>
+<li>Sort：Array.Sort 使用的是快速排序方式进行排序，从而我们明白了 List 的 Sort 排序的效率为O(nlogn)。</li>
+<li>总结：List 的效率并不高，只是通用性强而已，大部分的算法都使用的是线性复杂度的算法，这种线性算法当遇到规模比较大的计算量级时就会导致CPU的大量损耗。可以提前告知 List 对象最多会有多少元素在里面，这样的话 List 就不会因为空间不够而抛弃原有的数组，去重新申请数组了。</li>
 </ul>
-<h2 id="实现TCP长连接"><a href="#实现TCP长连接" class="headerlink" title="实现TCP长连接"></a>实现TCP长连接</h2><h4 id="TCP需要考虑的问题"><a href="#TCP需要考虑的问题" class="headerlink" title="TCP需要考虑的问题"></a>TCP需要考虑的问题</h4><ol>
-<li>建立连接</li>
-<li>断线检测</li>
-<li>网络协议</li>
-<li>发送和接受队列缓冲</li>
-<li>发送数据合并</li>
-<li>线程死锁策略</li>
-</ol>
-<h4 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h4><p>C#的.net库提供了TCP的Socket连接API，大部分情况都会使用异步操作的方法，不至于让游戏卡住（堵塞）去等待连接。</p>
-<ul>
-<li>Socket：创建套接字。</li>
-<li>Bind：为套接字绑定IP和端口。</li>
-<li>Listen：开启监听，参数表示最多可连接的个数（0表示不限制）。</li>
-<li>BeginConnect，开始连接  （异步）</li>
-<li>BeginReceive，开始接收信息  （异步）</li>
-<li>BeginSend，开始发送数据  （异步）</li>
-<li>BeginDisconnect，开始断开  （异步）</li>
-<li>Disconnect(Boolean)，立刻断开连接</li>
+<h2 id="Dictionary"><a href="#Dictionary" class="headerlink" title="Dictionary"></a>Dictionary</h2><ul>
+<li>实现原理：<br>健值对的映射关系通过Hash函数（算法）来实现，但由于不同的key可能映射到相同的value，这种情况称为哈希冲突。<br>解决哈希冲突的方法有：开放定址法、再哈希法、链地址法、建立一个公共溢出区等，Dictionary用的便是拉链法。<br>拉链法的原理：将所有关键字为同义词的结点链接在同一个单链表中。若选定的散列表长度为n，则可将散列表定义为一个由n个头指针组成的指针数 组T[0..n-1]。凡是散列地址为i的结点，均插入到以T[i]为头指针的单链表中。T中各分量的初值均应为空指针。</li>
+<li>总结：从效率上看，同List一样最好在实例化对象时，即 new 时尽量确定大致数量会更加高效，另外用数值方式做Key比用类实例方式作为Key值更加高效率。<br>从内存操作上看，大小以3-&gt;7-&gt;17-&gt;37-&gt;….的速度，每次增加2倍多的顺序进行，删除时，并不缩减内存。</li>
 </ul>
-<p>异步的方法在调用后会开启一个线程来工作，最后一个为同步阻塞方式的断开连接接口。最后一个阻塞式大都在游戏退出时调用，但问题是APP没有退出事件，因此一般Disconnect都会用在Unity3D Eitor下或者windows版本上调用，以保证在开发时强制退出后编辑器不会奔溃。</p>
-<h4 id="线程锁"><a href="#线程锁" class="headerlink" title="线程锁"></a>线程锁</h4><p>实际项目中网络模块中所有的操作都会以线程级的形式对待，而Unity3D的渲染和逻辑都是在主线程上运作的，这里就涉及到了主线程和子线程对资源抢占冲突导致我们需要做线程锁的问题。<br>当主线程与子线程一起工作到某时间点都需要某个内存块或者资源时（临界资源），就会同时去读取或者写入资源，这就会造成资源读写混乱的情况。<br>解决方法，加锁 (Lock)。</p>
-<h4 id="缓冲队列"><a href="#缓冲队列" class="headerlink" title="缓冲队列"></a>缓冲队列</h4><p>为了防止程序来不及处理源源不断发送过来的数据，实现流量控制，就需要用一个队列来进行存储和缓冲，它就被称为缓冲队列。</p>
-<p>一般我们会让负责接收的子线程把接收好的网络数据包放入接收缓冲队列，再由主线程通过Update轮训去检查接收队列里是否有数据，有的话则一个个取出来处理，没有的话继续轮训等待。<br>其中接收数据时会有些细节在里面，因为数据包并不会按照我们希望的大小发送，所以它或多或少的都会拆分一些数据或者粘粘了其他的数据（拆包和粘包），导致我们需要识别是否是一个完整的数据包，然后再从中解析出正确的数据包。（需要数据包格式定义）</p>
-<h4 id="双队列结构"><a href="#双队列结构" class="headerlink" title="双队列结构"></a>双队列结构</h4><p>缓冲队列是在多线程编程中常用的手段之一，不过它的效率还不够高，因为多个线程的锁的效率影响会被锁点卡住导致其他线程无法继续工作。双队列数据结构就能很好解决这个问题，它能增强多线程中队列的读写效率。</p>
-<p>双队列是一种高效的内存数据结构，在多线程编程中能保证生产者线程的写入和消费者的读出尽量做到最低的影响，避免了共享队列的锁开销。</p>
-<p>大多数多线程工作时都需要对缓冲队列读写，其中接收数据的网络线程会将数据写入队列，而处理数据的主线程则会读取队列头部并删除(即我们所说的弹出)，两者都会读写队列导致资源争夺，因此通常会增加锁机制来规范它们的行为。但是锁机制导致线程会常常处于等待状态，大大降低了线程的效率。</p>
-<p>双队列与普通的缓冲队列在接收数据包部分的逻辑操作都是一样的，即接收数据线程接收到数据时直接推入接收数据的队列，不一样的地方在当处理数据的线程轮询时，先将接收数据的队列拷贝到处理数据的队列中并清空接收数据的队列，然后主线再对拷贝后的数据队列进行处理，这时子线程无需等待主线程的逻辑处理时间就能够顺利的继续接收数据。这样就解放了两个线程各自工作的冲突时间，即两个队列分别理解为了接收数据队列和处理数据队列，当主线程需要处理数据时，先把接收到的数据队列中的数据置换为处理数据队列上，最后各自继续处理自己的工作因为队列已经分开。</p>
-<h4 id="发送数据"><a href="#发送数据" class="headerlink" title="发送数据"></a>发送数据</h4><p>发送数据时也需要队列来做缓冲。当发送的数据包会很多时，也有可能很短时间内会积累过多数据包导致发送池溢出。如果发送时大多数的数据包都是很小很小的数据包，如果每个数据包都发送一次等待接受后再发送就会导致发送效率过低，发送太慢导致延迟过大。而如果一下子把全部数据都发送的话，发送的数据可能会太大，导致发送效率很差，因为数据包越大越容易发送失败或丢包，TCP就会全盘否定这次发送的内容，并将整个包都重新发送一次，效率极其糟糕。</p>
-<p>建立发送缓冲的步骤：</p>
-<ol>
-<li>每次当你调用发送接口时先把数据包推入发送队列，发送程序就开始轮训是否有需要发送的信息在队列里，有的话就发送，没有的话就继续轮训等待。</li>
-<li>发送时合并队列里的一部分数据包，这样可以一次性发送多个数据包以提高效率。</li>
-<li>对这种合并操作做个限制，如果因为合并而导致数据包太大，也会导致效率差。发送过程中，只要丢失一个数据就要全盘重新发送，数据包很大的话，发送本来就很缓慢的情况下，又重新整体重新发送，就会使得发送效率大大降低，合并的数据的大小限制在窗口大小的范围内(2的16次字节内)。</li>
-</ol>
-<h4 id="协议数据定义标准"><a href="#协议数据定义标准" class="headerlink" title="协议数据定义标准"></a>协议数据定义标准</h4><p>在网络数据传输中协议是比较重要的一个关键点，它是客户端与服务器交流的语言。<br>制定协议过程中的几个关键点：</p>
-<ol>
-<li>选择客户端和服务器都能接受的格式。</li>
-<li>数据包体大小最小化。</li>
-<li>要有一定的校验能力。</li>
-</ol>
-<h4 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h4><p>为了保证网络数据包不被篡改和查看，导致外挂破坏整个游戏平衡，我们需要对发送的网络数据包中的主体部分进行加密。加密算法很多，包括RSA，公钥私钥，以及非对称加密等，其中最简单也是最快的加密方式就是对数据做异或处理，由于数据两次异或处理就能使得数据回到原形，所以算法中常使用异或的操作来做加密。通常做法是发送时对数据做异或处理一次，收到时再做一次异或处理，这样就能简单快速加密解密数据。</p>
-<p>如果加密的性能损耗过大那就得不偿失了，所以我们仍然希望加密的过程是快速的，在不损耗大量CPU前提下，不影响项目性能的情况下对协议数据做最大化的加密工作。</p>
-<h4 id="断线检测"><a href="#断线检测" class="headerlink" title="断线检测"></a>断线检测</h4><p>TCP本身就是强连接，所以自身就有断线的检测机制，但是它本身的检测机制还不够好，时常会因为网络问题导致断线的判断不够及时，所以我们在编写TCP长连接的程序时需要加强断线检测机制，让断线判断变的更加准确及时。</p>
-<p>为了能有效检测TCP连接是否正常，我们需要服务器和客户端共同达成一个协议来检测连接，我们把这个共同达成的协议取名叫心跳包协议。在心跳包协议中，每几秒服务器向客户端发送一个心跳包，包内包含了服务器时间、服务器状态等少量信息，然后由接收到这个心跳协议的客户端做反馈，发送给服务器一个心跳回应包，包内也包含客户端的少量信息例如客户端状态、用户信息等。两边的终端上的逻辑可以就此达成共识，认为当收到心跳信息时认为连接时存在的，当服务器30秒没有收到任何反馈心跳包的信息则认为客户端已经断线，这时主动断开客户端的连接。客户端这边也是同样的协定，当客户端30秒内没有接收到任何数据包时则认为网络已经断开，客户端最好主动退出游戏重新登陆重新连接服务器。</p>
-<p>通常当网络异常时，客户端和服务器都很难断定连接是否依然存在，因此需要用这种机制来加以判定，例如在ios中APP可以随时切出屏幕并不关闭游戏，或者直接关闭应用不给服务器任何解释，服务器自然收不到断开连接的请求。面对各种异常的情况，我们制定的心跳包和心跳回应来判定是否仍处于连接的状态，倘若没有收到心跳包和心跳回应包，就表示连接存在问题了，有可能已经断开。为了规避一些时候网络的波动，我们可以设置一个有效判断断开连接的时间间隔，比如，10秒内没有收到心跳包和心跳回应包，就表示连接已经断开，这时服务器和客户端主动断开连接，客户端可以根据游戏的逻辑先退出游戏再重新登陆寻求再次与服务器连接。</p>
-<p>心跳协议在TCP之上，加强了断线检测的准确性，能更有效快速的检测到断线问题。</p>
-<h2 id="实现UDP"><a href="#实现UDP" class="headerlink" title="实现UDP"></a>实现UDP</h2><p>（待补充）</p>
-<h2 id="状态同步和帧同步"><a href="#状态同步和帧同步" class="headerlink" title="状态同步和帧同步"></a>状态同步和帧同步</h2><ul>
-<li><p>同步<br>  同步就是要多个客户端表现效果是一致的，而且对于大多数的游戏，不仅仅要表现一致，还要客户端和服务器的数据也是一致的。所以同步是个网络游戏概念，只有网络游戏才需要同步，而单机游戏是不需要同步的。</p>
+<h2 id="委托-delegate-与事件-Event"><a href="#委托-delegate-与事件-Event" class="headerlink" title="委托(delegate)与事件(Event)"></a>委托(delegate)与事件(Event)</h2><ul>
+<li><p>委托：<br>可以被视为一个更高级的函数指针，它不仅仅能把地址指向另一个函数，而且还能传递参数、获得返回值等多个信息，系统还为委托对象自动生成了同步、异步的调用方式，开发人员使用 BeginInvoke、EndInvoke 方法就可以避开 Thread类 从而直接使用多线程调用。<br>Delegate类中有个变量是用来存储函数地址的，当变量操作 =(等号) 时，把函数地址赋值给变量存起来。不过这个存储函数地址的变量是个可变数组，你可以认为是个链表，每次直接赋值时会换一个链表。<br>Delegate委托类还重写了 +=，-= 这两个操作符，其实就是对应 MulticastDelegate（其父类） 的 Combine 和 Remove 方法，当对函数操作 += 和 -= 时，相当于把函数地址推入了链表尾部，或者移出了链表。</p>
 </li>
-<li><p>帧同步<br>  帧同步的代表作当属当下最火的手游王者荣耀了吧，它就是帧同步完成的，也意味着它的核心的战斗逻辑写在客户端。帧同步经常被采用在RTS游戏（Real-Time Strategy ）中。在游戏中，又客户端给服务器上传玩家的指令，服务器收到指令之后不做任何操作然后转发给所有的客户端。客户端来运算包括技能逻辑、普攻、属性，伤害、移动、Al、检测、碰撞等一系列的内容，这也是游戏中最核心和最难的部分。所有的客户端运算完成所有接收到的指令，并且修改相应的属性和对应的特效。</p>
+<li><p>事件：<br>事件就是在委托delegate上，又做了一次封装，这次封装的意义是，限制用户直接操作delegate委托实例中变量的权限。<br>封装后，用户不再能够直接用赋值(即使用 = 等号操作符)操作来改变委托变量了，只能通过注册或者注销委托的方法来增减委托函数的数量，更好的维护了delegate的秩序。</p>
 </li>
-<li><p>状态同步<br>  状态同步和帧同步是相反的，它最核心的一系列东西都写在服务器端。当客户端发送要进行操作给服务器，服务器进行一系列的操作运算，然后把相应的结果发送给所有的客户端，客户端接到数据后修改属性。这里客户端相当于服务器的播放器一样，因为核心的判断都是在服务器的，一切的表现和属性都以服务器为准，就算客户端的血条是满的，服务器的血条是0，那依旧要死。</p>
+</ul>
+<h2 id="装箱和拆箱"><a href="#装箱和拆箱" class="headerlink" title="装箱和拆箱"></a>装箱和拆箱</h2><ul>
+<li><p>值类型和引用类型：值类型的变量会直接存储数据，如byte，short，int，long，float，double，decimal，char，bool 和 struct 统称为值类型，而引用类型的变量持有的是数据的引用，其真实数据存储在数据堆中，</p>
 </li>
-<li><p>例子：<br> 一个角色要释放一个技能（非指向技能）<br> 客户端告诉服务器我要释放一个技能<br> 服务器通知所有客户端在某个地方以什么方向释放技能<br> 客户端根据收到的信息创建一个特效放在这个地方，然后以某个方向飞行<br> 服务器根据碰撞检测判断到某个时刻碰到了地方英雄，通知客户端<br> 客户端根据服务器发来的信息删除特效，被打到的人减少血量播放收击特效</p>
+<li><p>栈和堆：<br>栈是本着先进后出的数据结构(LIFO)原则的存储机制，它是一段连续的内存，所以对栈数据的定位比较快速, 而堆则是随机分配的空间, 处理的数据比较多, 无论如何, 至少要两次定位。堆内存的创建和删除节点的时间复杂度是O(logn)。栈创建和删除的时间复杂度则是O(1)，栈速度更快。<br>栈中的生命周期是必须确定的，销毁时必须按次序销毁，从最后分配的块部分开始销毁，创建后什么时候销毁必须是一个定量，所以在分配和销毁时不灵活，基本都用于函数调用和递归调用中，这些生命周期比较确定的地方。相反堆内存可以存放生命周期不确定的内存块，满足当需要删除时再删除的需求，所以堆内存相对于全局类型的内存块更适合，分配和销毁更灵活。（托管堆会GC）</p>
 </li>
-<li><p>帧同步和状态同步的区别</p>
+<li><p>装箱步骤<br>第一步：在堆内存中新分配一个内存块(大小为值类型实例大小加上一个方法表指针和一个SyncBlockIndex)。<br>第二步：将值类型的实例字段拷贝到新分配的内存块中。<br>第三步：返回内存堆中新分配对象的地址。这个地址就是一个指向对象的引用了。</p>
+</li>
+<li><p>装箱拆箱的问题：<br>装箱、拆箱时生成的是全新的对象，不断得分配和销毁内存会不但大量消耗CPU，也同时增加了内存碎片，降低了性能。</p>
+</li>
+<li><p>优化：</p>
 </li>
 </ul>
 <ol>
-<li><p>流量：状态同步的消耗的流量比帧同步要多的多，因为状态同步所有的属性都是在服务器的，当某个角色的属性变化之后都需要同步给所有客户端，而且在一些复杂一些的玩家角色的属性有上百条，这样同步下来消耗是巨大的。而帧同步不需要做属性同步，服务器只需要做一次转发操作指令，属性这些都是客户端自己计算，所以消耗少的多。</p>
-</li>
-<li><p>回放和观战：帧同步比状态同步简单，因为只需要保存每局内所有人的操作就好了，当回放的时候只需要挨个播放这局所有的操作就好。状态同步需要有一个专门的服务器，当一局战斗打响，服务器给客户端发送消息的同时，还需要把这些消息发送给这个专门的服务器做存储，当有人看回放或者观战时，这个专门的服务器把存储起来的消息发就可以了</p>
-</li>
-<li><p>安全性：状态同步比帧同步安全性高很多，因为状态同步的所有数据和逻辑都是在服务器端保存的，要想作弊就必须修改服务器的值，这样难度就会高很多；而帧同步所有的数据时在客户端，只要解析客户端的数据之后就可以达到自己想要的效果。</p>
-</li>
-<li><p>断线重连：帧同步的锻炼重连时比较麻烦的，当你在10分钟的时候断线了，在15分钟回来，就需要把服务器这15分钟的消息一次性的发送给客户端，然后客户端加速整个游戏的核心逻辑运算，直到追上现有进度。状态同步很简单，重新把整个场景中的任务全部重新生成一边，各种数值根据服务端提供的信息加到任务身上即可。</p>
-</li>
-<li><p>开发效率：状态同步的游戏占主流，同一个功能至少需要一个客户端和服务器共同完成，开发起来比较困难。而帧同步服务器开发难度低，服务器只需要转发，而帧同步不需要和服务器的沟通交状态同步，开发的效率也高。</p>
-</li>
+<li>通过泛型来避免拆箱、装箱。</li>
+<li>通过继承统一的接口提前拆箱、装箱，避免多次重复拆箱、装箱。</li>
 </ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] Unity3D网络游戏实战 罗培羽<br>[2] Unity3D高级编程: 主程手记 陆泽西</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] Unity3D高级编程: 主程手记 陆泽西</p>
 
       
 
@@ -286,7 +246,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">C#</a>
         		</li>
       		
 		</ul>
@@ -342,7 +302,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/25/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/18/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -356,20 +316,15 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/05/25/Unity-%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/05/20/%E7%AE%97%E6%B3%95-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E6%9D%BF/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Unity 资源加载
+          算法 解题思路与模板
         
       </div>
     </a>
   
-  
-    <a href="/2022/05/24/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">C# 一些要点</div>
-      <i class="icon-circle-right"></i>
-    </a>
   
 </nav>
 
@@ -493,11 +448,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">C#</a>
+                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
+                <a href="javascript:void(0)" class="js-tag color3">C#</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -513,11 +468,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
             
             <div class="clearfix"></div>
