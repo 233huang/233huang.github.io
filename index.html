@@ -202,109 +202,9 @@
 <li>对上一阶段得到的逐顶点数据进行插值运算，在进行逐像素处理</li>
 <li>生成屏幕上的像素，渲染出最终的图像</li>
 </ul>
-<h3 id="CPU和GPU之间的通信"><a href="#CPU和GPU之间的通信" class="headerlink" title="CPU和GPU之间的通信"></a>CPU和GPU之间的通信</h3><p>应用阶段可以分为三个小阶段：</p>
-<ol>
-<li><p>把数据加载到显存中。<br>（硬盘 –&gt; 内存 –&gt; 显存）<br>数据加载到显存后，RAM中的数据就可以移除了，但有些情况需要保留，比如要访问网格数据进行碰撞检测。</p>
-</li>
-<li><p>设置渲染状态<br>定义场景中的网格是如何被渲染的，使用什么着色器，用什么光源、材质。</p>
-</li>
-<li><p>调用Draw Call<br>CPU调用渲染命令，告知GPU开始渲染。<br>DrawCall就是CPU调用图像编程接口，命令GPU进行渲染的操作。<br>通常造成DrawCall性能问题的是CPU而不是GPU。</p>
-</li>
-</ol>
-<h3 id="GPU流水线"><a href="#GPU流水线" class="headerlink" title="GPU流水线"></a>GPU流水线</h3><p>GPU渲染的过程就是GPU流水线，在几何阶段和光栅化阶段，开发者没有绝对的控制权。<br>GPU的渲染流水线接受顶点数据作为输入，传递给顶点着色器。</p>
-<p><strong>几何阶段：</strong></p>
-<h5 id="顶点着色器"><a href="#顶点着色器" class="headerlink" title="顶点着色器"></a>顶点着色器</h5><p>完全可编程，通常用于实现顶点的空间变换，顶点等功能。<br>单位是顶点，从CPU传递过来的顶点都会调用一次顶点着色器。<br>着色器不能创建/销毁任何顶点，也无法得到顶点与顶点之间的关系。</p>
-<ul>
-<li>坐标变换<br>可以改变顶点的位置，模拟水面，布料。<br>把顶点坐标从模型空间转换到齐次裁剪空间（MVP矩阵），再由硬件做透视除法后，得到归一化的设备坐标（NDC）。<br><img src="/2022/05/31/Unity-Shader/NDC.png" alt="NDC"></li>
-</ul>
-<h5 id="曲面细分着色器"><a href="#曲面细分着色器" class="headerlink" title="曲面细分着色器"></a>曲面细分着色器</h5><p>用于细分图元</p>
-<h5 id="几何着色器"><a href="#几何着色器" class="headerlink" title="几何着色器"></a>几何着色器</h5><p>逐图元的着色操作</p>
-<h5 id="裁剪"><a href="#裁剪" class="headerlink" title="裁剪"></a>裁剪</h5><p>剔除不在摄像机范围内的顶点</p>
-<h5 id="屏幕映射"><a href="#屏幕映射" class="headerlink" title="屏幕映射"></a>屏幕映射</h5><p>将每个图元的坐标转换到屏幕坐标系（视口变换）</p>
-<p><strong>光栅化阶段：</strong></p>
-<h5 id="三角形设置，三角形遍历"><a href="#三角形设置，三角形遍历" class="headerlink" title="三角形设置，三角形遍历"></a>三角形设置，三角形遍历</h5><p>固定函数阶段。</p>
-<ul>
-<li>三角形设置：计算每个图元覆盖了哪些像素，以及为这些像素计算它们的颜色。</li>
-<li>三角形遍历：检查每个像素是否被三角形网格覆盖，任何生成片元。</li>
-</ul>
-<h5 id="片元着色器"><a href="#片元着色器" class="headerlink" title="片元着色器"></a>片元着色器</h5><p>实现逐片元的着色操作，是非常重要的可编程着色器阶段。<br>输入是上一个阶段对顶点信息插值得到的结果，根据片元信息，计算该片元的输出颜色。<br>在这个阶段，可以做纹理采样等很多重要的渲染技术。</p>
-<h5 id="逐片元操作"><a href="#逐片元操作" class="headerlink" title="逐片元操作"></a>逐片元操作</h5><ul>
-<li><p>决定每个片元的可见性，涉及到各种测试工作，如深度测试、模板测试。</p>
-</li>
-<li><p>通过测试后，将片元的颜色和存储在颜色缓冲区的颜色进行合并，或者说混合。</p>
-</li>
-<li><p>模板测试（即颜色缓冲，深度缓冲）：<br>读取模板缓冲区中该片元位置的模板值，任何进行比较。<br>通常用于限制渲染的区域，高级用法则是渲染阴影、轮廓渲染等</p>
-</li>
-<li><p>深度测试：<br>将该片元的深度值和深度缓冲区的深度值进行比较，进行遮挡剔除，透明效果。<br>可以决定是否进行深度写入，将该片元的深度值覆盖原有的深度值<br>在Unity中，深度测试是在片元着色器之前，减少性能损耗，但有时也会出现操作上的冲突。</p>
-</li>
-<li><p>合并<br>对颜色信息进行处理，因为颜色缓冲往往已经有了上次渲染之后的结果，是要覆盖还是其它效果？<br>不透明物体：关闭混合<br>半透明：开启混合<br>需要一个混合函数，</p>
-</li>
-</ul>
-<h5 id="显示到屏幕"><a href="#显示到屏幕" class="headerlink" title="显示到屏幕"></a>显示到屏幕</h5><p>屏幕显示的时颜色缓冲区中的颜色值，GPU会用双重缓冲的策略，对场景的渲染发送在后置缓冲中，GPU会交换前置缓冲区和后置缓冲区中的内容。</p>
-<h3 id="OpenGL-DirectX"><a href="#OpenGL-DirectX" class="headerlink" title="OpenGL/DirectX"></a>OpenGL/DirectX</h3><p>图像应用编程接口，是上层应用程序和底层GPU的沟通桥梁。<br>HSLS、GLSL、CG则是着色器编程语言。</p>
-<h1 id="Unity-Shader基础"><a href="#Unity-Shader基础" class="headerlink" title="Unity Shader基础"></a>Unity Shader基础</h1><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Unity中，需要Material材质和Shader配合。<br>ShaderLab：对普通的Shader进行抽象，再封装一层。</p>
-<h3 id="顶点着色器的输入参数"><a href="#顶点着色器的输入参数" class="headerlink" title="顶点着色器的输入参数"></a>顶点着色器的输入参数</h3><p>可以定义一个结构体，用来定义顶点着色器的输入，注意语义。<br>这些输入的数据，由使用该材质的<strong>Mesh Render组件</strong>提供。</p>
-<h3 id="内置文件与变量"><a href="#内置文件与变量" class="headerlink" title="内置文件与变量"></a>内置文件与变量</h3><p>可以用#include指令将内置的包含文件包含进来。<br>在Unity应用程序中找到CGIncludes文件夹，里面包含了所有的内置包含文件。<br>这里列举几个常用的：</p>
-<ol>
-<li>UnityCGcginc：包含了最常使用的帮助函数、宏和结构体等</li>
-<li>UnityShaderVariables.cginc：会被自动包含进来，包括各种内置的全局变量，如MVP矩阵</li>
-<li>Lighting.cginc：包含各种内置的光照模型，如果用的是Surface Shader，则会自动包含进来</li>
-<li>HLSLSupport.cginc：在编译Unity Shader时，会被自动包含进来，声明了许多跨平台的宏和定义</li>
-</ol>
-<h3 id="Unity支持的语义"><a href="#Unity支持的语义" class="headerlink" title="Unity支持的语义"></a>Unity支持的语义</h3><p>应用阶段–&gt;顶点着色器：</p>
-<ul>
-<li>POSITION:模型空间中的顶点位置，通常是float4类型</li>
-<li>NORMAL:顶点法线，通常是float3类型</li>
-<li>TANGENT:顶点切线，通常是float4类型</li>
-<li>TEXCOORDn:顶点的纹理坐标，0表示第一组，以此类推，通常是float2或float4类型</li>
-<li>COLOR:顶点颜色，通常是fixed4或float4类型</li>
-</ul>
-<p>顶点着色器–&gt;片元着色器：</p>
-<ul>
-<li>SV_POSITION：裁剪空间中的顶点坐标</li>
-<li>COLOR0/1：通常用于输出第一/二组顶点颜色</li>
-<li>TEXCOORD0~TEXCOORD7:通常用于输出纹理坐标</li>
-</ul>
-<p>片元着色器–&gt;Unity</p>
-<ul>
-<li>SV_Target:输出值将会存储到渲染目标</li>
-</ul>
-<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><ul>
-<li>使用假彩色图像</li>
-<li>用Visual Studio进行调试</li>
-</ul>
-<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>不同的Shader Target，不同的着色器阶段，可使用的临时寄存器和指令数目都是不同的。</p>
-<h1 id="数学基础"><a href="#数学基础" class="headerlink" title="数学基础"></a>数学基础</h1><p>略 </p>
-<h1 id="基础光照"><a href="#基础光照" class="headerlink" title="基础光照"></a>基础光照</h1><h3 id="标准光照模型"><a href="#标准光照模型" class="headerlink" title="标准光照模型"></a>标准光照模型</h3><p>标准光照模型只关心直接光照<br><img src="/2022/05/31/Unity-Shader/%E5%85%89%E7%85%A7.png" alt="光照"></p>
-<h5 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h5><p>物体可以被间接光照照亮，环境光用来模拟间接光照，通常是一个全局变量<br><img src="/2022/05/31/Unity-Shader/%E7%8E%AF%E5%A2%83%E5%85%89.png" alt="环境光"></p>
-<h5 id="自发光"><a href="#自发光" class="headerlink" title="自发光"></a>自发光</h5><p>用材质本身的自发光颜色</p>
-<h5 id="漫反射"><a href="#漫反射" class="headerlink" title="漫反射"></a>漫反射</h5><p>兰伯特定律：反射光线的强度与表面的法线和光源之间的夹角的余弦值成正比。<br><img src="/2022/05/31/Unity-Shader/%E5%85%B0%E4%BC%AF%E7%89%B9.png" alt="兰伯特"></p>
-<h5 id="高光反射"><a href="#高光反射" class="headerlink" title="高光反射"></a>高光反射</h5><p>Phong模型，Blinn模型</p>
-<h1 id="基础纹理"><a href="#基础纹理" class="headerlink" title="基础纹理"></a>基础纹理</h1><h3 id="单张纹理"><a href="#单张纹理" class="headerlink" title="单张纹理"></a>单张纹理</h3><p>我们通常会用一张纹理来代替物体的漫反射颜色。<br>除了在Properties语义块添加一个纹理属性以外，还需要为纹理类型的属性声明一个float4类型的变量，来表示缩放和平移值。</p>
-<h3 id="凹凸映射"><a href="#凹凸映射" class="headerlink" title="凹凸映射"></a>凹凸映射</h3><p>原理是用一张纹理来修改模型表面的法线。<br>方法有二：</p>
-<ol>
-<li>高度纹理：存储高度值，表示模型表面局部的海拔高度，需要由像素的灰度值计算而得，消耗性能</li>
-<li>法线纹理：</li>
-</ol>
-<ul>
-<li>法线方向的分量范围在[-1,1]，而像素的分量范围为[0,1]，所以需要做一个映射</li>
-<li>一般采用模型顶点的切线空间在存储法线，对于模型的每个顶点，都有属于它的切线空间，</li>
-</ul>
-<h3 id="渐变纹理"><a href="#渐变纹理" class="headerlink" title="渐变纹理"></a>渐变纹理</h3><p>用渐变纹理来控制漫反射光照</p>
-<h3 id="遮罩纹理"><a href="#遮罩纹理" class="headerlink" title="遮罩纹理"></a>遮罩纹理</h3><p>遮罩纹理允许我们保护某些范围，让它们免于修改。<br>流程：通过采样得到遮罩纹理的纹素值，然后用其中某个通道的值来与某种表面属性进行相乘，这样，当该通道的值为0时，可以保护表面不受该属性的影响。</p>
-<h1 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h1><p>要在实时渲染中实现透明效果，通常会在渲染模型时控制它的透明通道（Alpha Channel）<br>当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值以外，还有另一个属性–透明度。（1为完全不透明）<br>两种方法来实现透明效果：</p>
-<ul>
-<li>透明度测试：无法得到真正的半透明效果，有深度写入，要么完全透明，要么完全不透明。</li>
-<li>透明度混合：当前片元的透明度作为混合因子，与已经存储在颜色缓冲的颜色值进行混合，得到新的颜色。</li>
-</ul>
-<h3 id="渲染顺序"><a href="#渲染顺序" class="headerlink" title="渲染顺序"></a>渲染顺序</h3><p>在使用深度缓冲的情况下，可以不用担心不透明物体的渲染顺序，但是要实现透明效果，就需要使用透明度混合，同时关闭深度写入。<br>渲染引擎一般会先对物体进行排序，再渲染，常用的方法是：</p>
-<ol>
-<li>先渲染所以不透明物体，并开启它们的深度测试和深度写入</li>
-<li>再将半透明物体按它们的远近进行排序，然后按顺序依次渲染，开启深度测试，关闭深度写入</li>
-</ol>
-<h3 id="UnityShader的渲染顺序"><a href="#UnityShader的渲染顺序" class="headerlink" title="UnityShader的渲染顺序"></a>UnityShader的渲染顺序</h3><p>Queue标签决定模型归属于哪个渲染队列。</p>
-<h3 id="透明度测试"><a href="#透明度测试" class="headerlink" title="透明度测试"></a>透明度测试</h3><h3 id="透明度混合"><a href="#透明度混合" class="headerlink" title="透明度混合"></a>透明度混合</h3><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[1] [Unity-shader入门精要-冯乐乐]</p>
-
+        
+          <a class="article-more-a" href="/2022/05/31/Unity-Shader/#more">more >></a>
+        
       
 
       
@@ -390,115 +290,9 @@
 <li>发送数据合并</li>
 <li>线程死锁策略</li>
 </ol>
-<h4 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h4><p>C#的.net库提供了TCP的Socket连接API，大部分情况都会使用异步操作的方法，不至于让游戏卡住（堵塞）去等待连接。</p>
-<ul>
-<li>Socket：创建套接字。</li>
-<li>Bind：为套接字绑定IP和端口。</li>
-<li>Listen：开启监听，参数表示最多可连接的个数（0表示不限制）。</li>
-<li>BeginConnect，开始连接  （异步）</li>
-<li>BeginReceive，开始接收信息  （异步）</li>
-<li>BeginSend，开始发送数据  （异步）</li>
-<li>BeginDisconnect，开始断开  （异步）</li>
-<li>Disconnect(Boolean)，立刻断开连接</li>
-</ul>
-<p>异步的方法在调用后会开启一个线程来工作，最后一个为同步阻塞方式的断开连接接口。最后一个阻塞式大都在游戏退出时调用，但问题是APP没有退出事件，因此一般Disconnect都会用在Unity3D Eitor下或者windows版本上调用，以保证在开发时强制退出后编辑器不会奔溃。</p>
-<h4 id="线程锁"><a href="#线程锁" class="headerlink" title="线程锁"></a>线程锁</h4><p>实际项目中网络模块中所有的操作都会以线程级的形式对待，而Unity3D的渲染和逻辑都是在主线程上运作的，这里就涉及到了主线程和子线程对资源抢占冲突导致我们需要做线程锁的问题。<br>当主线程与子线程一起工作到某时间点都需要某个内存块或者资源时（临界资源），就会同时去读取或者写入资源，这就会造成资源读写混乱的情况。<br>解决方法，加锁 (Lock)。</p>
-<h4 id="缓冲队列"><a href="#缓冲队列" class="headerlink" title="缓冲队列"></a>缓冲队列</h4><p>为了防止程序来不及处理源源不断发送过来的数据，实现流量控制，就需要用一个队列来进行存储和缓冲，它就被称为缓冲队列。</p>
-<p>一般我们会让负责接收的子线程把接收好的网络数据包放入接收缓冲队列，再由主线程通过Update轮训去检查接收队列里是否有数据，有的话则一个个取出来处理，没有的话继续轮训等待。<br>其中接收数据时会有些细节在里面，因为数据包并不会按照我们希望的大小发送，所以它或多或少的都会拆分一些数据或者粘粘了其他的数据（拆包和粘包），导致我们需要识别是否是一个完整的数据包，然后再从中解析出正确的数据包。（需要数据包格式定义）</p>
-<h4 id="双队列结构"><a href="#双队列结构" class="headerlink" title="双队列结构"></a>双队列结构</h4><p>缓冲队列是在多线程编程中常用的手段之一，不过它的效率还不够高，因为多个线程的锁的效率影响会被锁点卡住导致其他线程无法继续工作。双队列数据结构就能很好解决这个问题，它能增强多线程中队列的读写效率。</p>
-<p>双队列是一种高效的内存数据结构，在多线程编程中能保证生产者线程的写入和消费者的读出尽量做到最低的影响，避免了共享队列的锁开销。</p>
-<p>大多数多线程工作时都需要对缓冲队列读写，其中接收数据的网络线程会将数据写入队列，而处理数据的主线程则会读取队列头部并删除(即我们所说的弹出)，两者都会读写队列导致资源争夺，因此通常会增加锁机制来规范它们的行为。但是锁机制导致线程会常常处于等待状态，大大降低了线程的效率。</p>
-<p>双队列与普通的缓冲队列在接收数据包部分的逻辑操作都是一样的，即接收数据线程接收到数据时直接推入接收数据的队列，不一样的地方在当处理数据的线程轮询时，先将接收数据的队列拷贝到处理数据的队列中并清空接收数据的队列，然后主线再对拷贝后的数据队列进行处理，这时子线程无需等待主线程的逻辑处理时间就能够顺利的继续接收数据。这样就解放了两个线程各自工作的冲突时间，即两个队列分别理解为了接收数据队列和处理数据队列，当主线程需要处理数据时，先把接收到的数据队列中的数据置换为处理数据队列上，最后各自继续处理自己的工作因为队列已经分开。</p>
-<h4 id="发送数据"><a href="#发送数据" class="headerlink" title="发送数据"></a>发送数据</h4><p>发送数据时也需要队列来做缓冲。当发送的数据包会很多时，也有可能很短时间内会积累过多数据包导致发送池溢出。如果发送时大多数的数据包都是很小很小的数据包，如果每个数据包都发送一次等待接受后再发送就会导致发送效率过低，发送太慢导致延迟过大。而如果一下子把全部数据都发送的话，发送的数据可能会太大，导致发送效率很差，因为数据包越大越容易发送失败或丢包，TCP就会全盘否定这次发送的内容，并将整个包都重新发送一次，效率极其糟糕。</p>
-<p>建立发送缓冲的步骤：</p>
-<ol>
-<li>每次当你调用发送接口时先把数据包推入发送队列，发送程序就开始轮训是否有需要发送的信息在队列里，有的话就发送，没有的话就继续轮训等待。</li>
-<li>发送时合并队列里的一部分数据包，这样可以一次性发送多个数据包以提高效率。</li>
-<li>对这种合并操作做个限制，如果因为合并而导致数据包太大，也会导致效率差。发送过程中，只要丢失一个数据就要全盘重新发送，数据包很大的话，发送本来就很缓慢的情况下，又重新整体重新发送，就会使得发送效率大大降低，合并的数据的大小限制在窗口大小的范围内(2的16次字节内)。</li>
-</ol>
-<h4 id="协议数据定义标准"><a href="#协议数据定义标准" class="headerlink" title="协议数据定义标准"></a>协议数据定义标准</h4><p>在网络数据传输中协议是比较重要的一个关键点，它是客户端与服务器交流的语言。<br>制定协议过程中的几个关键点：</p>
-<ol>
-<li>选择客户端和服务器都能接受的格式。</li>
-<li>数据包体大小最小化。</li>
-<li>要有一定的校验能力。</li>
-</ol>
-<h4 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h4><p>为了保证网络数据包不被篡改和查看，导致外挂破坏整个游戏平衡，我们需要对发送的网络数据包中的主体部分进行加密。加密算法很多，包括RSA，公钥私钥，以及非对称加密等，其中最简单也是最快的加密方式就是对数据做异或处理，由于数据两次异或处理就能使得数据回到原形，所以算法中常使用异或的操作来做加密。通常做法是发送时对数据做异或处理一次，收到时再做一次异或处理，这样就能简单快速加密解密数据。</p>
-<p>如果加密的性能损耗过大那就得不偿失了，所以我们仍然希望加密的过程是快速的，在不损耗大量CPU前提下，不影响项目性能的情况下对协议数据做最大化的加密工作。</p>
-<h4 id="断线检测"><a href="#断线检测" class="headerlink" title="断线检测"></a>断线检测</h4><p>TCP本身就是强连接，所以自身就有断线的检测机制，但是它本身的检测机制还不够好，时常会因为网络问题导致断线的判断不够及时，所以我们在编写TCP长连接的程序时需要加强断线检测机制，让断线判断变的更加准确及时。</p>
-<p>为了能有效检测TCP连接是否正常，我们需要服务器和客户端共同达成一个协议来检测连接，我们把这个共同达成的协议取名叫心跳包协议。在心跳包协议中，每几秒服务器向客户端发送一个心跳包，包内包含了服务器时间、服务器状态等少量信息，然后由接收到这个心跳协议的客户端做反馈，发送给服务器一个心跳回应包，包内也包含客户端的少量信息例如客户端状态、用户信息等。两边的终端上的逻辑可以就此达成共识，认为当收到心跳信息时认为连接时存在的，当服务器30秒没有收到任何反馈心跳包的信息则认为客户端已经断线，这时主动断开客户端的连接。客户端这边也是同样的协定，当客户端30秒内没有接收到任何数据包时则认为网络已经断开，客户端最好主动退出游戏重新登陆重新连接服务器。</p>
-<p>通常当网络异常时，客户端和服务器都很难断定连接是否依然存在，因此需要用这种机制来加以判定，例如在ios中APP可以随时切出屏幕并不关闭游戏，或者直接关闭应用不给服务器任何解释，服务器自然收不到断开连接的请求。面对各种异常的情况，我们制定的心跳包和心跳回应来判定是否仍处于连接的状态，倘若没有收到心跳包和心跳回应包，就表示连接存在问题了，有可能已经断开。为了规避一些时候网络的波动，我们可以设置一个有效判断断开连接的时间间隔，比如，10秒内没有收到心跳包和心跳回应包，就表示连接已经断开，这时服务器和客户端主动断开连接，客户端可以根据游戏的逻辑先退出游戏再重新登陆寻求再次与服务器连接。</p>
-<p>心跳协议在TCP之上，加强了断线检测的准确性，能更有效快速的检测到断线问题。</p>
-<h2 id="实现UDP"><a href="#实现UDP" class="headerlink" title="实现UDP"></a>实现UDP</h2><p>（待补充）</p>
-<h2 id="网络编程实战"><a href="#网络编程实战" class="headerlink" title="网络编程实战"></a>网络编程实战</h2><p>（基于TCP连接）</p>
-<h4 id="第一步-建立基础服务端和客户端程序"><a href="#第一步-建立基础服务端和客户端程序" class="headerlink" title="第一步 建立基础服务端和客户端程序"></a>第一步 建立基础服务端和客户端程序</h4><ol>
-<li>服务端创建Socket，绑定好IP地址和端口后，异步等待客户端连接</li>
-<li>客户端通过Connect连接到服务器</li>
-<li>服务端为每个客户端维护Socket及缓冲区（定义一个Conn类，放在连接池中）</li>
-<li>调试程序，现在可以简单实现收发消息了</li>
-</ol>
-<h4 id="第二步-序列号与定时器"><a href="#第二步-序列号与定时器" class="headerlink" title="第二步 序列号与定时器"></a>第二步 序列号与定时器</h4><ol>
-<li>将需要传输的信息类（如Player的信息）序列化，保存到数据库</li>
-<li>实现定时器Timer，为之后心跳检测做准备</li>
-<li>解决线程互斥产生的问题，为临界区资源加锁Lock</li>
-</ol>
-<h4 id="第三步-通信协议"><a href="#第三步-通信协议" class="headerlink" title="第三步 通信协议"></a>第三步 通信协议</h4><ol>
-<li>定义通信协议，及对应的包装和解析函数</li>
-<li>构建消息列表，让U3D主线程可以提取消息进行执行（非主线程无法设置U3D组件）</li>
-</ol>
-<h4 id="第四步-构建服务端框架"><a href="#第四步-构建服务端框架" class="headerlink" title="第四步 构建服务端框架"></a>第四步 构建服务端框架</h4><ol>
-<li>服务端框架分为：逻辑层、中间层、底层<br><img src="/2022/05/27/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A1%86%E6%9E%B6.png" alt="服务端框架"></li>
-<li>实现数据管理类DateMgr，功能是验证和读取数据库信息，同时要防止Sql注入</li>
-<li>实现网络管理类ServNet，解决粘包和分包的问题<ul>
-<li>TCP协议会将小的网络数据包进行合并/接收缓冲区的数据没有及时被取走==&gt;产生粘包。</li>
-<li>TCP协议会将大的网络数据包进行拆分==&gt;产生分包</li>
-<li>解决方法：可以每个数据包前面加上长度字节，接收时进行判断即可</li>
-</ul>
-</li>
-<li>完善Conn连接类，增加心跳时间（记录时间利用时间戳），同时因为 异步回调、定时器、主线程会同时处理Conn对象，所以要加锁</li>
-</ol>
-<h4 id="第五步-定义协议"><a href="#第五步-定义协议" class="headerlink" title="第五步 定义协议"></a>第五步 定义协议</h4><ol>
-<li>定义协议基类，实现解码、编码等功能<ul>
-<li>此协议可以理解为，发出的不同的请求，比如位置移动Pos，登录Login 下线Logout</li>
-</ul>
-</li>
-<li>实现消息处理类，对不同的协议消息进行分发处理<ul>
-<li>可以提取协议名，再通过反射的方法分发调用</li>
-</ul>
-</li>
-</ol>
-<h4 id="第六步-客户端网络模块"><a href="#第六步-客户端网络模块" class="headerlink" title="第六步 客户端网络模块"></a>第六步 客户端网络模块</h4><ol>
-<li>客户端实现监听表，对收到的不同协议的消息进行分发处理</li>
-<li>实现Connection连接，定义缓冲区，协议，及定时向服务端发送心跳信号</li>
-</ol>
-<h4 id="第七步-数据同步"><a href="#第七步-数据同步" class="headerlink" title="第七步 数据同步"></a>第七步 数据同步</h4><ol>
-<li>帧同步和状态同步</li>
-</ol>
-<h2 id="状态同步和帧同步"><a href="#状态同步和帧同步" class="headerlink" title="状态同步和帧同步"></a>状态同步和帧同步</h2><ul>
-<li><p>同步<br>  同步就是要多个客户端表现效果是一致的，而且对于大多数的游戏，不仅仅要表现一致，还要客户端和服务器的数据也是一致的。所以同步是个网络游戏概念，只有网络游戏才需要同步，而单机游戏是不需要同步的。</p>
-</li>
-<li><p>帧同步<br>  帧同步的代表作当属当下最火的手游王者荣耀了吧，它就是帧同步完成的，也意味着它的核心的战斗逻辑写在客户端。帧同步经常被采用在RTS游戏（Real-Time Strategy ）中。在游戏中，又客户端给服务器上传玩家的指令，服务器收到指令之后不做任何操作然后转发给所有的客户端。客户端来运算包括技能逻辑、普攻、属性，伤害、移动、Al、检测、碰撞等一系列的内容，这也是游戏中最核心和最难的部分。所有的客户端运算完成所有接收到的指令，并且修改相应的属性和对应的特效。</p>
-</li>
-<li><p>状态同步<br>  状态同步和帧同步是相反的，它最核心的一系列东西都写在服务器端。当客户端发送要进行操作给服务器，服务器进行一系列的操作运算，然后把相应的结果发送给所有的客户端，客户端接到数据后修改属性。这里客户端相当于服务器的播放器一样，因为核心的判断都是在服务器的，一切的表现和属性都以服务器为准，就算客户端的血条是满的，服务器的血条是0，那依旧要死。</p>
-</li>
-<li><p>例子：<br> 一个角色要释放一个技能（非指向技能）<br> 客户端告诉服务器我要释放一个技能<br> 服务器通知所有客户端在某个地方以什么方向释放技能<br> 客户端根据收到的信息创建一个特效放在这个地方，然后以某个方向飞行<br> 服务器根据碰撞检测判断到某个时刻碰到了地方英雄，通知客户端<br> 客户端根据服务器发来的信息删除特效，被打到的人减少血量播放收击特效</p>
-</li>
-<li><p>帧同步和状态同步的区别</p>
-</li>
-</ul>
-<ol>
-<li><p>流量：状态同步的消耗的流量比帧同步要多的多，因为状态同步所有的属性都是在服务器的，当某个角色的属性变化之后都需要同步给所有客户端，而且在一些复杂一些的玩家角色的属性有上百条，这样同步下来消耗是巨大的。而帧同步不需要做属性同步，服务器只需要做一次转发操作指令，属性这些都是客户端自己计算，所以消耗少的多。</p>
-</li>
-<li><p>回放和观战：帧同步比状态同步简单，因为只需要保存每局内所有人的操作就好了，当回放的时候只需要挨个播放这局所有的操作就好。状态同步需要有一个专门的服务器，当一局战斗打响，服务器给客户端发送消息的同时，还需要把这些消息发送给这个专门的服务器做存储，当有人看回放或者观战时，这个专门的服务器把存储起来的消息发就可以了</p>
-</li>
-<li><p>安全性：状态同步比帧同步安全性高很多，因为状态同步的所有数据和逻辑都是在服务器端保存的，要想作弊就必须修改服务器的值，这样难度就会高很多；而帧同步所有的数据时在客户端，只要解析客户端的数据之后就可以达到自己想要的效果。</p>
-</li>
-<li><p>断线重连：帧同步的锻炼重连时比较麻烦的，当你在10分钟的时候断线了，在15分钟回来，就需要把服务器这15分钟的消息一次性的发送给客户端，然后客户端加速整个游戏的核心逻辑运算，直到追上现有进度。状态同步很简单，重新把整个场景中的任务全部重新生成一边，各种数值根据服务端提供的信息加到任务身上即可。</p>
-</li>
-<li><p>开发效率：状态同步的游戏占主流，同一个功能至少需要一个客户端和服务器共同完成，开发起来比较困难。而帧同步服务器开发难度低，服务器只需要转发，而帧同步不需要和服务器的沟通交状态同步，开发的效率也高。</p>
-</li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] Unity3D网络游戏实战 罗培羽<br>[2] Unity3D高级编程: 主程手记 陆泽西</p>
-
+        
+          <a class="article-more-a" href="/2022/05/27/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/#more">more >></a>
+        
       
 
       
@@ -577,80 +371,9 @@
 <li>xLua：<br>腾讯开发的Lua插件，目前比较主流。</li>
 </ul>
 <h2 id="热更新原理"><a href="#热更新原理" class="headerlink" title="热更新原理"></a>热更新原理</h2><p>客户端和服务器上分别保存有配置文件，程序启动时使用http协议下载服务器的配置文件来与客户端的进行逐行对比，通过比较（比如md5码）找出不同的资源和脚本代码（需要更新的部分），把对应的资源和代码下载下来并将本地的覆盖。</p>
-<h2 id="Lua-一些要点"><a href="#Lua-一些要点" class="headerlink" title="Lua 一些要点"></a>Lua 一些要点</h2><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>轻量级脚本语言，常用于热更，Lua本身是由C语言编写。</p>
-<h4 id="理解面向对象的实现"><a href="#理解面向对象的实现" class="headerlink" title="理解面向对象的实现"></a>理解面向对象的实现</h4><p>本质上就是用表当作类，然后用元表及其元方法实现各种套娃操作。</p>
-<h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4><p>简单来说，一个函数内部的局部变量，通过函数返回值延续其寿命（生命周期），这就是闭包。</p>
-<h4 id="lua和C-是怎么进行交互的？"><a href="#lua和C-是怎么进行交互的？" class="headerlink" title="lua和C#是怎么进行交互的？"></a>lua和C#是怎么进行交互的？</h4><ul>
-<li>过程：<br>C# Call Lua：</li>
-</ul>
-<ol>
-<li>由C#文件先调用Lua解析器底层dll库（由C语言编写），再由dll文件执行相应的Lua文件。<br>Lua Call C#：</li>
-<li>Wrap方式:首先生成C#源文件所对应的Wrap文件，由Lua文件调用Wrap文件，再由Wrap文件调用C#文件。</li>
-<li>反射方式：当索引系统API、dll库或者第三方库时，如果无法将代码的具体实现进行代码生成，可采用此方式实现交互，就是执行效率低。</li>
-</ol>
-<ul>
-<li>原理：<br>C#与Lua进行交互主要通过虚拟栈实现，栈的索引分为正数与负数，若果索引为正数，则1表示栈底，若果索引为负数，则-1表示栈顶。<br>C# Call Lua:由C#先将数据放入栈中，由lua去栈中获取数据，然后返回数据对应的值到栈顶，再由栈顶返回至C#。<br>Lua Call C#:先生成C#源文件所对应的Wrap文件或者编写C#源文件所对应的c模块，然后将源文件内容通过Wrap文件或者C模块注册到Lua解释器中，然后由Lua去调用这个模块的函数。</li>
-</ul>
-<h4 id="Lua的GC垃圾回收机制算法"><a href="#Lua的GC垃圾回收机制算法" class="headerlink" title="Lua的GC垃圾回收机制算法"></a>Lua的GC垃圾回收机制算法</h4><p>Lua的GC使用了标记清除算法Mark and Sweep。</p>
-<h2 id="AssetBundle"><a href="#AssetBundle" class="headerlink" title="AssetBundle"></a>AssetBundle</h2><h4 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h4><p>Assetbundle是游戏安装之后，对<strong>非代码内容</strong>进行更新的主要方式，同时也可以做到<strong>减少初始包体大小、游戏可以做分包处理、利用二进制文件做资源加密</strong>的功能。<br>AssetBundle是一个“archive” 文件，包含的是特定平台的非代码资产（assets），比如说Models, Textures, Prefabs等。并且可以表达这些资产的互相引用，甚至不在同一个assetbundle中的资产的引用，比如这个assetbundle里面的Material可以关联到另一个Assetbundle里的Texture。</p>
-<h4 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h4><p>AssetBundle可以使用压缩方法进行压缩，提供了LZMA和LZ4两种压缩方法，官方建议使用LZ4方法。压缩率会低一点但是速度快了10倍。</p>
-<h4 id="加载与卸载"><a href="#加载与卸载" class="headerlink" title="加载与卸载"></a>加载与卸载</h4><p>加载分为网络加载和本地加载，视情况选择对应的API。<br>卸载的API：</p>
-<ul>
-<li>AssetBundle.Unload(false)： 参数为false时，AssetBundle内的序列化数据会被释放，实例化的物体还都保持完好。简单的说就是断开了AssetBundle和实例之间的联系。值得注意的是这样做并不会卸载AssetBundle，意思是AssetBundle还会继续占用内存。然而如果再次实例化对象，也不会返回以前初例化过的AssetBundle，而是重新实例化一个新的AssetBundle，那么这样就出现了冗余，同样的资源，内存中会出现多份。所以适合这样来卸载的资源，一定是不需要多次创建实例的资源，例如:一次性使用的配置信息。而卸载的话要当创建的实例删除回收以后，手动调用Resources.UnloadUnusedAssets或切换场景来释放。</li>
-<li>AssetBundle.Unload(true)。参数为true时，就简单多了，卸载AssetBundle，并且删除被引用的资源。注意！如果AssetBundle中有资源在场景中被引用，则会出现资源丢失的情况。这种卸载方式，最为彻底，完全从内存移除，缺点是你需要一套机制，来关注是不是还有资源引用，会不会引起异常。</li>
-<li>加载的AssetBundle，可以通过Resources.UnloadUnusedAssets来释放。但是前提是加载的AssetBundle一定要先释放干净，即没有任何引用。在调用AssetBundle.Unload(true)后会强行删除创建的实例和引用；而AssetBundle.Unload(false)，必须先手动删除资源的实例和引用才能释放，Resources.UnloadUnusedAssets的开销其实并不小（因为不仅仅是释放AssetBundle还包括Resources.Load的其他资源），建议每隔一段时间进行调用比较合适。</li>
-</ul>
-<h4 id="依赖打包"><a href="#依赖打包" class="headerlink" title="依赖打包"></a>依赖打包</h4><ol>
-<li>对于引用的资源，必须明确出现在其他AssetBundle的资源列表中，Unity才能识别为依赖关系，形成依赖打包。</li>
-<li>合理规划AssetBundle包，公共的资源单独抽离打包。（如果两个对象分配个两个不同的assetbundles，但是同时和一个常见的对象产生了依赖，那么这个对象就会被同时打包进两个assetbundles中，这不仅会造成应用大小的负担，而且如果场景加载这两个父对象，那它就会被加载两遍。）</li>
-<li>注意资源与AssetBundle的关系，一个AssetBundle可以包含多个资源，但同一份资源不允许存在于多个AssetBundle中。</li>
-</ol>
-<h4 id="分组策略"><a href="#分组策略" class="headerlink" title="分组策略"></a>分组策略</h4><ul>
-<li>AssetBundle 数量太少:</li>
-</ul>
-<ol>
-<li>会增加运行时内存使用</li>
-<li>会增加加载时间</li>
-<li>需要下载大量数据</li>
-</ol>
-<ul>
-<li>AssetBundle 数量太多:</li>
-</ul>
-<ol>
-<li>会增加构建的时间</li>
-<li>会加大开发的复杂性</li>
-<li>会增加总的下载时间</li>
-</ol>
-<ul>
-<li>分配策略：</li>
-</ul>
-<ol>
-<li>逻辑实体分组：通过项目功能来分组对象</li>
-<li>类型分组：相似或者相同类型的对象被放置到同一个 AssetBundle 中</li>
-<li>不相干(concurrent)内容分组：将需要同时加载和使用内容分组到同一个 AssetBundle 的策略</li>
-</ol>
-<h4 id="浏览与检测"><a href="#浏览与检测" class="headerlink" title="浏览与检测"></a>浏览与检测</h4><p>要检测资源是否冗余，推荐使用AssetBundles-Browser、UnityStudio、disunity、UWA GOT等工具进行检测。</p>
-<h4 id="优秀的开源库"><a href="#优秀的开源库" class="headerlink" title="优秀的开源库"></a>优秀的开源库</h4><p>MonsterABSystem，ABSystem，KSFramework，xasset，zcode-AssetBundlePacker</p>
-<h2 id="XLua"><a href="#XLua" class="headerlink" title="XLua"></a>XLua</h2><h4 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h4><p>xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。<br>使用流程：标记需要热更的资源，打包构建AssetBundle资源（包括lua脚本），上传到服务器，客户端通过服务器下载读取AssetBundle资源，执行lua脚本即可。<br>github：<a target="_blank" rel="noopener" href="https://github.com/Tencent/xLua">https://github.com/Tencent/xLua</a></p>
-<h4 id="简单的使用流程"><a href="#简单的使用流程" class="headerlink" title="简单的使用流程"></a>简单的使用流程</h4><ol>
-<li>创建xLua虚拟环境，定义加载器</li>
-<li>在需要热更新的类加上[Hotfix]标签，需要热更的方法加上 [LuaCallCSharp]标签</li>
-<li>释放：及时将LuaEnv给Dispose掉，释放LuaEnv之前还要反注册，那些注册到C#中的回调函数</li>
-</ol>
-<h2 id="ILruntime"><a href="#ILruntime" class="headerlink" title="ILruntime"></a>ILruntime</h2><p>ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新。</p>
-<p>同市面上的其他热更方案相比，ILRuntime主要有以下优点：</p>
-<ol>
-<li>无缝访问C#工程的现成代码，无需额外抽象脚本API</li>
-<li>执行效率是L#的10-20倍</li>
-<li>选择性的CLR绑定使跨域调用更快速，绑定后跨域调用的性能能达到slua的2倍左右（从脚本调用GameObject之类的接口）</li>
-<li>支持跨域继承</li>
-<li>完整的泛型支持</li>
-<li>拥有Visual Studio的调试插件，可以实现真机源码级调试。</li>
-</ol>
-<p>原理：<br>ILRuntime借助Mono.Cecil库来读取DLL的PE信息，以及当中类型的所有信息，最终得到方法的IL汇编码，然后通过内置的IL解译执行虚拟机来执行DLL中的代码。</p>
-<p>IL托管栈和托管对象栈：<br>为了高性能进行运算，尤其是栈上的基础类型运算，如int,float,long之类类型的运算，直接借助C#的Stack类实现IL托管栈肯定是个非常糟糕的做法。因为这意味着每次读取和写入这些基础类型的值，都需要将他们进行装箱和拆箱操作，这个过程会非常耗时并且会产生巨量的GC Alloc，使得整个运行时执行效率非常低下。</p>
-<p>因此ILRuntime使用unsafe代码以及非托管内存，实现了自己的IL托管栈。</p>
-
+        
+          <a class="article-more-a" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/#more">more >></a>
+        
       
 
       
@@ -725,56 +448,9 @@
       
         <h2 id="图集"><a href="#图集" class="headerlink" title="图集"></a>图集</h2><h4 id="什么是图集？"><a href="#什么是图集？" class="headerlink" title="什么是图集？"></a>什么是图集？</h4><p>首先，Unity会为场景中的每个纹理发出一次绘制调用，即DrawCall（CPU发出命令让GUP开始渲染）<br>一个个纹理进行绘制，那性能必须大消耗，所以，把多个纹理合并成一个，那么DrawCall也只会有一个，这就是合并纹理，即图集。<br>（补充一下Unity的Batches，即DrawCall的封装，代表每帧有多少DrawCall）</p>
 <h4 id="关于图集的渲染"><a href="#关于图集的渲染" class="headerlink" title="关于图集的渲染"></a>关于图集的渲染</h4><p>Unity的Canvas会按照深度Depth从下向上渲染，所以最下面的UI一般会渲染在最前面。 但是如果UI之间产生了交叉重叠的情况，图集的合批会在不同图集重叠的地方被打断（如果两个相同图集之间穿插了另一个不同的图集，则合批会被打断）</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h4 id="Unity-API"><a href="#Unity-API" class="headerlink" title="Unity API"></a>Unity API</h4><ul>
-<li><p>SendMessage：用反射，费性能，低效率，垃圾玩意，观察者模式取而代之。</p>
-</li>
-<li><p>Extern Call Caching：把transform、gameobject之类的属性访问器进行缓存使用，指的就是外部调用缓存，我们把一些常用或者频繁使用到的外部组件以全局变量或者局部变量缓存起来可以减少外部调用的次数。</p>
-</li>
-<li><p>FindObjects：<br>FindObjectsOfType比FindGameObjectsWithTag更耗时，是最耗性能以及效率最低的一种。<br>Transform.Find():用这个方法查找物体时，根节点一定要处于“显示”状态。<br>GameObject.Find():使用简单，不会因为重名报错，但是不能查找被隐藏的物体，全局查找，所以效率低，很耗性能。<br><img src="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/FindObject.jpg" alt="FindObject"></p>
-</li>
-<li><p>Physics.OverlapSphere VS Physics.OverlapSphereNonAlloc<br>Physics.OverlapSphere: 计算并存储接触球体或位于球体内部的碰撞体，会产生GC Alloc。<br>Physics.OverlapSphereNonAlloc: 计算与球体接触或位于球体内部的碰撞体，并将它们存储到提供的缓冲区中，耗时比在OverlapSphere长。</p>
-</li>
-</ul>
-<h4 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h4><ul>
-<li><p>GameObject的SpawnPool应支持“移出屏幕”功能<br>GameObject（比如特效）可能会被频繁的在“使用中”、“不使用”的状态间切换。我们的SpawnPool不应过快地把“刚刚不使用”的GameObject立刻Deactivate掉，否则会引起不必要的Deactivate/Activate的性能消耗。应有一个“从热变冷”的过程：“刚刚不使用”只是移出屏幕；只有“不使用一段时间”的GameObject，才会得以Deactivate。可能的实现方式如下</p>
-</li>
-<li><p>Transform的孩子不应过多<br>当Transform包含不该有的孩子Transform或其他组件时，为该Transform进行position、rotation赋值，会引起消耗，特别是包含粒子系统的时候。</p>
-</li>
-<li><p>应减少粒子系统的Play()的调用次数<br>每次调用ParticleSystem.Play()都会有消耗，如果粒子系统本身没有明显“前摇”阶段，应先检查ParticleSystem.isPlaying。</p>
-</li>
-<li><p>应减少每帧Material.GetXX()/Material.SetXX()的次数<br>每次调用Material.GetXX()或Material.SetXX()都会有消耗，应减少调用该API的频率。比如使用C#对象变量来记录Material的变量状态，从而规避Material.GetXX()；<br>在Shader里把多个uniform half变量合并为uniform half 4，从而把4个Material.SetXX()调用合并为1个Material.SetXX()。</p>
-</li>
-<li><p>应使用支持Conditional的日志输出机制<br>简单使用 Debug.Log(ToString() + “hello “ + “world”); 其实参会造成CPU消耗及GC。使用支持Conditional的日志输出机制，则无此问题，只需在构建时，取消对应的编译参数即可。</p>
-</li>
-<li><p>减少GetComponent()的频率<br>GetComponent()会有一定的GC产生，有少量的CPU消耗。</p>
-</li>
-<li><p>减少UnityEngine.Object的null比较<br>因为Unity overwrite掉了Object.Equals()，<a target="_blank" rel="noopener" href="https://blog.unity.com/technology/custom-operator-should-we-keep-it">《CUSTOM == OPERATOR, SHOULD WE KEEP IT?》</a>也说过unityEngineObject==null事实上和GetComponent()的消耗类似，都涉及到Engine层面的机制调用，所以UnityEngine.Object的null比较，都会有少许的性能消耗。对于基础功能、调用栈叶子节点逻辑、高频功能，我们应少null比较，使用assertion来处理。只有在调用栈根节点逻辑，有必要的时候，才进行null比较。</p>
-</li>
-<li><p>减少不必要的Transform.position/rotation等访问<br>每次访问Transform.position/rotation都有相应的消耗。应能cache就cache其返回结果。</p>
-</li>
-<li><p>减少创建C#堆内存对象<br>建议使用成员变量，或者Pool来规避高频创建C#堆内存对象的创建。而且堆内存对象创建本身就是个相对较慢的过程。</p>
-</li>
-<li><p>应为struct对象重载所有object函数<br>为了普适性，C#的struct的默认Equals()、GetHashCode()和ToString()都是较慢实现，甚至涉及反射。用户自定义的struct，都应重载上述3个函数。</p>
-</li>
-<li><p>尽量用Queue/Stack来代替List<br>我们会习惯用List来实现数据集合的需求。但好一些情况下，我们事实上是不需对其进行随机访问，而仅仅是“增加”、“删除”操作。此时，我们应该使用增删复杂度都是O(1)的Queue或者Stack。</p>
-</li>
-<li><p>注意容器的初始化capacity<br>Capacity增长时，除了O(n)的复杂度，也有GC消耗。</p>
-</li>
-<li><p>尽量为类或函数声明为sealed<br>IL2CPP就sealed的类或函数会有优化，变虚函数调用为直接函数调用。</p>
-</li>
-<li><p>减少Dictionary的冗余访问<br>myDictionary.Contains(oneKey) ==&gt; myDictionary.TryGetValue(oneKey, out myValue)</p>
-</li>
-</ul>
-<h2 id="Profiler工具"><a href="#Profiler工具" class="headerlink" title="Profiler工具"></a>Profiler工具</h2><ul>
-<li><p>长期性能数据监控工具<br>长期性能数据监控工具会至少每天都对游戏单局、或游戏资源进行自动化性能测试，并上报结果到服务器。能从“整体”去对比不同时段、不同版本间的性能差别。</p>
-</li>
-<li><p>Unity Profiler<br>Unity Profiler能定量地找到C#的GC Alloc问题；其Timeline视图也能从地整体（但不太定量）找到CPU瓶颈。</p>
-</li>
-<li><p>XCode<br>XCode的GPU Report视图能从整体（但不太定量）找到游戏的瓶颈阶段。当Frame Time中CPU大于GPU时，表示CPU是瓶颈，否则表示GPU是瓶颈；当Utilization中的TILER比RENDERER高时，表示顶点处理是GPU的瓶颈，否则表示像素处理是GPU的瓶颈。帧率受限于瓶颈，应优先优化瓶颈阶段，非瓶颈阶段优化得再快都无法提高帧率。</p>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1401256820485259264">Unity性能优化 -劳烦叫我小小泽</a><br>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24392681">Unity游戏项目性能优化总结 -DonaldW</a></p>
-
+        
+          <a class="article-more-a" href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/#more">more >></a>
+        
       
 
       
@@ -1027,54 +703,9 @@
 </ul>
 <h4 id="EventSystem（事件系统）："><a href="#EventSystem（事件系统）：" class="headerlink" title="EventSystem（事件系统）："></a>EventSystem（事件系统）：</h4><p>一个场景内只有拥有一个EventSystem组件，它负责射线投射，处理输入，发送事件。<br>StandaloneInputModule和TouchInputModule组件是系统提供的标准输入模块和触摸输入模块，我们可以通过继承BaseInputModule实现自己的输入模块。</p>
 <p>要实现交互，还需要一个射线检测组件——Graph Raycaster，凡是继承了Graph类的UI，都能通过该组件进行射线检测，实现交互。<br>值得一提的是，EventSystem同样可以作用于3D物体，不过需要的射线检测组件是Physics Raycaster，一般将它挂载在Camera上，然后只需要在3D物体上挂载实现了交互接口的脚本，就可以实现交互控制。</p>
-<h4 id="Rect-Transform："><a href="#Rect-Transform：" class="headerlink" title="Rect Transform："></a>Rect Transform：</h4><p><del>借鉴参考</del>抄袭了该文章的内容：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4592bf809c8b">Unity——RectTransform详解</a></p>
-<ul>
-<li>Anchor：<br>当anchorMax与anchorMin相等时，Anchor呈现为一个点，称为锚点。<br>当anchorMax与anchorMin不相等时，Anchor呈现为一个框，姑且称为锚框。</li>
-</ul>
-<p>绝对布局（即锚点状态）下：<br>    无论分辨率是多少，父物体多大，该UI元素的大小是恒定的。<br>    PosX,PosY,PosZ表征的就是Pivot到锚点的距离。<br>相对布局（即锚框状态下）：<br>    此时，RectTransform的属性变为Left,Top,Right,Bottom,PosZ，表示UI元素的每一条边距离父物体的每一条边的距离。</p>
-<ul>
-<li>Pivot：<br>  Pivot中心点，就是UI元素旋转缩放的中心点，左下角为(0,0)右上角为(1,1)。</li>
-</ul>
-<ul>
-<li><p>Offset：<br>  OffsetMax：就是UI元素的右上角的坐标，减去AnchorMax的值，得到一个从AnchorMax指向元素右上角的向量(vector2类型)。<br>  OffsetMin：就是UI元素的左上角的坐标，减去AnchorMin的值，得到一个从AnchorMin指向元素左上角的向量(vector2类型)。</p>
-</li>
-<li><p>sizeDelta：<br>  sizeDelta的值就是OffsetMax-OffsetMin的值。</p>
-</li>
-<li><p>rect：<br>  rect中的属性，不与UI元素所在的位置有关，只和其自身属性相关，所以其中的rect.width和rect.height属性就可以让我们在任何情况下取得元素的大小。</p>
-</li>
-<li><p>anchoredPosition：<br>  在使用锚点的情况下，anchoredPosition表征的是元素Pivot到Anchor的距离。<br>  在使用锚框的情况下，anchoredPosition表征的是元素Pivot到锚框中心点的距离。</p>
-</li>
-<li><p>BluePrintMode：<br>  在蓝图模式下，RectTransforms 的矩形句柄（就是包裹UI组件的那个框）会忽略本地旋转和缩放。</p>
-</li>
-<li><p>Raw edit Mode：<br>  轴心点和锚点是自由的。</p>
-</li>
-</ul>
-<h2 id="UGUI运作机制"><a href="#UGUI运作机制" class="headerlink" title="UGUI运作机制"></a>UGUI运作机制</h2><p>UGUI是在3D网格下建立起来的UI系统，它的每个可显示的元素都是以3D模型网格的形式来构建起来的。当UI被实例化时，UGUI首先要做的事就是构建网格。</p>
-<p>也就是说当Unity3D制作一个图元，或者一个按钮，或者一个背景时，都会先构建一个方形网格，再将图片放入网格中。可以理解为制造了一个3D模型，用一个网格绑定一个材质球，材质球里存放了要显示的图片。</p>
-<p>UGUI在这方面做了优化，它将一部分相同类型的图片都集合起来合成一个张图，然后将拥有相同图片相同shader的材质球合并成一个材质球，并且把分散开的模型网格也一起合并了，这样就生成了几个大网格和几个材质球，以及少许整张的图集。节省了很多材质球，图片，网格的渲染，UI的效率更高了很多，游戏在进行时才会顺畅。这就是我们常常在UI制作中提到的图集的概念，它把很多张图片都放置在一张图集上，导致大量的图片和材质球不需要重复的绘制，只要改变模型顶点上的uv即可。</p>
-<h2 id="UGUI源码分析"><a href="#UGUI源码分析" class="headerlink" title="UGUI源码分析"></a>UGUI源码分析</h2><p> UGUI 内核源码分成了三块：输入事件，动画，核心渲染。</p>
-<h4 id="动画部分"><a href="#动画部分" class="headerlink" title="动画部分"></a>动画部分</h4><p>这部分相对比较简单，用了tween补间动画的形式，对颜色，位置，大小做了渐进的操作。tween的原理是在启动一个协程，在协程里对元素的属性渐进式的修改，除了修改属性数值，tween还有多种曲线可以选择，比如内番曲线，外翻曲线等，一个数值从起点到终点的过程可以由曲线来控制。</p>
-<h4 id="输入事件模块"><a href="#输入事件模块" class="headerlink" title="输入事件模块"></a>输入事件模块</h4><p>UGUI 把输入事件模块有四部分，事件数据模块，输入事件捕获模块，射线碰撞检测模块，事件逻辑处理及回调模块。</p>
-<ul>
-<li><p>事件数据模块<br>功能：存储事件发生时的位置、和事件对应的物体、事件的位移大小、触发事件的输入信息等等等，总之就是获取数据，提供数据服务。<br>继承关系：<br>BaseEventData -&gt; PointerEventData，AxisEventData<br>AxisEventData<br>这些类存储了大部分事件系统逻辑需要的数据，比如鼠标按下的位置，左键还是右键，拖拽的距离，点击到的物体等等。</p>
-</li>
-<li><p>输入事件捕获模块<br>功能：处理鼠标、键盘、手柄等外设输入的逻辑。<br>继承关系：<br>BaseInputModule -&gt; PointerInputModule -&gt; StandaloneInputModule，TouchInputModule</p>
-</li>
-<li><p>射线碰撞检测模块<br>功能：射线碰撞检测模块主要工作是从摄像机的屏幕位置上，做射线碰撞检测并获取碰撞结果，把结果返回给事件处理逻辑类，交由事件处理模块处理事件。</p>
-</li>
-</ul>
-<p>分类：2D射线碰撞检测，3D射线碰撞检测，GraphicRaycaster图形射线碰撞检测。</p>
-<p>分析：<br>2D、3D射线碰撞测试相对比较简单，用射线的形式做碰撞测试，2D碰撞结果里预留了2D的层级次序以便在后面的碰撞结果排序时，以这个层级次序为依据做排序，而3D的碰撞检测结果则是以距离大小为依据排序的。</p>
-<p>GraphicRaycaster 为UGUI元素点位检测的类，它被放在了 Core 渲染块里。它主要针对 ScreenSpaceOverlay 模式下输入点位做碰撞检测，因为这个模式下的检测并不依赖于射线碰撞，而是遍历所有可点击的UGUI元素来检测比较，从而判断是该响应哪个UI元素。因此 GraphicRaycaster 是比较特殊的。</p>
-<p>GraphicRaycaster 对每个可以点击的元素(raycastTarget是否为true，并且 depth 不为-1，为可点击元素)进行计算，判断点位是否落在该元素上。再通过 depth 变量排序，判断最先该落在哪个元素上，从而确定哪个元素响应输入事件。</p>
-<p>所有检测碰撞的结果数据结构为 RaycastResult 类，它承载了所有碰撞检测结果的依据，包括了距离，世界点位，屏幕点位，2D层级次序，碰撞物体等，为后面事件处理提供了数据上的依据。</p>
-<ul>
-<li>事件逻辑处理模块<br>事件主逻辑处理模块，主要的逻辑都集中在 EventSystem 类中。</li>
-</ul>
-<p>EventInterfaces，EventTrigger，EventTriggerType 定义了事件回调函数，ExecuteEvents 编写了所有执行事件的回调接口。</p>
-<p>EventSystem基本上就是处理由射线碰撞检测后引起的各类事件。判断事件是否成立，成立则发起事件回调，不成立则继续轮询检查，等待事件的发生。</p>
-<p>EventSystem 是事件处理模块中唯一继承 MonoBehavior 并且有在 Update 帧循环中做轮询的。也就是说，所有UI事件的发生都是通过 EventSystem 轮询监测到的并且实施的。EventSystem 通过调用输入事件检测模块，检测碰撞模块，来形成自己主逻辑部分。因此可以说 EventSystem 是主逻辑类，是整个事件模块的入口。</p>
-
+        
+          <a class="article-more-a" href="/2022/05/23/Unity-UGUI%E5%88%86%E6%9E%90/#more">more >></a>
+        
       
 
       
@@ -1160,41 +791,9 @@
 <li>结构不灵活，可扩展性不高，难以脚本化/可视化。</li>
 </ul>
 <h2 id="行为树（BT）"><a href="#行为树（BT）" class="headerlink" title="行为树（BT）"></a>行为树（BT）</h2><p>行为树是一棵用于控制 AI 决策行为的、包含了层级节点的树结构。<br>行为树的开发过程是高度可迭代的。<br>一个理想的系统应该将决策过程和状态本身分离，这样你只需要在一个位置进行更改，仍然能够正确转换状态，这就是行为树的应用场景。</p>
-<ul>
-<li><p>节点的返回值：true，false，running</p>
-</li>
-<li><p>行为树(Behavior Tree)具有有4大类型的Node：</p>
-<ul>
-<li>Composite Node　　组合节点</li>
-<li>Decorator Node　　 修饰节点</li>
-<li>Condition Node　　 条件节点（叶节点）</li>
-<li>Action Node　　　　动作节点（叶节点）</li>
-</ul>
-</li>
-<li><p>优点： </p>
-</li>
-</ul>
-<ol>
-<li>行为逻辑和状态数据分离，任何节点写好以后可以反复利用 </li>
-<li>重用性高，可用通过重组不同的节点来实现不同的行为树 </li>
-<li>呈线性的方式扩展，易于扩展 </li>
-<li>可配置，把工作交给designer </li>
-</ol>
-<ul>
-<li>缺点： </li>
-</ul>
-<ol>
-<li>每一帧都从root开始，有可能会访问到所以的节点，相对State Machine消耗更多的cpu </li>
-<li>任何一个简单的操作都必须要使用节点</li>
-</ol>
-<h2 id="A-寻路算法"><a href="#A-寻路算法" class="headerlink" title="A*寻路算法"></a>A*寻路算法</h2><ul>
-<li>当前代价：即来到“该点”所需要的最短步数。</li>
-<li>预估代价：即“该点”到目的的距离</li>
-<li>有两种求法：欧拉距离（两点之间直线距离），曼哈顿距离（水平和竖直距离的相加）</li>
-<li>总代价：即当前代价加上预估代价。</li>
-<li>步骤：先遍历周围网格（即先进行一次广度），存入数组中，随后求min最小总代价的其中一个，如果相同则选择预估代价最小的一个（可以优先队列一次性解决），再以这个作为新的起点，重复以上步骤。</li>
-</ul>
-
+        
+          <a class="article-more-a" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/#more">more >></a>
+        
       
 
       
@@ -1358,77 +957,14 @@
 <li>矩阵运算：自己翻书去，略。</li>
 </ul>
 <h2 id="基础变换矩阵"><a href="#基础变换矩阵" class="headerlink" title="基础变换矩阵"></a>基础变换矩阵</h2><ul>
-<li>线性变换：缩放、剪切、旋转</li>
-<li>仿射变换：位移</li>
-<li>齐次坐标：由于位移无法用单一矩阵实现，因此为了使基础变换矩阵都能用单一矩阵描述，引入齐次坐标，即多加入一个维度，1表示点，0表示向量。<br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/scaling.png" alt="scaling"><br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/shearing.png" alt="shearing"><br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/rotation.jpg" alt="rotation"><br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/translation.jpg" alt="translation"></li>
-</ul>
-<h2 id="视图变换"><a href="#视图变换" class="headerlink" title="视图变换"></a>视图变换</h2><p>即将虚拟世界中的物体，从它的模型坐标，一步步转化到屏幕坐标系。（通过MVP矩阵）。<br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/mvp.jpg" alt="MVP"></p>
-<ul>
-<li><p>模型变换（modeling tranformation）<br>  将虚拟世界（游戏场景）中的物体，调整至它们应该在的位置。（模型空间转化到世界空间）。<br>  用基础变换矩阵简单调整。</p>
+<li><p>线性变换：缩放、剪切、旋转</p>
 </li>
-<li><p>摄像机变换（camera tranformation）<br>  为了得到物体与摄像机的相对位置，将摄像机和物体一起移动，让摄像机坐标与世界空间的原点坐标重合。<br>  定义相机位置e，观察方向g，上方向t，建立摄像机坐标系。<br>  由于旋转矩阵是正交矩阵，所以通过逆推，即可求出摄像机变换的矩阵。</p>
+<li><p>仿射变换：位移</p>
 </li>
-<li><p>投影变换（projection tranformation）<br>  将三维空间中的顶点坐标映射到二维空间，投影变换又分为正交投影和透射投影。<br>  正交投影：将物体转换到一个[-1，1]^3的空间之中(保留z是为了方便之后的遮挡剔除)<br>  透射投影：将物体进行压缩，再进行正交投影。</p>
-</li>
-<li><p>视口变换（viewport tranformation）<br>  将处于标准平面映射到屏幕分辨率范围之内，即[-1,1]^2==&gt;[0,width]*[0,height], 其中width和height指屏幕分辨率大小</p>
-</li>
-</ul>
-<h2 id="光栅化"><a href="#光栅化" class="headerlink" title="光栅化"></a>光栅化</h2><p>光栅化是将向量图形格式表示的图像转换成位图以用于显示器或者打印机输出的过程。<br>屏幕可以简单理解为，由离散的、二维的像素点构成。<br>而最基本的二维图像是三角形，对其离散化的操作便是生成图像的重点，方法就是采样。（说人话：判断三角形和像素的位置关系）</p>
-<ul>
-<li><p>采样（Sampling）<br>  如果采样频率＜变化频率，就会出现走样现象（锯齿、摩尔纹等）<br>  解决思路：先Filter（模糊）后采样，Filter包括卷积（类似于低通滤波）<br>  目前运用广泛的方法有：</p>
-<ul>
-<li>MSAA：将像素再度划分，通过平均/卷积求其颜色值，这是一种Filter的方法，并非提高采样率。</li>
-<li>FXAA：先采样，再通过深度学习等方法弥补锯齿。</li>
-<li>TAA：静态场景，相邻两帧同一像素用不同的位置来采样，会借助前面帧的信息。</li>
-</ul>
-</li>
-<li><p>光栅化算法<br>  直线光栅化算法</p>
-<ul>
-<li>DDA数值微分算法：通过判断斜率，来确定主要前进方向是x轴还是y轴。</li>
-<li>中点Bresenham算法：根据接下来可能要画的几个像素的中点和直线的位置关系判断。<br>三角形光栅化算法</li>
-<li>简单粗暴：对屏幕中的每一个像素进行采样，如果这个像素点在三角形之中那么这个像素点就应该被采用。（叉乘判断）</li>
-<li>优化：ABB包围盒</li>
-</ul>
-</li>
-</ul>
-<h2 id="Z-Buffer算法"><a href="#Z-Buffer算法" class="headerlink" title="Z-Buffer算法"></a>Z-Buffer算法</h2><ul>
-<li>要把物体渲染显示在屏幕上，还要判断物体先后顺序，这就需要用到MVP变换之后所得到的深度值Z了。</li>
-</ul>
-<ol>
-<li>Z-Buffer算法需要为每个像素点维持一个深度数组记为zbuffer，其每个位置初始值置为无穷大（即离摄像机无穷远）。</li>
-<li>随后我们遍历每个三角形面上的每一个像素点[x,y]，如果该像素点的深度值z，小于zbuffer[x,y]中的值，则更新zbuffer[x,y]值为该点深度值z，并同时更新该像素点[x,y]的颜色为该三角形面上的该点的颜色。</li>
-</ol>
-<h2 id="局部光照模型"><a href="#局部光照模型" class="headerlink" title="局部光照模型"></a>局部光照模型</h2><p>到了着色（shading）的环节，就要计算出每个采样像素点的颜色是多少。<br>可以先将光线简单的分为3类：</p>
-<ol>
-<li>镜面反射</li>
-<li>漫反射</li>
-<li>环境光</li>
-</ol>
-<ul>
-<li><p>泛光模型<br>泛光模型即只考虑环境光，这是最简单的经验模型，只会去考虑环境光的影响，并且不会去精确的描述，而只是用一个简单的式子表示: 环境光 = 反射率 * 入射光亮度</p>
-</li>
-<li><p>Lambert漫反射模型<br>漫反射 = 漫反射系数 * 光照强度 * max（0，法线向量和入射方向的点乘）</p>
-</li>
-<li><p>Phong反射模型<br>高光反射 = 反射系数 * （入射光强/距离^2）* max（0，cos反射方向和观察方向的夹角）^衰减系数</p>
-</li>
-<li><p>Blinn-Phong反射模型<br>将Phong反射模型的角度计算换为 半程向量和法线向量 的夹角</p>
-</li>
-</ul>
-<h2 id="着色频率"><a href="#着色频率" class="headerlink" title="着色频率"></a>着色频率</h2><ul>
-<li>Flat Shading：以面为单位进行着色</li>
-<li>Gouraud Shading：以顶点为单位进行着色</li>
-<li>Phong Shading：以像素为单位进行着色</li>
-</ul>
-<h2 id="图形渲染管线"><a href="#图形渲染管线" class="headerlink" title="图形渲染管线"></a>图形渲染管线</h2><p>![Graphics Pipeline](Graphics Pipeline.jpg)</p>
-<ol>
-<li>空间中的点 -&gt;MVP矩阵，投影到屏幕上</li>
-<li>点形成三角形</li>
-<li>光栅化</li>
-<li>着色</li>
-<li>整合信息，输出</li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] GAMES101-现代计算机图形学入门-闫令琪</p>
-
+<li><p>齐次坐标：由于位移无法用单一矩阵实现，因此为了使基础变换矩阵都能用单一矩阵描述，引入齐次坐标，即多加入一个维度，1表示点，0表示向量。<br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/scaling.png" alt="scaling"><br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/shearing.png" alt="shearing"><br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/rotation.jpg" alt="rotation"><br><img src="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/translation.jpg" alt="translation"></p>
+        
+          <a class="article-more-a" href="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/#more">more >></a>
+        
       
 
       
@@ -1594,11 +1130,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">设计</a>
+                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">AI</a>
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1606,11 +1142,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+                <a href="javascript:void(0)" class="js-tag color3">设计</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
               </li>
             
             <div class="clearfix"></div>
