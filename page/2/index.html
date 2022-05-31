@@ -152,6 +152,90 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Unity 协程分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/">Unity 协程分析</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2022-05-22T09:38:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是协程？"><a href="#什么是协程？" class="headerlink" title="什么是协程？"></a>什么是协程？</h2><p>在Unity中，协程用于在主线程运行的同时开启另一段逻辑处理，来协助当前程序的执行。<br>协程看起来有点像是轻量级线程，但是本质上协程还是运行在主线程上，它在每帧结束之后去检测yield的条件是否满足，协程不是线程，也不是异步执行的。<br>协程和MonoBehaviour的Update函数一样也是在主线程中执行的，因此不用考虑同步和锁的问题。</p>
+<p>简单的说，协程就是一种特殊的函数，它可以主动的请求暂停自身并提交一个唤醒条件，Unity会在唤醒条件满足的时候去重新唤醒协程。<br>协程能做的Update都能做，那为什么我们需要协程呢？ 因为使用协程，我们可以把一个跨越多帧的操作封装到一个方法内部，代码会更清晰。</p>
+<h2 id="Unity中的协程原理"><a href="#Unity中的协程原理" class="headerlink" title="Unity中的协程原理"></a>Unity中的协程原理</h2><p>Unity的协程开启后，会挂在当前的MonoBehaviour下，在MonoBehaviour生命周期的Update和LateUpdate之间，会检查这个MonoBehaviour下挂载的所有协程，并唤醒其中满足唤醒条件的协程。<br>要想使用协程，只需要以IEnumerator为返回值，并且在函数体里面用yield return语句来暂停协程并提交一个唤醒条件。然后使用StartCoroutine来开启协程。</p>
+<p>协程分为两部分，协程与协程调度器：协程仅仅是一个能够中间暂停返回的函数，而协程调度是在MonoBehaviour的生命周期中实现的。 准确的说，Unity只实现了协程调度部分，而协程本身其实就是用了C#原生的“迭代器方法”。</p>
+<p>协程本体是C#的迭代器函数，可以使用yield来暂停，使用MoveNext()来继续执行。<br>翻阅Unity官方文档中介绍MonoBehaviour生命周期的部分，会发现有很多yield阶段，在这些阶段中，Unity会检查MonoBehaviour中是否挂载了可以被唤醒的协程，如果有则唤醒它。</p>
+<h2 id="进程，线程与协程"><a href="#进程，线程与协程" class="headerlink" title="进程，线程与协程"></a>进程，线程与协程</h2><p>进程是操作系统资源分配的基本单位 线程是处理器调度与执行的基本单位。</p>
+<p>每一个进程都独立拥有自己的指令和数据，所以称为资源分配的基本单位。其中数据又分布在内存的不同区域，我们在C语言课程中学习过内存四区的概念，一个运行中的进程所占有的内存大体可以分为四个区域：栈区、堆区、数据区、代码区。其中代码区存储指令，另外三个区存储数据。</p>
+<p>线程是处理器调度和执行的基本单位，一个线程往往和一个函数调用栈绑定，一个进程有多个线程，每个线程拥有自己的函数调用栈，同时共用进程的堆区，数据区，代码区。操作系统会不停地在不同线程之间切换来营造出一个并行的效果，这个策略称为时间片轮转法。</p>
+<p>而协程，可以简单理解为，一切用户自己实现的，类似于线程的轮子，都可以称之为是协程。</p>
+<p>协程调度是非抢占式的，线程调度是抢占式的：<br>操作系统会主动中断当前执行中的线程，然后把CPU控制权交给别的线程，就好像有很多线程去争抢CPU的控制权一样。<br>协程需要主动调用yield来释放CPU控制权，协程的运行中间不会被系统中断打断。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Coroutines.html">Unity官方的协程文档</a><br>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/279383752">Unity协程的原理与应用 by宇亓</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -591,6 +675,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Shader</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">热更新</a>
               </li>
              
@@ -603,15 +691,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
             
             <div class="clearfix"></div>

@@ -152,6 +152,211 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Unity-Shader" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/31/Unity-Shader/">Unity Shader</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/31/Unity-Shader/" class="archive-article-date">
+  	<time datetime="2022-05-31T02:59:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="渲染流水线"><a href="#渲染流水线" class="headerlink" title="渲染流水线"></a>渲染流水线</h1><h3 id="什么是渲染流水线"><a href="#什么是渲染流水线" class="headerlink" title="什么是渲染流水线"></a>什么是渲染流水线</h3><ul>
+<li>工作任务：由一个三维场景出发，生成（渲染）一张二维图像。</li>
+</ul>
+<h3 id="渲染流程的三个阶段"><a href="#渲染流程的三个阶段" class="headerlink" title="渲染流程的三个阶段"></a>渲染流程的三个阶段</h3><p>应用阶段（Application Stage）</p>
+<ul>
+<li>由CPU负责，开发者拥有绝对的控制权</li>
+<li>任务：</li>
+</ul>
+<ol>
+<li>准备好场景数据</li>
+<li>为了提高渲染性能，做粗粒度剔除，将不可见的物体剔除出去</li>
+<li>设置渲染状态，包括不限于材质、纹理、shader</li>
+</ol>
+<ul>
+<li>最后，输出渲染图元，即渲染所需要的几何信息。（可以是点、线、三角面）</li>
+</ul>
+<p>几何阶段（Geometry Stage）</p>
+<ul>
+<li>由GPU负责</li>
+<li>和每个渲染图元打交道，进行逐顶点、逐多边形的操作</li>
+<li>顶点坐标 ==&gt; 屏幕空间</li>
+<li>输出屏幕空间的二维顶点坐标，及对应的深度值，着色等相关信息</li>
+</ul>
+<p>光栅化阶段（Rasterizer Stage）</p>
+<ul>
+<li>由GOU负责</li>
+<li>决定每个渲染图元中的哪些像素应该被绘制</li>
+<li>对上一阶段得到的逐顶点数据进行插值运算，在进行逐像素处理</li>
+<li>生成屏幕上的像素，渲染出最终的图像</li>
+</ul>
+<h3 id="CPU和GPU之间的通信"><a href="#CPU和GPU之间的通信" class="headerlink" title="CPU和GPU之间的通信"></a>CPU和GPU之间的通信</h3><p>应用阶段可以分为三个小阶段：</p>
+<ol>
+<li><p>把数据加载到显存中。<br>（硬盘 –&gt; 内存 –&gt; 显存）<br>数据加载到显存后，RAM中的数据就可以移除了，但有些情况需要保留，比如要访问网格数据进行碰撞检测。</p>
+</li>
+<li><p>设置渲染状态<br>定义场景中的网格是如何被渲染的，使用什么着色器，用什么光源、材质。</p>
+</li>
+<li><p>调用Draw Call<br>CPU调用渲染命令，告知GPU开始渲染。<br>DrawCall就是CPU调用图像编程接口，命令GPU进行渲染的操作。<br>通常造成DrawCall性能问题的是CPU而不是GPU。</p>
+</li>
+</ol>
+<h3 id="GPU流水线"><a href="#GPU流水线" class="headerlink" title="GPU流水线"></a>GPU流水线</h3><p>GPU渲染的过程就是GPU流水线，在几何阶段和光栅化阶段，开发者没有绝对的控制权。<br>GPU的渲染流水线接受顶点数据作为输入，传递给顶点着色器。</p>
+<p><strong>几何阶段：</strong></p>
+<h5 id="顶点着色器"><a href="#顶点着色器" class="headerlink" title="顶点着色器"></a>顶点着色器</h5><p>完全可编程，通常用于实现顶点的空间变换，顶点等功能。<br>单位是顶点，从CPU传递过来的顶点都会调用一次顶点着色器。<br>着色器不能创建/销毁任何顶点，也无法得到顶点与顶点之间的关系。</p>
+<ul>
+<li>坐标变换<br>可以改变顶点的位置，模拟水面，布料。<br>把顶点坐标从模型空间转换到齐次裁剪空间（MVP矩阵），再由硬件做透视除法后，得到归一化的设备坐标（NDC）。<br><img src="/2022/05/31/Unity-Shader/NDC.png" alt="NDC"></li>
+</ul>
+<h5 id="曲面细分着色器"><a href="#曲面细分着色器" class="headerlink" title="曲面细分着色器"></a>曲面细分着色器</h5><p>用于细分图元</p>
+<h5 id="几何着色器"><a href="#几何着色器" class="headerlink" title="几何着色器"></a>几何着色器</h5><p>逐图元的着色操作</p>
+<h5 id="裁剪"><a href="#裁剪" class="headerlink" title="裁剪"></a>裁剪</h5><p>剔除不在摄像机范围内的顶点</p>
+<h5 id="屏幕映射"><a href="#屏幕映射" class="headerlink" title="屏幕映射"></a>屏幕映射</h5><p>将每个图元的坐标转换到屏幕坐标系（视口变换）</p>
+<p><strong>光栅化阶段：</strong></p>
+<h5 id="三角形设置，三角形遍历"><a href="#三角形设置，三角形遍历" class="headerlink" title="三角形设置，三角形遍历"></a>三角形设置，三角形遍历</h5><p>固定函数阶段。</p>
+<ul>
+<li>三角形设置：计算每个图元覆盖了哪些像素，以及为这些像素计算它们的颜色。</li>
+<li>三角形遍历：检查每个像素是否被三角形网格覆盖，任何生成片元。</li>
+</ul>
+<h5 id="片元着色器"><a href="#片元着色器" class="headerlink" title="片元着色器"></a>片元着色器</h5><p>实现逐片元的着色操作，是非常重要的可编程着色器阶段。<br>输入是上一个阶段对顶点信息插值得到的结果，根据片元信息，计算该片元的输出颜色。<br>在这个阶段，可以做纹理采样等很多重要的渲染技术。</p>
+<h5 id="逐片元操作"><a href="#逐片元操作" class="headerlink" title="逐片元操作"></a>逐片元操作</h5><ul>
+<li><p>决定每个片元的可见性，涉及到各种测试工作，如深度测试、模板测试。</p>
+</li>
+<li><p>通过测试后，将片元的颜色和存储在颜色缓冲区的颜色进行合并，或者说混合。</p>
+</li>
+<li><p>模板测试（即颜色缓冲，深度缓冲）：<br>读取模板缓冲区中该片元位置的模板值，任何进行比较。<br>通常用于限制渲染的区域，高级用法则是渲染阴影、轮廓渲染等</p>
+</li>
+<li><p>深度测试：<br>将该片元的深度值和深度缓冲区的深度值进行比较，进行遮挡剔除，透明效果。<br>可以决定是否进行深度写入，将该片元的深度值覆盖原有的深度值<br>在Unity中，深度测试是在片元着色器之前，减少性能损耗，但有时也会出现操作上的冲突。</p>
+</li>
+<li><p>合并<br>对颜色信息进行处理，因为颜色缓冲往往已经有了上次渲染之后的结果，是要覆盖还是其它效果？<br>不透明物体：关闭混合<br>半透明：开启混合<br>需要一个混合函数，</p>
+</li>
+</ul>
+<h5 id="显示到屏幕"><a href="#显示到屏幕" class="headerlink" title="显示到屏幕"></a>显示到屏幕</h5><p>屏幕显示的时颜色缓冲区中的颜色值，GPU会用双重缓冲的策略，对场景的渲染发送在后置缓冲中，GPU会交换前置缓冲区和后置缓冲区中的内容。</p>
+<h3 id="OpenGL-DirectX"><a href="#OpenGL-DirectX" class="headerlink" title="OpenGL/DirectX"></a>OpenGL/DirectX</h3><p>图像应用编程接口，是上层应用程序和底层GPU的沟通桥梁。<br>HSLS、GLSL、CG则是着色器编程语言。</p>
+<h1 id="Unity-Shader基础"><a href="#Unity-Shader基础" class="headerlink" title="Unity Shader基础"></a>Unity Shader基础</h1><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Unity中，需要Material材质和Shader配合。<br>ShaderLab：对普通的Shader进行抽象，再封装一层。</p>
+<h3 id="顶点着色器的输入参数"><a href="#顶点着色器的输入参数" class="headerlink" title="顶点着色器的输入参数"></a>顶点着色器的输入参数</h3><p>可以定义一个结构体，用来定义顶点着色器的输入，注意语义。<br>这些输入的数据，由使用该材质的<strong>Mesh Render组件</strong>提供。</p>
+<h3 id="内置文件与变量"><a href="#内置文件与变量" class="headerlink" title="内置文件与变量"></a>内置文件与变量</h3><p>可以用#include指令将内置的包含文件包含进来。<br>在Unity应用程序中找到CGIncludes文件夹，里面包含了所有的内置包含文件。<br>这里列举几个常用的：</p>
+<ol>
+<li>UnityCGcginc：包含了最常使用的帮助函数、宏和结构体等</li>
+<li>UnityShaderVariables.cginc：会被自动包含进来，包括各种内置的全局变量，如MVP矩阵</li>
+<li>Lighting.cginc：包含各种内置的光照模型，如果用的是Surface Shader，则会自动包含进来</li>
+<li>HLSLSupport.cginc：在编译Unity Shader时，会被自动包含进来，声明了许多跨平台的宏和定义</li>
+</ol>
+<h3 id="Unity支持的语义"><a href="#Unity支持的语义" class="headerlink" title="Unity支持的语义"></a>Unity支持的语义</h3><p>应用阶段–&gt;顶点着色器：</p>
+<ul>
+<li>POSITION:模型空间中的顶点位置，通常是float4类型</li>
+<li>NORMAL:顶点法线，通常是float3类型</li>
+<li>TANGENT:顶点切线，通常是float4类型</li>
+<li>TEXCOORDn:顶点的纹理坐标，0表示第一组，以此类推，通常是float2或float4类型</li>
+<li>COLOR:顶点颜色，通常是fixed4或float4类型</li>
+</ul>
+<p>顶点着色器–&gt;片元着色器：</p>
+<ul>
+<li>SV_POSITION：裁剪空间中的顶点坐标</li>
+<li>COLOR0/1：通常用于输出第一/二组顶点颜色</li>
+<li>TEXCOORD0~TEXCOORD7:通常用于输出纹理坐标</li>
+</ul>
+<p>片元着色器–&gt;Unity</p>
+<ul>
+<li>SV_Target:输出值将会存储到渲染目标</li>
+</ul>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><ul>
+<li>使用假彩色图像</li>
+<li>用Visual Studio进行调试</li>
+</ul>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>不同的Shader Target，不同的着色器阶段，可使用的临时寄存器和指令数目都是不同的。</p>
+<h1 id="数学基础"><a href="#数学基础" class="headerlink" title="数学基础"></a>数学基础</h1><p>略 </p>
+<h1 id="基础光照"><a href="#基础光照" class="headerlink" title="基础光照"></a>基础光照</h1><h3 id="标准光照模型"><a href="#标准光照模型" class="headerlink" title="标准光照模型"></a>标准光照模型</h3><p>标准光照模型只关心直接光照<br><img src="/2022/05/31/Unity-Shader/%E5%85%89%E7%85%A7.png" alt="光照"></p>
+<h5 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h5><p>物体可以被间接光照照亮，环境光用来模拟间接光照，通常是一个全局变量<br><img src="/2022/05/31/Unity-Shader/%E7%8E%AF%E5%A2%83%E5%85%89.png" alt="环境光"></p>
+<h5 id="自发光"><a href="#自发光" class="headerlink" title="自发光"></a>自发光</h5><p>用材质本身的自发光颜色</p>
+<h5 id="漫反射"><a href="#漫反射" class="headerlink" title="漫反射"></a>漫反射</h5><p>兰伯特定律：反射光线的强度与表面的法线和光源之间的夹角的余弦值成正比。<br><img src="/2022/05/31/Unity-Shader/%E5%85%B0%E4%BC%AF%E7%89%B9.png" alt="兰伯特"></p>
+<h5 id="高光反射"><a href="#高光反射" class="headerlink" title="高光反射"></a>高光反射</h5><p>Phong模型，Blinn模型</p>
+<h1 id="基础纹理"><a href="#基础纹理" class="headerlink" title="基础纹理"></a>基础纹理</h1><h3 id="单张纹理"><a href="#单张纹理" class="headerlink" title="单张纹理"></a>单张纹理</h3><p>我们通常会用一张纹理来代替物体的漫反射颜色。<br>除了在Properties语义块添加一个纹理属性以外，还需要为纹理类型的属性声明一个float4类型的变量，来表示缩放和平移值。</p>
+<h3 id="凹凸映射"><a href="#凹凸映射" class="headerlink" title="凹凸映射"></a>凹凸映射</h3><p>原理是用一张纹理来修改模型表面的法线。<br>方法有二：</p>
+<ol>
+<li>高度纹理：存储高度值，表示模型表面局部的海拔高度，需要由像素的灰度值计算而得，消耗性能</li>
+<li>法线纹理：</li>
+</ol>
+<ul>
+<li>法线方向的分量范围在[-1,1]，而像素的分量范围为[0,1]，所以需要做一个映射</li>
+<li>一般采用模型顶点的切线空间在存储法线，对于模型的每个顶点，都有属于它的切线空间，</li>
+</ul>
+<h3 id="渐变纹理"><a href="#渐变纹理" class="headerlink" title="渐变纹理"></a>渐变纹理</h3><p>用渐变纹理来控制漫反射光照</p>
+<h3 id="遮罩纹理"><a href="#遮罩纹理" class="headerlink" title="遮罩纹理"></a>遮罩纹理</h3><p>遮罩纹理允许我们保护某些范围，让它们免于修改。<br>流程：通过采样得到遮罩纹理的纹素值，然后用其中某个通道的值来与某种表面属性进行相乘，这样，当该通道的值为0时，可以保护表面不受该属性的影响。</p>
+<h1 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h1><p>要在实时渲染中实现透明效果，通常会在渲染模型时控制它的透明通道（Alpha Channel）<br>当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值以外，还有另一个属性–透明度。（1为完全不透明）<br>两种方法来实现透明效果：</p>
+<ul>
+<li>透明度测试：无法得到真正的半透明效果，有深度写入，要么完全透明，要么完全不透明。</li>
+<li>透明度混合：当前片元的透明度作为混合因子，与已经存储在颜色缓冲的颜色值进行混合，得到新的颜色。</li>
+</ul>
+<h3 id="渲染顺序"><a href="#渲染顺序" class="headerlink" title="渲染顺序"></a>渲染顺序</h3><p>在使用深度缓冲的情况下，可以不用担心不透明物体的渲染顺序，但是要实现透明效果，就需要使用透明度混合，同时关闭深度写入。<br>渲染引擎一般会先对物体进行排序，再渲染，常用的方法是：</p>
+<ol>
+<li>先渲染所以不透明物体，并开启它们的深度测试和深度写入</li>
+<li>再将半透明物体按它们的远近进行排序，然后按顺序依次渲染，开启深度测试，关闭深度写入</li>
+</ol>
+<h3 id="UnityShader的渲染顺序"><a href="#UnityShader的渲染顺序" class="headerlink" title="UnityShader的渲染顺序"></a>UnityShader的渲染顺序</h3><p>Queue标签决定模型归属于哪个渲染队列。</p>
+<h3 id="透明度测试"><a href="#透明度测试" class="headerlink" title="透明度测试"></a>透明度测试</h3><h3 id="透明度混合"><a href="#透明度混合" class="headerlink" title="透明度混合"></a>透明度混合</h3><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[1] [Unity-shader入门精要-冯乐乐]</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Shader</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/31/Unity-Shader/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-网络编程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -366,19 +571,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="什么是热更新？"><a href="#什么是热更新？" class="headerlink" title="什么是热更新？"></a>什么是热更新？</h2><p>热更新是指当游戏出现bug，或者需要修改，增加某个功能的时候，我们不需要重新下载安装包，就可以更新游戏内容。</p>
-<p>游戏上线后，遇见bug或者需要更新内容，一般有两种做法：<br>第一种：重新打包上传一个新的安装包到应用商店（需要审核，费时间），然后让玩家下载新的客户端安装包（需要重新下载，费流量）<br>第二种：在游戏内更新，游戏启动时去下载需要更新的资源，即热更新</p>
+        <h2 id="什么是热更新？"><a href="#什么是热更新？" class="headerlink" title="什么是热更新？"></a>什么是热更新？</h2><p>热更新是指当游戏出现bug，或者需要修改，增加某个功能的时候，我们不需要重新下载安装包，就可以更新游戏内容。<br>游戏上线后，遇见bug或者需要更新内容，一般有两种做法：<br>第一种：重新打包上传一个新的安装包到应用商店（需要审核，费时间），然后让玩家下载新的客户端安装包（需要重新下载，费流量）<br>第二种：在游戏内更新，游戏启动时去下载需要更新的资源，即<strong>热更新</strong></p>
 <h2 id="实现热更新方案"><a href="#实现热更新方案" class="headerlink" title="实现热更新方案"></a>实现热更新方案</h2><ul>
 <li>ILRuntime：<br>是掌趣科技开发的开源unity热更框架，这个框架打破了C#不能做ios平台热更的规则(在ios平台中是以ILRuntime+dll的方式解释执行，当然是在IL2CPP下)。有了这个框架，开发者只需使用C#这一种语言即可，而不用在C#和lua之间切换。</li>
 <li>xLua：<br>腾讯开发的Lua插件，目前比较主流。</li>
 </ul>
 <h2 id="热更新原理"><a href="#热更新原理" class="headerlink" title="热更新原理"></a>热更新原理</h2><p>客户端和服务器上分别保存有配置文件，程序启动时使用http协议下载服务器的配置文件来与客户端的进行逐行对比，通过比较（比如md5码）找出不同的资源和脚本代码（需要更新的部分），把对应的资源和代码下载下来并将本地的覆盖。</p>
-<h2 id="Lua-一些要点"><a href="#Lua-一些要点" class="headerlink" title="Lua 一些要点"></a>Lua 一些要点</h2><h4 id="理解面向对象的实现"><a href="#理解面向对象的实现" class="headerlink" title="理解面向对象的实现"></a>理解面向对象的实现</h4><p>本质上就是用表当作类，然后用元表及其元方法实现各种套娃操作。</p>
+<h2 id="Lua-一些要点"><a href="#Lua-一些要点" class="headerlink" title="Lua 一些要点"></a>Lua 一些要点</h2><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>轻量级脚本语言，常用于热更，Lua本身是由C语言编写。</p>
+<h4 id="理解面向对象的实现"><a href="#理解面向对象的实现" class="headerlink" title="理解面向对象的实现"></a>理解面向对象的实现</h4><p>本质上就是用表当作类，然后用元表及其元方法实现各种套娃操作。</p>
 <h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4><p>简单来说，一个函数内部的局部变量，通过函数返回值延续其寿命（生命周期），这就是闭包。</p>
 <h4 id="lua和C-是怎么进行交互的？"><a href="#lua和C-是怎么进行交互的？" class="headerlink" title="lua和C#是怎么进行交互的？"></a>lua和C#是怎么进行交互的？</h4><ul>
-<li>过程：<br>C# Call Lua：由C#文件先调用Lua解析器底层dll库（由C语言编写），再由dll文件执行相应的Lua文件。<br>Lua Call C#：</li>
+<li>过程：<br>C# Call Lua：</li>
 </ul>
 <ol>
+<li>由C#文件先调用Lua解析器底层dll库（由C语言编写），再由dll文件执行相应的Lua文件。<br>Lua Call C#：</li>
 <li>Wrap方式:首先生成C#源文件所对应的Wrap文件，由Lua文件调用Wrap文件，再由Wrap文件调用C#文件。</li>
 <li>反射方式：当索引系统API、dll库或者第三方库时，如果无法将代码的具体实现进行代码生成，可采用此方式实现交互，就是执行效率低。</li>
 </ol>
@@ -386,7 +592,51 @@
 <li>原理：<br>C#与Lua进行交互主要通过虚拟栈实现，栈的索引分为正数与负数，若果索引为正数，则1表示栈底，若果索引为负数，则-1表示栈顶。<br>C# Call Lua:由C#先将数据放入栈中，由lua去栈中获取数据，然后返回数据对应的值到栈顶，再由栈顶返回至C#。<br>Lua Call C#:先生成C#源文件所对应的Wrap文件或者编写C#源文件所对应的c模块，然后将源文件内容通过Wrap文件或者C模块注册到Lua解释器中，然后由Lua去调用这个模块的函数。</li>
 </ul>
 <h4 id="Lua的GC垃圾回收机制算法"><a href="#Lua的GC垃圾回收机制算法" class="headerlink" title="Lua的GC垃圾回收机制算法"></a>Lua的GC垃圾回收机制算法</h4><p>Lua的GC使用了标记清除算法Mark and Sweep。</p>
-<h2 id="XLua"><a href="#XLua" class="headerlink" title="XLua"></a>XLua</h2><p>xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。</p>
+<h2 id="AssetBundle"><a href="#AssetBundle" class="headerlink" title="AssetBundle"></a>AssetBundle</h2><h4 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h4><p>Assetbundle是游戏安装之后，对<strong>非代码内容</strong>进行更新的主要方式，同时也可以做到<strong>减少初始包体大小、游戏可以做分包处理、利用二进制文件做资源加密</strong>的功能。<br>AssetBundle是一个“archive” 文件，包含的是特定平台的非代码资产（assets），比如说Models, Textures, Prefabs等。并且可以表达这些资产的互相引用，甚至不在同一个assetbundle中的资产的引用，比如这个assetbundle里面的Material可以关联到另一个Assetbundle里的Texture。</p>
+<h4 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h4><p>AssetBundle可以使用压缩方法进行压缩，提供了LZMA和LZ4两种压缩方法，官方建议使用LZ4方法。压缩率会低一点但是速度快了10倍。</p>
+<h4 id="加载与卸载"><a href="#加载与卸载" class="headerlink" title="加载与卸载"></a>加载与卸载</h4><p>加载分为网络加载和本地加载，视情况选择对应的API。<br>卸载的API：</p>
+<ul>
+<li>AssetBundle.Unload(false)： 参数为false时，AssetBundle内的序列化数据会被释放，实例化的物体还都保持完好。简单的说就是断开了AssetBundle和实例之间的联系。值得注意的是这样做并不会卸载AssetBundle，意思是AssetBundle还会继续占用内存。然而如果再次实例化对象，也不会返回以前初例化过的AssetBundle，而是重新实例化一个新的AssetBundle，那么这样就出现了冗余，同样的资源，内存中会出现多份。所以适合这样来卸载的资源，一定是不需要多次创建实例的资源，例如:一次性使用的配置信息。而卸载的话要当创建的实例删除回收以后，手动调用Resources.UnloadUnusedAssets或切换场景来释放。</li>
+<li>AssetBundle.Unload(true)。参数为true时，就简单多了，卸载AssetBundle，并且删除被引用的资源。注意！如果AssetBundle中有资源在场景中被引用，则会出现资源丢失的情况。这种卸载方式，最为彻底，完全从内存移除，缺点是你需要一套机制，来关注是不是还有资源引用，会不会引起异常。</li>
+<li>加载的AssetBundle，可以通过Resources.UnloadUnusedAssets来释放。但是前提是加载的AssetBundle一定要先释放干净，即没有任何引用。在调用AssetBundle.Unload(true)后会强行删除创建的实例和引用；而AssetBundle.Unload(false)，必须先手动删除资源的实例和引用才能释放，Resources.UnloadUnusedAssets的开销其实并不小（因为不仅仅是释放AssetBundle还包括Resources.Load的其他资源），建议每隔一段时间进行调用比较合适。</li>
+</ul>
+<h4 id="依赖打包"><a href="#依赖打包" class="headerlink" title="依赖打包"></a>依赖打包</h4><ol>
+<li>对于引用的资源，必须明确出现在其他AssetBundle的资源列表中，Unity才能识别为依赖关系，形成依赖打包。</li>
+<li>合理规划AssetBundle包，公共的资源单独抽离打包。（如果两个对象分配个两个不同的assetbundles，但是同时和一个常见的对象产生了依赖，那么这个对象就会被同时打包进两个assetbundles中，这不仅会造成应用大小的负担，而且如果场景加载这两个父对象，那它就会被加载两遍。）</li>
+<li>注意资源与AssetBundle的关系，一个AssetBundle可以包含多个资源，但同一份资源不允许存在于多个AssetBundle中。</li>
+</ol>
+<h4 id="分组策略"><a href="#分组策略" class="headerlink" title="分组策略"></a>分组策略</h4><ul>
+<li>AssetBundle 数量太少:</li>
+</ul>
+<ol>
+<li>会增加运行时内存使用</li>
+<li>会增加加载时间</li>
+<li>需要下载大量数据</li>
+</ol>
+<ul>
+<li>AssetBundle 数量太多:</li>
+</ul>
+<ol>
+<li>会增加构建的时间</li>
+<li>会加大开发的复杂性</li>
+<li>会增加总的下载时间</li>
+</ol>
+<ul>
+<li>分配策略：</li>
+</ul>
+<ol>
+<li>逻辑实体分组：通过项目功能来分组对象</li>
+<li>类型分组：相似或者相同类型的对象被放置到同一个 AssetBundle 中</li>
+<li>不相干(concurrent)内容分组：将需要同时加载和使用内容分组到同一个 AssetBundle 的策略</li>
+</ol>
+<h4 id="浏览与检测"><a href="#浏览与检测" class="headerlink" title="浏览与检测"></a>浏览与检测</h4><p>要检测资源是否冗余，推荐使用AssetBundles-Browser、UnityStudio、disunity、UWA GOT等工具进行检测。</p>
+<h4 id="优秀的开源库"><a href="#优秀的开源库" class="headerlink" title="优秀的开源库"></a>优秀的开源库</h4><p>MonsterABSystem，ABSystem，KSFramework，xasset，zcode-AssetBundlePacker</p>
+<h2 id="XLua"><a href="#XLua" class="headerlink" title="XLua"></a>XLua</h2><h4 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h4><p>xLua为Unity、 .Net、 Mono等C#环境增加Lua脚本编程的能力，借助xLua，这些Lua代码可以方便的和C#相互调用。<br>使用流程：标记需要热更的资源，打包构建AssetBundle资源（包括lua脚本），上传到服务器，客户端通过服务器下载读取AssetBundle资源，执行lua脚本即可。<br>github：<a target="_blank" rel="noopener" href="https://github.com/Tencent/xLua">https://github.com/Tencent/xLua</a></p>
+<h4 id="简单的使用流程"><a href="#简单的使用流程" class="headerlink" title="简单的使用流程"></a>简单的使用流程</h4><ol>
+<li>创建xLua虚拟环境，定义加载器</li>
+<li>在需要热更新的类加上[Hotfix]标签，需要热更的方法加上 [LuaCallCSharp]标签</li>
+<li>释放：及时将LuaEnv给Dispose掉，释放LuaEnv之前还要反注册，那些注册到C#中的回调函数</li>
+</ol>
 <h2 id="ILruntime"><a href="#ILruntime" class="headerlink" title="ILruntime"></a>ILruntime</h2><p>ILRuntime项目为基于C#的平台（例如Unity）提供了一个纯C#实现，快速、方便且可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码的热更新。</p>
 <p>同市面上的其他热更方案相比，ILRuntime主要有以下优点：</p>
 <ol>
@@ -1231,90 +1481,6 @@
 
 
   
-    <article id="post-Unity 协程分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/">Unity 协程分析</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2022-05-22T09:38:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是协程？"><a href="#什么是协程？" class="headerlink" title="什么是协程？"></a>什么是协程？</h2><p>在Unity中，协程用于在主线程运行的同时开启另一段逻辑处理，来协助当前程序的执行。<br>协程看起来有点像是轻量级线程，但是本质上协程还是运行在主线程上，它在每帧结束之后去检测yield的条件是否满足，协程不是线程，也不是异步执行的。<br>协程和MonoBehaviour的Update函数一样也是在主线程中执行的，因此不用考虑同步和锁的问题。</p>
-<p>简单的说，协程就是一种特殊的函数，它可以主动的请求暂停自身并提交一个唤醒条件，Unity会在唤醒条件满足的时候去重新唤醒协程。<br>协程能做的Update都能做，那为什么我们需要协程呢？ 因为使用协程，我们可以把一个跨越多帧的操作封装到一个方法内部，代码会更清晰。</p>
-<h2 id="Unity中的协程原理"><a href="#Unity中的协程原理" class="headerlink" title="Unity中的协程原理"></a>Unity中的协程原理</h2><p>Unity的协程开启后，会挂在当前的MonoBehaviour下，在MonoBehaviour生命周期的Update和LateUpdate之间，会检查这个MonoBehaviour下挂载的所有协程，并唤醒其中满足唤醒条件的协程。<br>要想使用协程，只需要以IEnumerator为返回值，并且在函数体里面用yield return语句来暂停协程并提交一个唤醒条件。然后使用StartCoroutine来开启协程。</p>
-<p>协程分为两部分，协程与协程调度器：协程仅仅是一个能够中间暂停返回的函数，而协程调度是在MonoBehaviour的生命周期中实现的。 准确的说，Unity只实现了协程调度部分，而协程本身其实就是用了C#原生的“迭代器方法”。</p>
-<p>协程本体是C#的迭代器函数，可以使用yield来暂停，使用MoveNext()来继续执行。<br>翻阅Unity官方文档中介绍MonoBehaviour生命周期的部分，会发现有很多yield阶段，在这些阶段中，Unity会检查MonoBehaviour中是否挂载了可以被唤醒的协程，如果有则唤醒它。</p>
-<h2 id="进程，线程与协程"><a href="#进程，线程与协程" class="headerlink" title="进程，线程与协程"></a>进程，线程与协程</h2><p>进程是操作系统资源分配的基本单位 线程是处理器调度与执行的基本单位。</p>
-<p>每一个进程都独立拥有自己的指令和数据，所以称为资源分配的基本单位。其中数据又分布在内存的不同区域，我们在C语言课程中学习过内存四区的概念，一个运行中的进程所占有的内存大体可以分为四个区域：栈区、堆区、数据区、代码区。其中代码区存储指令，另外三个区存储数据。</p>
-<p>线程是处理器调度和执行的基本单位，一个线程往往和一个函数调用栈绑定，一个进程有多个线程，每个线程拥有自己的函数调用栈，同时共用进程的堆区，数据区，代码区。操作系统会不停地在不同线程之间切换来营造出一个并行的效果，这个策略称为时间片轮转法。</p>
-<p>而协程，可以简单理解为，一切用户自己实现的，类似于线程的轮子，都可以称之为是协程。</p>
-<p>协程调度是非抢占式的，线程调度是抢占式的：<br>操作系统会主动中断当前执行中的线程，然后把CPU控制权交给别的线程，就好像有很多线程去争抢CPU的控制权一样。<br>协程需要主动调用yield来释放CPU控制权，协程的运行中间不会被系统中断打断。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a target="_blank" rel="noopener" href="https://docs.unity3d.com/Manual/Coroutines.html">Unity官方的协程文档</a><br>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/279383752">Unity协程的原理与应用 by宇亓</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1420,6 +1586,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Shader</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">热更新</a>
               </li>
              
@@ -1432,15 +1602,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
             
             <div class="clearfix"></div>
