@@ -16,7 +16,7 @@
 <meta property="og:description" content="List 实现原理：List内部是用数组实现的，而不是链表，并且当没有给予指定容量时，初始的容量为0，每次容量不够的时候，整个数组的容量都会扩充一倍。 Add：每次增加一个元素的数据，Add接口都会首先检查的是容量还够不够，如果不够则用 EnsureCapacity 来增加容量。 Remove：元素删除的原理其实就是用 Array.Copy 对数组进行覆盖。IndexOf 启用的是 Array.I">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-18T04:22:40.000Z">
-<meta property="article:modified_time" content="2022-05-31T09:49:20.746Z">
+<meta property="article:modified_time" content="2022-06-06T13:38:29.256Z">
 <meta property="article:author" content="iamsb">
 <meta property="article:tag" content="C#">
 <meta name="twitter:card" content="summary">
@@ -210,7 +210,29 @@
 <li>通过泛型来避免拆箱、装箱。</li>
 <li>通过继承统一的接口提前拆箱、装箱，避免多次重复拆箱、装箱。</li>
 </ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] Unity3D高级编程: 主程手记 陆泽西</p>
+<h2 id="垃圾回收机制-GC"><a href="#垃圾回收机制-GC" class="headerlink" title="垃圾回收机制 GC"></a>垃圾回收机制 GC</h2><h4 id="GC的优点"><a href="#GC的优点" class="headerlink" title="GC的优点"></a>GC的优点</h4><ol>
+<li>提高软件系统的内聚。</li>
+<li>降低编程复杂度，使程序员不必分散精力去处理析构。</li>
+<li>不妨碍设计师进行系统抽象。</li>
+<li>减少由于内存运用不当产生的Bug。</li>
+<li>成功的将内存管理工作从程序的编写时，脱离至运行时，使不可预估的管理漏洞变为可预估的。</li>
+</ol>
+<h4 id="算法工作原理"><a href="#算法工作原理" class="headerlink" title="算法工作原理"></a>算法工作原理</h4><p>垃圾收集器的本质,就是跟踪所有被引用到的对象，整理不再被引用的对象，回收相应的内存。<br>一种常用的做法是<strong>引用计数器</strong>，但因为需要遍历所有对象，并维护它们的引用情况，所以效率较低，并且在出现“环引用”时很容易造成内存泄露。<br>.NET中采取了**标记与清除(Mark Sweep)**算法。</p>
+<ul>
+<li><p>“标记”——垃圾的识别：<br>从应用程序的root出发，利用相互引用关系，遍历其在堆上动态分配的所有对象，没有被引用的对象不被标记，即成为垃圾；存活的对象被标记，即维护成了一张“根-对象可达图”。其实，CLR会把对象关系看做“树图”。<br>检测并标记对象引用，在.Net中是利用栈来完成的，在不断的入栈与出栈中完成检测。</p>
+</li>
+<li><p>“清除”——回收内存：<br>启用Compact算法，对内存中存活的对象进行移动，修改它们的指针，使之在内存中连续，这样空闲的内存也就连续了，这就解决了内存碎片问题，当再次为新对象分配内存时，CLR不必在充满碎片的内存中寻找适合新对象的内存空间，所以分配速度会大大提高。<br>大对象除外，不会消耗性能去移动大对象，通常，大对象具有很长的生存期，当一个大对象在.NET托管堆中产生时，它被分配在堆的一个特殊部分中，移动大对象所带来的开销超过了整理这部分堆所能提高的性能。<br>Compact算法除了会提高再次分配内存的速度，如果新分配的对象在堆中位置很紧凑的话，高速缓存的性能将会得到提高，因为一起分配的对象经常被一起使用(程序的局部性原理)，所以为程序提供一段连续空白的内存空间是很重要的。</p>
+</li>
+</ul>
+<h4 id="代龄"><a href="#代龄" class="headerlink" title="代龄"></a>代龄</h4><p>代龄就是对Heap中的对象按照存在时间长短进行分代，最短的分在第0代，最长的分在第2代，第2代中的对象往往是比较大的。（Generation的层级与FrameWork版本有关，可以通过调用GC.MaxGeneration得知）。<br>通常，GC会优先收集那些最近分配的对象(第0代)，这与操作系统经典内存换页算法“最近最少使用”算法如出一辙。<br>.Net GC将堆空间按对象的生存期长短分成3代：新分配的对象在第0代(0代空间最大长度通常为256K)，按地址顺序分配，它们通常是一些局部变量；第1代(1代空间最大长度通常为2 MB)是经过0代垃圾收集后仍然驻留在内存中的对象，它们通常是一些如表单，按钮等对象；第2代是经历过几次垃圾收集后仍然驻留在内存中的对象，它们通常是一些应用程序对象。<br>当内存吃紧时(例如0代对象充满)，GC便被调入执行引擎——也就是CLR——开始对第0代的空间进行标记与压缩工作、回收工作，这通常小于1毫秒。如果回收后内存依然吃紧，那么GC会继续回收第1代(回收操作通常小于10毫秒)、第2代，当然GC有时并不是按照第0、1、2代的顺序收集垃圾的，这取决于运行时的情况，或是手动调用GC.Collect(i)指定回收的代。当对第2代回收后任然无法获得足够的内存，那么系统就会抛出OutOfMemoryException异常。</p>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>. NET提供了三种释放资源的方式：Dispose，Close，析构函数(也就是Finalize方法)<br>什么是托管资源，非托管资源：托管资源是由CLR全权负责的资源，CLR不负责的资源位非托管资源。<br>GC回收垃圾需要两次轮询，第一次调用析构函数，第二次才是内存回收（如果没有析构，则只需一次内存回收）<br>推荐一下：<a target="_blank" rel="noopener" href="https://kb.cnblogs.com/page/504684/">可视化垃圾回收算法</a></p>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><h4 id="什么是反射"><a href="#什么是反射" class="headerlink" title="什么是反射"></a>什么是反射</h4><p>是.NET Framework 的功能，并不是C#语言特有的功能。<br>简单理解：给我一个对象，我能在不用new操作符的情况下，也不知道是什么静态类型的情况下，创建一个同类型的对象，还能访问这个对象的各个成员。<br>注意：<br>这相当于进一步解耦（如果用new操作符，意味着类型依赖）<br>反射是托管语言（C#，Java）和原生语言（C，C++）的最大区别之一<br>单元测试、依赖注入、泛型编程都是基于反射机制的<br>一般情况下，我们在使用反射时并不能感觉到，因为大多数我们使用的都是封装好的反射</p>
+<h4 id="使用情况"><a href="#使用情况" class="headerlink" title="使用情况"></a>使用情况</h4><p>很多时候程序的逻辑并不是在写的时候就能确定，有时需要用户交互时才确定，此时程序已经属于运行状态（Dynamic，动态）。<br>如果要程序员在静态（static）编写时，去枚举用户可能做的操作，会让程序变得十分臃肿，可读性、可维护性都很烂，并且枚举用户可能做的操作这件事是很难实现的。<br>这是我们需要的这种：以不变应万变的能力，就是反射机制。<br>简单的说反射是为了方便动态地运行时加载。</p>
+<h2 id="关于-Net-Framework"><a href="#关于-Net-Framework" class="headerlink" title="关于.Net Framework"></a>关于.Net Framework</h2><h4 id="公共语言运行时-CLR"><a href="#公共语言运行时-CLR" class="headerlink" title="公共语言运行时 CLR"></a>公共语言运行时 CLR</h4><p>CLR（Common Language Runtime）是一个运行时环境，保证应用和底层操作系统之间必要的分离，是.NET Framework的主要执行引擎，是可由面向CLR的多种编程语言使用的“运行时”。<br>CLR的核心功能（内存管理、程序集加载、安全性、异常处理和线程同步等）由面向CLR的所有语言使用。</p>
+<h4 id="IL代码-（托管代码）"><a href="#IL代码-（托管代码）" class="headerlink" title="IL代码 （托管代码）"></a>IL代码 （托管代码）</h4><p>本地代码编译器是面向特定CPU架构的代码。<br>而每个面向CLR的编译器生成的都是IL代码 （中间语言代码 ）。IL代码有时称为托管代码，因为CLR要管理它的执行。<br>这提供了平台移植性。</p>
+<h4 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h4><p>IL代码由面向CLR的编译器产生，但它并不是编译器产生的提供给运行时仅有的东西。编译器同样产生有关原始代码的元数据。它提供给CLR关于代码更多的东西，例如：各种类型的定义、各种类型成员的签名以及其他数据。基本上，元数据是类型库、注册表内容和其它用于COM的信息。尽管如此，元数据还是直接和执行代码合并在一起，并不处在 隔离的位置。<br>简单地说，元数据是整个microsoft .net framework开发平台的关键，它实现了编程语言、类型和对象的无缝集成。</p>
+<h4 id="程序集"><a href="#程序集" class="headerlink" title="程序集"></a>程序集</h4><p>程序集（assembly）是一个抽象的概念。<br>首先，他是一个或多个模块/资源文件的逻辑性分组。其次，程序集是重用、安全性以及版本控制的最小单元。取决于你对编译器或者工具的选择，即可以生成单文件程序集，也可以生成多文件程序集。在CLR的世界中，程序集相当于一个“组件”。利用“程序集”这个概念性的东西，可以将一组文件当成一个单独的实体来对待。<br>对于一个可重用的、可保护的、可版本控制的组件，程序集把它的逻辑表示和物理表示分开。具体如何将代码和资源划分到不同的文件中，完全取决于个人。程序集的模块中，还包含与引用的程序集有关的信息。这些信息使程序集能够自描述（self-describing）。换句话说，CLR能够判断出为了执行程序集中代码，程序集的直接依赖对象（immediate dependency）是什么。<br>托管程序集同时包含元数据和IL。IL是与CPU无关的机器语言，是Microsoft在请教了外面的几个商业及学术性语言/编译器的作者之后，费劲心思开发出来的。IL比大多数CPU机器语言都要高级。IL能访问和操作对象类型，并提供了指令来创建和初始化对象，调用对象上的虚方法以及直接操作数据元素。甚至可以提供抛出和捕捉异常的指令来实现错误处理。可将IL视为一种面向对象的机器语言。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] Unity3D高级编程: 主程手记 陆泽西<br>[2] CLR via C#(第4版)<br>[3] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/352725048">内存管理与CG优化 -曾志伟</a></p>
 
       
 
@@ -467,11 +489,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">设计</a>
+                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -479,7 +505,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
             
             <div class="clearfix"></div>
