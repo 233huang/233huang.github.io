@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Unity UGUI分析 | 武哥的博客</title>
+  <title>Unity UGUI基础 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="基础知识UGUI是Unity自带的，一套成熟的UI系统，UGUI所有的UI组件都要作为Canvas的子物体而存在。 Canvas（画布）：渲染顺序：和层次结构中的显示顺序相同，也可由相机的深度、Layer级别决定（需要在子物体上单独添加Canvas组件） 渲染方式：屏幕空间、相机空间和世界空间。 交互方面：Canvas使用EventSystem对象来帮助消息传递系统。 Canvas Scaler（">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity UGUI分析">
+<meta property="og:title" content="Unity UGUI基础">
 <meta property="og:url" content="http://example.com/2022/05/23/Unity-UGUI%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="武哥的博客">
 <meta property="og:description" content="基础知识UGUI是Unity自带的，一套成熟的UI系统，UGUI所有的UI组件都要作为Canvas的子物体而存在。 Canvas（画布）：渲染顺序：和层次结构中的显示顺序相同，也可由相机的深度、Layer级别决定（需要在子物体上单独添加Canvas组件） 渲染方式：屏幕空间、相机空间和世界空间。 交互方面：Canvas使用EventSystem对象来帮助消息传递系统。 Canvas Scaler（">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-23T13:46:55.000Z">
-<meta property="article:modified_time" content="2022-06-08T13:55:02.274Z">
+<meta property="article:modified_time" content="2022-06-11T09:09:54.636Z">
 <meta property="article:author" content="iamsb">
 <meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
@@ -162,7 +162,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Unity UGUI分析
+      Unity UGUI基础
     </h1>
   
 
@@ -216,37 +216,6 @@
 <h2 id="UGUI运作机制"><a href="#UGUI运作机制" class="headerlink" title="UGUI运作机制"></a>UGUI运作机制</h2><p>UGUI是在<strong>3D网格下建立起来的UI系统</strong>，它的每个可显示的元素都是以3D模型网格的形式来构建起来的。<strong>当UI被实例化时，UGUI首先要做的事就是构建网格</strong>。</p>
 <p>也就是说当<strong>Unity3D制作一个图元，或者一个按钮，或者一个背景时，都会先构建一个方形网格，再将图片放入网格中。可以理解为制造了一个3D模型，用一个网格绑定一个材质球，材质球里存放了要显示的图片。</strong></p>
 <p>UGUI在这方面做了优化，它将一部分相同类型的图片都集合起来合成一个张图，然后将拥有相同图片相同shader的材质球合并成一个材质球，并且把分散开的模型网格也一起合并了，这样就生成了几个大网格和几个材质球，以及少许整张的图集。节省了很多材质球，图片，网格的渲染，UI的效率更高了很多，游戏在进行时才会顺畅。这就是我们常常在UI制作中提到的图集的概念，它把很多张图片都放置在一张图集上，导致大量的图片和材质球不需要重复的绘制，只要改变模型顶点上的uv即可。</p>
-<h2 id="UGUI源码分析"><a href="#UGUI源码分析" class="headerlink" title="UGUI源码分析"></a>UGUI源码分析</h2><p> UGUI 内核源码分成了三块：<strong>输入事件，动画，核心渲染</strong>。</p>
-<h4 id="动画部分"><a href="#动画部分" class="headerlink" title="动画部分"></a>动画部分</h4><p>这部分相对比较简单，用了<strong>tween补间动画</strong>的形式，对颜色，位置，大小做了渐进的操作。<strong>tween的原理是在启动一个协程，在协程里对元素的属性渐进式的修改</strong>，除了修改属性数值，tween还有多种曲线可以选择，比如内番曲线，外翻曲线等，一个数值从起点到终点的过程可以由曲线来控制。</p>
-<h4 id="输入事件模块"><a href="#输入事件模块" class="headerlink" title="输入事件模块"></a>输入事件模块</h4><p>UGUI 把输入事件模块有四部分，<strong>事件数据模块，输入事件捕获模块，射线碰撞检测模块，事件逻辑处理及回调模块</strong>。</p>
-<ul>
-<li><p>事件数据模块<br>功能：存储事件发生时的位置、和事件对应的物体、事件的位移大小、触发事件的输入信息等等等，总之就是获取数据，提供数据服务。<br>继承关系：<br>BaseEventData -&gt; PointerEventData，AxisEventData<br>AxisEventData<br>这些类存储了大部分事件系统逻辑需要的数据，比如鼠标按下的位置，左键还是右键，拖拽的距离，点击到的物体等等。</p>
-</li>
-<li><p>输入事件捕获模块<br>功能：处理鼠标、键盘、手柄等外设输入的逻辑。<br>继承关系：<br>BaseInputModule -&gt; PointerInputModule -&gt; StandaloneInputModule，TouchInputModule</p>
-</li>
-<li><p>射线碰撞检测模块<br>功能：射线碰撞检测模块主要工作是从摄像机的屏幕位置上，做射线碰撞检测并获取碰撞结果，把结果返回给事件处理逻辑类，交由事件处理模块处理事件。</p>
-</li>
-</ul>
-<p>分类：2D射线碰撞检测，3D射线碰撞检测，GraphicRaycaster图形射线碰撞检测。</p>
-<p>分析：<br>2D、3D射线碰撞测试相对比较简单，用射线的形式做碰撞测试，2D碰撞结果里预留了2D的层级次序以便在后面的碰撞结果排序时，以这个层级次序为依据做排序，而3D的碰撞检测结果则是以距离大小为依据排序的。</p>
-<p>GraphicRaycaster 为UGUI元素点位检测的类，它被放在了 Core 渲染块里。它主要针对 ScreenSpaceOverlay 模式下输入点位做碰撞检测，因为这个模式下的检测并不依赖于射线碰撞，而是遍历所有可点击的UGUI元素来检测比较，从而判断是该响应哪个UI元素。因此 GraphicRaycaster 是比较特殊的。</p>
-<p>GraphicRaycaster 对每个可以点击的元素(raycastTarget是否为true，并且 depth 不为-1，为可点击元素)进行计算，判断点位是否落在该元素上。再通过 depth 变量排序，判断最先该落在哪个元素上，从而确定哪个元素响应输入事件。</p>
-<p>所有检测碰撞的结果数据结构为 RaycastResult 类，它承载了所有碰撞检测结果的依据，包括了距离，世界点位，屏幕点位，2D层级次序，碰撞物体等，为后面事件处理提供了数据上的依据。</p>
-<ul>
-<li>事件逻辑处理模块<br>事件主逻辑处理模块，主要的逻辑都集中在 EventSystem 类中。</li>
-</ul>
-<p>EventInterfaces，EventTrigger，EventTriggerType 定义了事件回调函数，ExecuteEvents 编写了所有执行事件的回调接口。</p>
-<p>EventSystem基本上就是处理由射线碰撞检测后引起的各类事件。判断事件是否成立，成立则发起事件回调，不成立则继续轮询检查，等待事件的发生。</p>
-<p>EventSystem 是事件处理模块中唯一继承 MonoBehavior 并且有在 Update 帧循环中做轮询的。也就是说，所有UI事件的发生都是通过 EventSystem 轮询监测到的并且实施的。EventSystem 通过调用输入事件检测模块，检测碰撞模块，来形成自己主逻辑部分。因此可以说 EventSystem 是主逻辑类，是整个事件模块的入口。</p>
-<h4 id="工具类"><a href="#工具类" class="headerlink" title="工具类"></a>工具类</h4><ul>
-<li><p>Culling 裁剪模块<br>Culling 里是对模型裁剪的工具类，大都用在了Mask遮罩上，<strong>只有Mask才有裁剪的需求。</strong></p>
-</li>
-<li><p>Layout 布局模块<br>Layout 主要功能都是布局方面，包括横向布局，纵向布局，方格布局等等，除了处理布局内容以外，则是调整自适应功能。</p>
-</li>
-<li><p>VertexModifiers 顶点修改器<br>主要用于修改图形网格，尤其是在UI元素网格生成完毕后对其进行二次修改。<br>其中 BaseMeshEffect 是抽象基类，提供所有在修改UI元素网格时所需的变量和接口。<br>IMeshModifier 是关键接口，在下面的渲染核心类 Graphic 中会获取所有拥有这个接口的组件，然后依次遍历并调用 ModifyMesh 接口来触发改变图像网格的效果。</p>
-</li>
-</ul>
-<h4 id="核心渲染类"><a href="#核心渲染类" class="headerlink" title="核心渲染类"></a>核心渲染类</h4><p>常用的UI组件大部分都直接或间接继承自 Graphic 类。<br>Graphic源代码中，</p>
 
       
 
@@ -508,15 +477,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">设计</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -152,6 +152,174 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-游戏AI" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/">游戏AI</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/" class="archive-article-date">
+  	<time datetime="2022-05-23T12:36:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是游戏AI？"><a href="#什么是游戏AI？" class="headerlink" title="什么是游戏AI？"></a>什么是游戏AI？</h2><p>游戏AI主要关注实体根据当前条件采取的行动，在传统人工智能文献中被称为“智能代理”，智能代理需要观察环境，做出决策，采取行动，即“感知/思考/行动”循环：</p>
+<ul>
+<li>感知：代理侦测或被告知环境中可能影响其行为的事物。</li>
+<li>思考：代理决定采取的应对措施。</li>
+<li>行动：代理将先前的决定付诸行动。<br>游戏世界中的AI，大部分情况是模拟，“感知”部分会较为简单。</li>
+</ul>
+<h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>即通过感知获得到的输入，经过各个节点进行判断，最后来到叶节点，找到要做出的最终决定。<br>简单来说，可能就是一堆if。<br>这方面最好做到代码和数据分离，给策划或设计师提供好工具。</p>
+<h2 id="有限状态机（FSM）"><a href="#有限状态机（FSM）" class="headerlink" title="有限状态机（FSM）"></a>有限状态机（FSM）</h2><p>某个AI代理目前可能处在几种可能的状态当中，它可以从一个状态转移到另一个状态，而且这些状态的数量有限。<br>可以用状态转换表或者绘制图表来表示各个状态到其它状态的转换条件。<br>可以对有限状态机进行分层优化，即分层有限状态机（HFSM），对状态进行分组，归类出主状态和子状态，避免过多的重复“思考”。<br>缺陷：</p>
+<ul>
+<li>状态类之间互相依赖很严重，耦合度高。（后期可能会变成一张乱成线团的大网）</li>
+<li>结构不灵活，可扩展性不高，难以脚本化/可视化。</li>
+</ul>
+<h2 id="行为树（BT）"><a href="#行为树（BT）" class="headerlink" title="行为树（BT）"></a>行为树（BT）</h2><p>行为树是一棵用于控制 AI 决策行为的、包含了层级节点的树结构。<br>行为树的开发过程是高度可迭代的。<br>一个理想的系统应该将决策过程和状态本身分离，这样你只需要在一个位置进行更改，仍然能够正确转换状态，这就是行为树的应用场景。</p>
+        
+          <a class="article-more-a" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">AI</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-游戏编程模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/23/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F/">游戏编程模式</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/23/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2022-05-23T03:09:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="架构设计的目的"><a href="#架构设计的目的" class="headerlink" title="架构设计的目的"></a>架构设计的目的</h2><p>简单来说，就是避免屎山代码，解耦合，优化性能，提高开发效率。</p>
+<h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><ul>
+<li><p>定义<br>将请求封装成对象，运行用不同的请求、队列或日志将客户端参数化，同时支持请求操作的撤销与恢复。<br>命令相对于对函数的一种延伸和封装，使其具备良好的扩展性。</p>
+</li>
+<li><p>实现<br>简单来说，就是定义一个ICommond接口，将行为（方法）封装起来并实现该接口，把对象执行方法这一行为拆分成：获取输入，根据输入创建/获取命令，然后执行命令。（获取命令的方法可以采用工厂模式）<br>将方法单独拎出来作为命令，不仅实现抽象化和解耦合，还可以扩展实现命令流/命令队列，可以运用在AI方面。<br>如何做到撤销？可以用备忘录模式，将命令执行前的数据记录下来，撤销就是简单的回滚。<br>重做也是相同的原理。</p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/05/23/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-计算机图形学" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -688,15 +856,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">设计</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
               </li>
              
               <li class="article-tag-list-item">

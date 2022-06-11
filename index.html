@@ -152,6 +152,166 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Unity-IL2CPP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/11/Unity-IL2CPP/">Unity IL2CPP</a>
+    </h1>
+  
+
+        
+        <a href="/2022/06/11/Unity-IL2CPP/" class="archive-article-date">
+  	<time datetime="2022-06-11T08:23:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="什么是IL2CPP？"><a href="#什么是IL2CPP？" class="headerlink" title="什么是IL2CPP？"></a>什么是IL2CPP？</h1><p>在Unity4.6.1 p5以后版本中，在PlayerSettings—&gt;Other Settings—&gt;Scripting Backend有mono和il2cpp两个选项，它们是<strong>Unity脚本后处理（Scripting Backend）</strong>的两种方式。</p>
+<p><strong>IL2CPP</strong>是Unity一种新的<strong>脚本后处理（Scripting Backend）</strong>方式，针对.Net平台编译输出的<strong>IL（中间语言）</strong>进行处理。</p>
+<h1 id="IL2CPP的组成"><a href="#IL2CPP的组成" class="headerlink" title="IL2CPP的组成"></a>IL2CPP的组成</h1><ol>
+<li>AOT静态编译编译器（il2cpp.exe）</li>
+<li>运行时库（libil2cpp）
+        
+          <a class="article-more-a" href="/2022/06/11/Unity-IL2CPP/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/11/Unity-IL2CPP/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Unity-UGUI源码阅读与解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/">Unity UGUI源码阅读与解析</a>
+    </h1>
+  
+
+        
+        <a href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2022-06-11T08:15:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>UGUI整体分成<strong>UnityEngine.EventSystems</strong>和<strong>UnityEngine.UI</strong>。</p>
+<h1 id="渲染系统"><a href="#渲染系统" class="headerlink" title="渲染系统"></a>渲染系统</h1><ol>
+<li>UI组件在渲染时，需要三部分数据：<strong>顶点，材质，Layout布局</strong>。</li>
+<li>UI组件在OnEnable或自身数据更改时，会把自己放入<strong>CanvasUpdateRegistry</strong>的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的数据（顶点、UV等）。<br><img src="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/UGUI%E6%B8%B2%E6%9F%93.png" alt="UGUI渲染"></li>
+</ol>
+        
+          <a class="article-more-a" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-设计模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -442,12 +602,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="什么是热更新？"><a href="#什么是热更新？" class="headerlink" title="什么是热更新？"></a>什么是热更新？</h2><p>热更新是指当游戏出现bug，或者需要修改，增加某个功能的时候，我们不需要重新下载安装包，就可以更新游戏内容。<br>游戏上线后，遇见bug或者需要更新内容，一般有两种做法：<br>第一种：重新打包上传一个新的安装包到应用商店（需要审核，费时间），然后让玩家下载新的客户端安装包（需要重新下载，费流量）<br>第二种：在游戏内更新，游戏启动时去下载需要更新的资源，即<strong>热更新</strong></p>
-<h2 id="实现热更新方案"><a href="#实现热更新方案" class="headerlink" title="实现热更新方案"></a>实现热更新方案</h2><ul>
+        <h1 id="什么是热更新？"><a href="#什么是热更新？" class="headerlink" title="什么是热更新？"></a>什么是热更新？</h1><p>热更新是指当游戏出现bug，或者需要修改，增加某个功能的时候，我们不需要重新下载安装包，就可以更新游戏内容。<br>游戏上线后，遇见bug或者需要更新内容，一般有两种做法：<br>第一种：重新打包上传一个新的安装包到应用商店（需要审核，费时间），然后让玩家下载新的客户端安装包（需要重新下载，费流量）<br>第二种：在游戏内更新，游戏启动时去下载需要更新的资源，即<strong>热更新</strong>。</p>
+<h1 id="实现热更新方案"><a href="#实现热更新方案" class="headerlink" title="实现热更新方案"></a>实现热更新方案</h1><ul>
 <li>ILRuntime：<br>是掌趣科技开发的开源unity热更框架，这个框架打破了C#不能做ios平台热更的规则(在ios平台中是以ILRuntime+dll的方式解释执行，当然是在IL2CPP下)。有了这个框架，开发者只需使用C#这一种语言即可，而不用在C#和lua之间切换。</li>
 <li>xLua：<br>腾讯开发的Lua插件，目前比较主流。</li>
 </ul>
-<h2 id="热更新原理"><a href="#热更新原理" class="headerlink" title="热更新原理"></a>热更新原理</h2><p>客户端和服务器上分别保存有配置文件，程序启动时使用http协议下载服务器的配置文件来与客户端的进行逐行对比，通过比较（比如md5码）找出不同的资源和脚本代码（需要更新的部分），把对应的资源和代码下载下来并将本地的覆盖。</p>
+<h1 id="热更新原理"><a href="#热更新原理" class="headerlink" title="热更新原理"></a>热更新原理</h1><p>客户端和服务器上分别保存有配置文件，程序启动时使用http协议下载服务器的配置文件来与客户端的进行逐行对比，通过比较（比如md5码）找出不同的资源和脚本代码（需要更新的部分），把对应的资源和代码下载下来并将本地的覆盖。</p>
         
           <a class="article-more-a" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/#more">more >></a>
         
@@ -752,7 +912,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/23/Unity-UGUI%E5%88%86%E6%9E%90/">Unity UGUI分析</a>
+      <a class="article-title" href="/2022/05/23/Unity-UGUI%E5%88%86%E6%9E%90/">Unity UGUI基础</a>
     </h1>
   
 
@@ -806,174 +966,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2022/05/23/Unity-UGUI%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-游戏AI" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/">游戏AI</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/" class="archive-article-date">
-  	<time datetime="2022-05-23T12:36:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是游戏AI？"><a href="#什么是游戏AI？" class="headerlink" title="什么是游戏AI？"></a>什么是游戏AI？</h2><p>游戏AI主要关注实体根据当前条件采取的行动，在传统人工智能文献中被称为“智能代理”，智能代理需要观察环境，做出决策，采取行动，即“感知/思考/行动”循环：</p>
-<ul>
-<li>感知：代理侦测或被告知环境中可能影响其行为的事物。</li>
-<li>思考：代理决定采取的应对措施。</li>
-<li>行动：代理将先前的决定付诸行动。<br>游戏世界中的AI，大部分情况是模拟，“感知”部分会较为简单。</li>
-</ul>
-<h2 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h2><p>即通过感知获得到的输入，经过各个节点进行判断，最后来到叶节点，找到要做出的最终决定。<br>简单来说，可能就是一堆if。<br>这方面最好做到代码和数据分离，给策划或设计师提供好工具。</p>
-<h2 id="有限状态机（FSM）"><a href="#有限状态机（FSM）" class="headerlink" title="有限状态机（FSM）"></a>有限状态机（FSM）</h2><p>某个AI代理目前可能处在几种可能的状态当中，它可以从一个状态转移到另一个状态，而且这些状态的数量有限。<br>可以用状态转换表或者绘制图表来表示各个状态到其它状态的转换条件。<br>可以对有限状态机进行分层优化，即分层有限状态机（HFSM），对状态进行分组，归类出主状态和子状态，避免过多的重复“思考”。<br>缺陷：</p>
-<ul>
-<li>状态类之间互相依赖很严重，耦合度高。（后期可能会变成一张乱成线团的大网）</li>
-<li>结构不灵活，可扩展性不高，难以脚本化/可视化。</li>
-</ul>
-<h2 id="行为树（BT）"><a href="#行为树（BT）" class="headerlink" title="行为树（BT）"></a>行为树（BT）</h2><p>行为树是一棵用于控制 AI 决策行为的、包含了层级节点的树结构。<br>行为树的开发过程是高度可迭代的。<br>一个理想的系统应该将决策过程和状态本身分离，这样你只需要在一个位置进行更改，仍然能够正确转换状态，这就是行为树的应用场景。</p>
-        
-          <a class="article-more-a" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">AI</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-游戏编程模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/23/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F/">游戏编程模式</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/23/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2022-05-23T03:09:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="架构设计的目的"><a href="#架构设计的目的" class="headerlink" title="架构设计的目的"></a>架构设计的目的</h2><p>简单来说，就是避免屎山代码，解耦合，优化性能，提高开发效率。</p>
-<h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><ul>
-<li><p>定义<br>将请求封装成对象，运行用不同的请求、队列或日志将客户端参数化，同时支持请求操作的撤销与恢复。<br>命令相对于对函数的一种延伸和封装，使其具备良好的扩展性。</p>
-</li>
-<li><p>实现<br>简单来说，就是定义一个ICommond接口，将行为（方法）封装起来并实现该接口，把对象执行方法这一行为拆分成：获取输入，根据输入创建/获取命令，然后执行命令。（获取命令的方法可以采用工厂模式）<br>将方法单独拎出来作为命令，不仅实现抽象化和解耦合，还可以扩展实现命令流/命令队列，可以运用在AI方面。<br>如何做到撤销？可以用备忘录模式，将命令执行前的数据记录下来，撤销就是简单的回滚。<br>重做也是相同的原理。</p>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/23/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
         </p>
       
 
@@ -1120,15 +1112,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">设计</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">图形学</a>
               </li>
              
               <li class="article-tag-list-item">

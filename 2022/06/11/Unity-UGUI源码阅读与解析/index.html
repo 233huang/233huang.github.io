@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2022 | 武哥的博客</title>
+  <title>Unity UGUI源码阅读与解析 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="武哥的博客">
-<meta property="og:url" content="http://example.com/archives/2022/page/2/index.html">
+  <meta name="description" content="概述UGUI整体分成UnityEngine.EventSystems和UnityEngine.UI。 渲染系统 UI组件在渲染时，需要三部分数据：顶点，材质，Layout布局。 UI组件在OnEnable或自身数据更改时，会把自己放入CanvasUpdateRegistry的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity UGUI源码阅读与解析">
+<meta property="og:url" content="http://example.com/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/index.html">
 <meta property="og:site_name" content="武哥的博客">
+<meta property="og:description" content="概述UGUI整体分成UnityEngine.EventSystems和UnityEngine.UI。 渲染系统 UI组件在渲染时，需要三部分数据：顶点，材质，Layout布局。 UI组件在OnEnable或自身数据更改时，会把自己放入CanvasUpdateRegistry的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/UGUI%E6%B8%B2%E6%9F%93.png">
+<meta property="article:published_time" content="2022-06-11T08:15:27.000Z">
+<meta property="article:modified_time" content="2022-06-11T09:19:00.642Z">
 <meta property="article:author" content="iamsb">
+<meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/UGUI%E6%B8%B2%E6%9F%93.png">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
   
@@ -150,150 +157,117 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Unity-UGUI源码阅读与解析" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Unity UGUI源码阅读与解析
+    </h1>
+  
+
+        
+        <a href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2022-06-11T08:15:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>UGUI整体分成<strong>UnityEngine.EventSystems</strong>和<strong>UnityEngine.UI</strong>。</p>
+<h1 id="渲染系统"><a href="#渲染系统" class="headerlink" title="渲染系统"></a>渲染系统</h1><ol>
+<li>UI组件在渲染时，需要三部分数据：<strong>顶点，材质，Layout布局</strong>。</li>
+<li>UI组件在OnEnable或自身数据更改时，会把自己放入<strong>CanvasUpdateRegistry</strong>的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的数据（顶点、UV等）。<br><img src="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/UGUI%E6%B8%B2%E6%9F%93.png" alt="UGUI渲染"></li>
+</ol>
+<span id="more"></span>
+
+<h4 id="UI组件的渲染"><a href="#UI组件的渲染" class="headerlink" title="UI组件的渲染"></a>UI组件的渲染</h4><ol>
+<li>UI组件在渲染时，需要三部分数据：<strong>顶点，材质，Layout布局</strong>。</li>
+<li>UI组件在OnEnable或自身数据更改时，会把自己放入<strong>CanvasUpdateRegistry</strong>的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的数据（顶点、UV等）。</li>
+</ol>
+<h4 id="CanvasUpdateRegistry"><a href="#CanvasUpdateRegistry" class="headerlink" title="CanvasUpdateRegistry"></a>CanvasUpdateRegistry</h4><ol>
+<li>在这个类中，执行画布刷新注册事件。</li>
+<li>在Canvas更新时会调用<strong>将要刷新界面的委托–willRenderCanvases</strong>。</li>
+<li>willRenderCanvases委托注册了一个PerformUpdate方法，遍历缓存列表，进行Rebuild更新。</li>
+</ol>
+<h4 id="Graphic"><a href="#Graphic" class="headerlink" title="Graphic"></a>Graphic</h4><ul>
+<li><p>渲染部分<br>  在<strong>OnEnable</strong>中，执行了<strong>SerAllDirty()<strong>方法，更新自身的</strong>顶点，材质，Layout布局</strong>。<br>  Vertices更新：在**DoMeshGeneration()和DoLegacyMeshGeneration()**方法中，根据自己的情况生成Mesh。<br>  <strong>DoMeshGeneration调用了OnPopulateMesh，将VertexHelper数据实装到Mesh，然后赋值给CanvasRenderer进行渲染</strong>。</p>
+</li>
+<li><p>流程<br>CanvasUpdateRegistry -&gt; Graphic -&gt; Rebuild -&gt; DoMeshGeneration -&gt; OnPopulateMesh</p>
+</li>
+</ul>
+<h4 id="Image"><a href="#Image" class="headerlink" title="Image"></a>Image</h4><ul>
+<li>继承关系</li>
+</ul>
+<p><strong>MaskableGraphic</strong>，ISerializationCallbackReceiver，ILayoutElement，ICanvasRaycastFilter</p>
+<ul>
+<li>MaskableGraphic<br>MaskableGraphic主要是对Graphic基类中的几个成员对象进行重写。</li>
+</ul>
+<ol>
+<li>mainTexture属性：主要负责提供贴图</li>
+<li>material属性：主要提供材质</li>
+<li><strong>OnPopulateMesh函数</strong>：主要提供顶点以及UV信息（也就是Mesh信息）</li>
+</ol>
+<ul>
+<li>OnPopulateMesh函数<br>主要针对<strong>VertexHelper</strong>这么一个存放渲染Mesh信息的容器，对其填充，修改顶点等数据。<br>扩展：使用UGUI的时候其实每一个Image都是使用了PopulateMesh来进行Mesh生成之后进行合批，我们其实可以将这一步直接放在这一个函数里面，由我们自己来重写就可以了，这样我们就不需要调用N次PopulateMesh之后进行合并，而只需要调用一次自己编写的PopulateMesh函数就可以了。<br>此函数的调用时机：<strong>DoMeshGeneration调用了OnPopulateMesh</strong>。</li>
+</ul>
+<h1 id="事件系统"><a href="#事件系统" class="headerlink" title="事件系统"></a>事件系统</h1><h3 id="EventSystem"><a href="#EventSystem" class="headerlink" title="EventSystem"></a>EventSystem</h3><p>处理和管理点击、触摸、键盘输入等事件。<br>持有输入模块、每帧更新输入模块、执行输入模块的Process（每帧处理）方法。<br>每个场景只需要一个EventSystem。</p>
+<h5 id="方法解析"><a href="#方法解析" class="headerlink" title="方法解析"></a>方法解析</h5><ol>
+<li>UpdateModule()：在输入模块Enable、本身的Update中调用。该方法获取输入模块，并放入m_SystemInputModules缓存中。</li>
+<li>TickModules()：在Update中调用。遍历m_SystemInputModules缓存中输入模块并更新它们的状态，同时找到第一个启用并且在当前平台可用的输入模块，将该模块赋值给m_CurrentInputModule字段。</li>
+<li>Update()：每帧执行，调用TickModules()、m_CurrentInputModule的Process()；</li>
+<li>RaycastAll()：被输入模块调用。遍历所有的GraphicRaycaster对象并执行其Raycast方法，然后得到raycastResults列表（该列表中第一个就是被点击的对象）。</li>
+</ol>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>EventSystem的主要功能就是持有输入模块，更新输入模块，驱动整个事件系统的运行。</p>
+<h3 id="StandaloneInputModule"><a href="#StandaloneInputModule" class="headerlink" title="StandaloneInputModule"></a>StandaloneInputModule</h3><p>生成和处理各种<strong>EventData</strong>，判断输入状态，调用<strong>ExecuteEvents</strong>执行注册的各种输入事件。</p>
+<h5 id="方法解析-1"><a href="#方法解析-1" class="headerlink" title="方法解析"></a>方法解析</h5><ol>
+<li>Process()：由EventSystem每帧调用，驱动整个输入系统。生成输入数据，调用射线检测，调用排序，判断操作模式（点击，拖拽等），调用操作模式对应的注册方法等。</li>
+<li>SendUpdateEventToSelectedObject()：对currentSlectedGameObject执行其OnUpdateSelected方法，更新选中的物体。</li>
+<li>ProcessTouchEvents()：处理触摸事件</li>
+</ol>
+<h3 id="GraphicRaycaster"><a href="#GraphicRaycaster" class="headerlink" title="GraphicRaycaster"></a>GraphicRaycaster</h3><p>获取哪些UI物体会被点击到。</p>
+<h3 id="EventInterface"><a href="#EventInterface" class="headerlink" title="EventInterface"></a>EventInterface</h3><p>各种操作事件的接口。</p>
+<h5 id="Button"><a href="#Button" class="headerlink" title="Button"></a>Button</h5><ul>
+<li>继承关系</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Button</span> : <span class="title">Selectable</span>, <span class="title">IPointerClickHandler</span>, <span class="title">ISubmitHandler</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li></li>
+</ul>
+<h1 id="动画部分"><a href="#动画部分" class="headerlink" title="动画部分"></a>动画部分</h1><p>这部分相对比较简单，用了<strong>tween补间动画</strong>的形式，对颜色，位置，大小做了渐进的操作。<br><strong>tween的原理是在启动一个协程，在协程里对元素的属性渐进式的修改</strong>，除了修改属性数值，tween还有多种曲线可以选择，比如内番曲线，外翻曲线等，一个数值从起点到终点的过程可以由曲线来控制。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/" class="archive-article-date">
-  	<time datetime="2022-05-23T12:36:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/">游戏AI</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">AI</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/23/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2022-05-23T03:09:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/23/%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F/">游戏编程模式</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="archive-article-date">
-  	<time datetime="2022-05-23T02:25:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/23/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">计算机图形学</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">图形学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2022-05-22T09:38:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/22/Unity%20%E5%8D%8F%E7%A8%8B%E5%88%86%E6%9E%90/">Unity 协程分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -305,125 +279,114 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/22/hello-world/" class="archive-article-date">
-  	<time datetime="2022-05-22T09:36:37.692Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-22</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2022/06/11/Unity-IL2CPP/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Unity IL2CPP
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">设计模式</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/22/hello-world/">Hello World</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/20/%E7%AE%97%E6%B3%95-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E6%9D%BF/" class="archive-article-date">
-  	<time datetime="2022-05-20T08:36:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/20/%E7%AE%97%E6%B3%95-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E4%B8%8E%E6%A8%A1%E6%9D%BF/">算法 解题思路与模板</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/18/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/" class="archive-article-date">
-  	<time datetime="2022-05-18T04:22:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/18/C-%E4%B8%80%E4%BA%9B%E8%A6%81%E7%82%B9/">C# 一些要点</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">C#</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2022/">&amp;laquo; Prev</a><a class="page-number" href="/archives/2022/">1</a><span class="page-number current">2</span>
-    </nav>
   
 
 
@@ -447,8 +410,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
