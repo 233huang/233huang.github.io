@@ -6,20 +6,27 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>设计模式 | 武哥的博客</title>
+  <title>Unity Shader入门 初级 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="面向对象的设计原则单一职责原则：一个类，最好只做一件事，只有一个引起它的变化。开放-封闭原则：对于扩展是开放的，对于更改是封闭的。里氏替换原则：子类必须能够替换其基类。依赖倒置原则：设计应该依赖于抽象而不是具体实现。接口隔离原则：使用多个小的专门的接口而不要使用一个大的总接口。  游戏开发中常用设计模式">
+  <meta name="description" content="渲染流水线什么是渲染流水线 工作任务：由一个三维场景出发，生成（渲染）一张二维图像。  渲染流程的三个阶段应用阶段（Application Stage）  由CPU负责，开发者拥有绝对的控制权 任务：   准备好场景数据 为了提高渲染性能，做粗粒度剔除，将不可见的物体剔除出去 设置渲染状态，包括不限于材质、纹理、shader   最后，输出渲染图元，即渲染所需要的几何信息。（可以是点、线、三角面）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式">
-<meta property="og:url" content="http://example.com/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:title" content="Unity Shader入门 初级">
+<meta property="og:url" content="http://example.com/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/index.html">
 <meta property="og:site_name" content="武哥的博客">
-<meta property="og:description" content="面向对象的设计原则单一职责原则：一个类，最好只做一件事，只有一个引起它的变化。开放-封闭原则：对于扩展是开放的，对于更改是封闭的。里氏替换原则：子类必须能够替换其基类。依赖倒置原则：设计应该依赖于抽象而不是具体实现。接口隔离原则：使用多个小的专门的接口而不要使用一个大的总接口。  游戏开发中常用设计模式">
+<meta property="og:description" content="渲染流水线什么是渲染流水线 工作任务：由一个三维场景出发，生成（渲染）一张二维图像。  渲染流程的三个阶段应用阶段（Application Stage）  由CPU负责，开发者拥有绝对的控制权 任务：   准备好场景数据 为了提高渲染性能，做粗粒度剔除，将不可见的物体剔除出去 设置渲染状态，包括不限于材质、纹理、shader   最后，输出渲染图元，即渲染所需要的几何信息。（可以是点、线、三角面）">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-06-06T13:01:28.000Z">
-<meta property="article:modified_time" content="2022-06-06T13:38:54.547Z">
+<meta property="og:image" content="http://example.com/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/NDC.png">
+<meta property="og:image" content="http://example.com/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E5%85%89%E7%85%A7.png">
+<meta property="og:image" content="http://example.com/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E7%8E%AF%E5%A2%83%E5%85%89.png">
+<meta property="og:image" content="http://example.com/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E5%85%B0%E4%BC%AF%E7%89%B9.png">
+<meta property="og:image" content="http://example.com/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E9%AB%98%E5%85%89Phong.jpg">
+<meta property="og:image" content="http://example.com/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E9%AB%98%E5%85%89Blinn-Phong.jpg">
+<meta property="article:published_time" content="2022-05-31T02:59:35.000Z">
+<meta property="article:modified_time" content="2022-06-12T08:46:13.743Z">
 <meta property="article:author" content="iamsb">
-<meta property="article:tag" content="设计模式">
+<meta property="article:tag" content="Shader">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/NDC.png">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
   
@@ -155,30 +162,168 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-设计模式" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Unity-Shader入门-初级" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      设计模式
+      Unity Shader入门 初级
     </h1>
   
 
         
-        <a href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2022-06-06T13:01:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-06</time>
+        <a href="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/" class="archive-article-date">
+  	<time datetime="2022-05-31T02:59:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-31</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="面向对象的设计原则"><a href="#面向对象的设计原则" class="headerlink" title="面向对象的设计原则"></a>面向对象的设计原则</h2><p>单一职责原则：一个类，最好只做一件事，只有一个引起它的变化。<br>开放-封闭原则：对于扩展是开放的，对于更改是封闭的。<br>里氏替换原则：子类必须能够替换其基类。<br>依赖倒置原则：设计应该依赖于抽象而不是具体实现。<br>接口隔离原则：使用多个小的专门的接口而不要使用一个大的总接口。 </p>
-<h2 id="游戏开发中常用设计模式"><a href="#游戏开发中常用设计模式" class="headerlink" title="游戏开发中常用设计模式"></a>游戏开发中常用设计模式</h2><span id="more"></span>
-<h4 id="观察者模式（Observer模式）："><a href="#观察者模式（Observer模式）：" class="headerlink" title="观察者模式（Observer模式）："></a>观察者模式（Observer模式）：</h4><p>简述：指多个对象间存在一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。<br>优点：<br>    降低了目标与观察者之间的耦合关系，两者之间是抽象耦合关系。符合依赖倒置原则。<br>    目标与观察者之间建立了一套触发机制。<br>缺点<br>    目标与观察者之间的依赖关系并没有完全解除，而且有可能出现循环引用。<br>    当观察者对象很多时，通知的发布会花费很多时间，影响程序的效率。<br>实现：<br>    C#为例，以委托为基础，实现订阅发布机制，然后…再修修改改就差不多了。</p>
-<h4 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h4><p>简述：这种模式涉及到一个单一的类，该类负责创建自己的对象，同时确保只有单个对象被创建。这个类提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象。<br>优点：<br>    在内存里只有一个实例，减少了内存的开销，尤其是频繁的创建和销毁实例。<br>    避免对资源的多重占用。<br>缺点：<br>    没有接口，不能继承，与单一职责原则冲突，一个类应该只关心内部逻辑，而不关心外面怎么样来实例化。<br>实现：<br>    懒汉式（要注意线程问题）<br>    饿汉式</p>
+        <h1 id="渲染流水线"><a href="#渲染流水线" class="headerlink" title="渲染流水线"></a>渲染流水线</h1><h3 id="什么是渲染流水线"><a href="#什么是渲染流水线" class="headerlink" title="什么是渲染流水线"></a>什么是渲染流水线</h3><ul>
+<li>工作任务：由一个三维场景出发，生成（渲染）一张二维图像。</li>
+</ul>
+<h3 id="渲染流程的三个阶段"><a href="#渲染流程的三个阶段" class="headerlink" title="渲染流程的三个阶段"></a>渲染流程的三个阶段</h3><p>应用阶段（Application Stage）</p>
+<ul>
+<li>由CPU负责，开发者拥有绝对的控制权</li>
+<li>任务：</li>
+</ul>
+<ol>
+<li>准备好场景数据</li>
+<li>为了提高渲染性能，做粗粒度剔除，将不可见的物体剔除出去</li>
+<li>设置渲染状态，包括不限于材质、纹理、shader</li>
+</ol>
+<ul>
+<li>最后，输出渲染图元，即渲染所需要的几何信息。（可以是点、线、三角面）</li>
+</ul>
+<p>几何阶段（Geometry Stage）</p>
+<ul>
+<li>由GPU负责</li>
+<li>和每个渲染图元打交道，进行逐顶点、逐多边形的操作</li>
+<li>顶点坐标 ==&gt; 屏幕空间</li>
+<li>输出屏幕空间的二维顶点坐标，及对应的深度值，着色等相关信息</li>
+</ul>
+<p>光栅化阶段（Rasterizer Stage）</p>
+<ul>
+<li>由GPU负责</li>
+<li>决定每个渲染图元中的哪些像素应该被绘制</li>
+<li>对上一阶段得到的逐顶点数据进行插值运算，在进行逐像素处理</li>
+<li>生成屏幕上的像素，渲染出最终的图像</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="CPU和GPU之间的通信"><a href="#CPU和GPU之间的通信" class="headerlink" title="CPU和GPU之间的通信"></a>CPU和GPU之间的通信</h3><p>应用阶段可以分为三个小阶段：</p>
+<ol>
+<li><p>把数据加载到显存中。<br>（硬盘 –&gt; 内存 –&gt; 显存）<br>数据加载到显存后，RAM中的数据就可以移除了，但有些情况需要保留，比如要访问网格数据进行碰撞检测。</p>
+</li>
+<li><p>设置渲染状态<br>定义场景中的网格是如何被渲染的，使用什么着色器，用什么光源、材质。</p>
+</li>
+<li><p>调用Draw Call<br>CPU调用渲染命令，告知GPU开始渲染。<br>DrawCall就是CPU调用图像编程接口，命令GPU进行渲染的操作。<br>通常造成DrawCall性能问题的是CPU而不是GPU。</p>
+</li>
+</ol>
+<h3 id="GPU流水线"><a href="#GPU流水线" class="headerlink" title="GPU流水线"></a>GPU流水线</h3><p>GPU渲染的过程就是GPU流水线，在几何阶段和光栅化阶段，开发者没有绝对的控制权。<br>GPU的渲染流水线接受顶点数据作为输入，传递给顶点着色器。</p>
+<p><strong>几何阶段：</strong></p>
+<h5 id="顶点着色器"><a href="#顶点着色器" class="headerlink" title="顶点着色器"></a>顶点着色器</h5><p>完全可编程，通常用于实现顶点的空间变换，顶点等功能。<br>单位是顶点，从CPU传递过来的顶点都会调用一次顶点着色器。<br>着色器不能创建/销毁任何顶点，也无法得到顶点与顶点之间的关系。</p>
+<ul>
+<li>坐标变换<br>可以改变顶点的位置，模拟水面，布料。<br>把顶点坐标从模型空间转换到齐次裁剪空间（MVP矩阵），再由硬件做透视除法后，得到归一化的设备坐标（NDC）。<br><img src="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/NDC.png" alt="NDC"></li>
+</ul>
+<h5 id="曲面细分着色器"><a href="#曲面细分着色器" class="headerlink" title="曲面细分着色器"></a>曲面细分着色器</h5><p>用于细分图元</p>
+<h5 id="几何着色器"><a href="#几何着色器" class="headerlink" title="几何着色器"></a>几何着色器</h5><p>逐图元的着色操作</p>
+<h5 id="裁剪"><a href="#裁剪" class="headerlink" title="裁剪"></a>裁剪</h5><p>剔除不在摄像机范围内的顶点</p>
+<h5 id="屏幕映射"><a href="#屏幕映射" class="headerlink" title="屏幕映射"></a>屏幕映射</h5><p>将每个图元的坐标转换到屏幕坐标系（视口变换）</p>
+<p><strong>光栅化阶段：</strong></p>
+<h5 id="三角形设置，三角形遍历"><a href="#三角形设置，三角形遍历" class="headerlink" title="三角形设置，三角形遍历"></a>三角形设置，三角形遍历</h5><p>固定函数阶段。</p>
+<ul>
+<li>三角形设置：计算每个图元覆盖了哪些像素，以及为这些像素计算它们的颜色。</li>
+<li>三角形遍历：检查每个像素是否被三角形网格覆盖，任何生成片元。</li>
+</ul>
+<h5 id="片元着色器"><a href="#片元着色器" class="headerlink" title="片元着色器"></a>片元着色器</h5><p>实现逐片元的着色操作，是非常重要的可编程着色器阶段。<br>输入是上一个阶段对顶点信息插值得到的结果，根据片元信息，计算该片元的输出颜色。<br>在这个阶段，可以做纹理采样等很多重要的渲染技术。</p>
+<h5 id="逐片元操作"><a href="#逐片元操作" class="headerlink" title="逐片元操作"></a>逐片元操作</h5><ul>
+<li><p>决定每个片元的可见性，涉及到各种测试工作，如深度测试、模板测试。</p>
+</li>
+<li><p>通过测试后，将片元的颜色和存储在颜色缓冲区的颜色进行合并，或者说混合。</p>
+</li>
+<li><p>模板测试（即颜色缓冲，深度缓冲）：<br>读取模板缓冲区中该片元位置的模板值，任何进行比较。<br>通常用于限制渲染的区域，高级用法则是渲染阴影、轮廓渲染等</p>
+</li>
+<li><p>深度测试：<br>将该片元的深度值和深度缓冲区的深度值进行比较，进行遮挡剔除，透明效果。<br>可以决定是否进行深度写入，将该片元的深度值覆盖原有的深度值<br>在Unity中，深度测试是在片元着色器之前，减少性能损耗，但有时也会出现操作上的冲突。</p>
+</li>
+<li><p>合并<br>对颜色信息进行处理，因为颜色缓冲往往已经有了上次渲染之后的结果，是要覆盖还是其它效果？<br>不透明物体：关闭混合<br>半透明：开启混合<br>需要一个混合函数，</p>
+</li>
+</ul>
+<h5 id="显示到屏幕"><a href="#显示到屏幕" class="headerlink" title="显示到屏幕"></a>显示到屏幕</h5><p>屏幕显示的时颜色缓冲区中的颜色值，GPU会用双重缓冲的策略，对场景的渲染发送在后置缓冲中，GPU会交换前置缓冲区和后置缓冲区中的内容。</p>
+<h3 id="OpenGL-DirectX"><a href="#OpenGL-DirectX" class="headerlink" title="OpenGL/DirectX"></a>OpenGL/DirectX</h3><p>图像应用编程接口，是上层应用程序和底层GPU的沟通桥梁。<br>HSLS、GLSL、CG则是着色器编程语言。</p>
+<h1 id="Unity-Shader基础"><a href="#Unity-Shader基础" class="headerlink" title="Unity Shader基础"></a>Unity Shader基础</h1><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Unity中，需要Material材质和Shader配合。<br>ShaderLab：对普通的Shader进行抽象，再封装一层。</p>
+<h3 id="顶点着色器的输入参数"><a href="#顶点着色器的输入参数" class="headerlink" title="顶点着色器的输入参数"></a>顶点着色器的输入参数</h3><p>可以定义一个结构体，用来定义顶点着色器的输入，注意语义。<br>这些输入的数据，由使用该材质的<strong>Mesh Render组件</strong>提供。</p>
+<h3 id="内置文件与变量"><a href="#内置文件与变量" class="headerlink" title="内置文件与变量"></a>内置文件与变量</h3><p>可以用#include指令将内置的包含文件包含进来。<br>在Unity应用程序中找到CGIncludes文件夹，里面包含了所有的内置包含文件。<br>这里列举几个常用的：</p>
+<ol>
+<li>UnityCGcginc：包含了最常使用的帮助函数、宏和结构体等</li>
+<li>UnityShaderVariables.cginc：会被自动包含进来，包括各种内置的全局变量，如MVP矩阵</li>
+<li>Lighting.cginc：包含各种内置的光照模型，如果用的是Surface Shader，则会自动包含进来</li>
+<li>HLSLSupport.cginc：在编译Unity Shader时，会被自动包含进来，声明了许多跨平台的宏和定义</li>
+</ol>
+<h3 id="Unity支持的语义"><a href="#Unity支持的语义" class="headerlink" title="Unity支持的语义"></a>Unity支持的语义</h3><p>应用阶段–&gt;顶点着色器：</p>
+<ul>
+<li>POSITION:模型空间中的顶点位置，通常是float4类型</li>
+<li>NORMAL:顶点法线，通常是float3类型</li>
+<li>TANGENT:顶点切线，通常是float4类型</li>
+<li>TEXCOORDn:顶点的纹理坐标，0表示第一组，以此类推，通常是float2或float4类型</li>
+<li>COLOR:顶点颜色，通常是fixed4或float4类型</li>
+</ul>
+<p>顶点着色器–&gt;片元着色器：</p>
+<ul>
+<li>SV_POSITION：裁剪空间中的顶点坐标</li>
+<li>COLOR0/1：通常用于输出第一/二组顶点颜色</li>
+<li>TEXCOORD0~TEXCOORD7:通常用于输出纹理坐标</li>
+</ul>
+<p>片元着色器–&gt;Unity</p>
+<ul>
+<li>SV_Target:输出值将会存储到渲染目标</li>
+</ul>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><ul>
+<li>使用假彩色图像</li>
+<li>用Visual Studio进行调试</li>
+</ul>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>不同的Shader Target，不同的着色器阶段，可使用的临时寄存器和指令数目都是不同的。</p>
+<h1 id="数学基础"><a href="#数学基础" class="headerlink" title="数学基础"></a>数学基础</h1><p>略 </p>
+<h1 id="基础光照"><a href="#基础光照" class="headerlink" title="基础光照"></a>基础光照</h1><h3 id="标准光照模型"><a href="#标准光照模型" class="headerlink" title="标准光照模型"></a>标准光照模型</h3><p>标准光照模型只关心直接光照<br><img src="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E5%85%89%E7%85%A7.png" alt="光照"></p>
+<h5 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h5><p>物体可以被间接光照照亮，环境光用来模拟间接光照，通常是一个全局变量<br><img src="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E7%8E%AF%E5%A2%83%E5%85%89.png" alt="环境光"></p>
+<h5 id="自发光"><a href="#自发光" class="headerlink" title="自发光"></a>自发光</h5><p>用材质本身的自发光颜色</p>
+<h5 id="漫反射"><a href="#漫反射" class="headerlink" title="漫反射"></a>漫反射</h5><p>兰伯特定律：反射光线的强度与表面的法线和光源之间的夹角的余弦值成正比。<br><img src="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E5%85%B0%E4%BC%AF%E7%89%B9.png" alt="兰伯特"></p>
+<h5 id="高光反射"><a href="#高光反射" class="headerlink" title="高光反射"></a>高光反射</h5><p>Phong模型，Blinn-Phong模型（无法表示涅尔反射和各向异性）<br><img src="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E9%AB%98%E5%85%89Phong.jpg" alt="高光Phong"><br><img src="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/%E9%AB%98%E5%85%89Blinn-Phong.jpg" alt="高光Blinn-Phong"></p>
+<h5 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Unlit/MyShader6_4&quot;</span><br><span class="line">&#123;</span><br><span class="line">    Properties</span><br><span class="line">    &#123;</span><br><span class="line">        //漫反射的颜色,可以理解为材质，物体吸收了光，反射出什么颜色</span><br><span class="line">        _Diffuse(&quot;Diffuse&quot;, Color) = (1,1,1,1)</span><br><span class="line">        //高光反射的颜色,可以理解为材质，物体吸收了光，反射出什么颜色</span><br><span class="line">        _Specular(&quot;Diffuse&quot;, Color) = (1,1,1,1)</span><br><span class="line">        //控制高光区域的大小，可以理解为Phong模型的一个系数</span><br><span class="line">        _Gloss(&quot;Gloss&quot;, Range(8.0, 256)) = 20</span><br><span class="line">    &#125;</span><br><span class="line">    SubShader</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        Pass</span><br><span class="line">        &#123;</span><br><span class="line">            //逐顶点的前向渲染</span><br><span class="line">            Tags &#123;&quot;LightMode&quot; = &quot;ForwardBase&quot;&#125;</span><br><span class="line">            CGPROGRAM</span><br><span class="line">            #pragma vertex vert</span><br><span class="line">            #pragma fragment frag</span><br><span class="line">            // make fog work</span><br><span class="line">            #pragma multi_compile_fog</span><br><span class="line">            //引入这个库才能正确使用内置的光照变量</span><br><span class="line">            #include &quot;Lighting.cginc&quot;</span><br><span class="line"></span><br><span class="line">            struct appdata</span><br><span class="line">            &#123;</span><br><span class="line">                float4 vertex : POSITION;</span><br><span class="line">                float3 normal : NORMAL;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            struct v2f</span><br><span class="line">            &#123;</span><br><span class="line">                float4 pos : SV_POSITION;</span><br><span class="line">                fixed3 worldNormal : COLOR;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            fixed4 _Diffuse;</span><br><span class="line">            fixed4 _Specular;</span><br><span class="line">            float _Gloss;</span><br><span class="line"></span><br><span class="line">            v2f vert (appdata v)</span><br><span class="line">            &#123;</span><br><span class="line">                v2f o;</span><br><span class="line">                //模型空间到裁剪空间</span><br><span class="line">                o.pos = UnityObjectToClipPos(v.vertex);</span><br><span class="line">                //世界坐标下的法线，逆矩阵+转置矩阵</span><br><span class="line">                o.worldNormal = normalize(mul(v.normal, (float3x3)unity_WorldToObject));</span><br><span class="line"></span><br><span class="line">                return o;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            fixed4 frag (v2f i) : SV_Target</span><br><span class="line">            &#123;</span><br><span class="line">                fixed3 worldNormal = i.worldNormal;</span><br><span class="line">                //世界空间下指向光源的平行光方向</span><br><span class="line">                fixed3 worldLight = normalize(_WorldSpaceLightPos0.xyz);</span><br><span class="line">                //兰伯特经验模型</span><br><span class="line">                fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * saturate(dot(worldNormal, worldLight));</span><br><span class="line">                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;</span><br><span class="line">                fixed3 color = ambient + diffuse;</span><br><span class="line"></span><br><span class="line">                //高光反射模型</span><br><span class="line">                //反射方向</span><br><span class="line">                fixed3 reflectDir = normalize(reflect(-worldLight, worldNormal));</span><br><span class="line">                //视角方向</span><br><span class="line">                fixed3 viewDir = normalize(_WorldSpaceLightPos0.xyz - mul(unity_ObjectToWorld, i.pos).xyz);</span><br><span class="line">                fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow( saturate(dot(reflectDir, viewDir)), _Gloss);</span><br><span class="line"></span><br><span class="line">                //Blinn-Phong模型</span><br><span class="line">                float3 halfDir = normalize(worldLight + viewDir);</span><br><span class="line">                specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss);</span><br><span class="line"></span><br><span class="line">                // sample the texture</span><br><span class="line">                fixed3 col = ambient + diffuse + specular;</span><br><span class="line">                return fixed4(col, 1.0);</span><br><span class="line">            &#125;</span><br><span class="line">            ENDCG</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    FallBack &quot;Specular&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="基础纹理"><a href="#基础纹理" class="headerlink" title="基础纹理"></a>基础纹理</h1><h3 id="单张纹理"><a href="#单张纹理" class="headerlink" title="单张纹理"></a>单张纹理</h3><p>我们通常会用一张纹理来代替物体的漫反射颜色。<br>除了在Properties语义块添加一个纹理属性以外，还需要为纹理类型的属性声明一个float4类型的变量，来表示缩放和平移值。</p>
+<h3 id="凹凸映射"><a href="#凹凸映射" class="headerlink" title="凹凸映射"></a>凹凸映射</h3><p>原理是用一张纹理来修改模型表面的法线。<br>方法有二：</p>
+<ol>
+<li>高度纹理：存储高度值，表示模型表面局部的海拔高度，需要由像素的灰度值计算而得，消耗性能</li>
+<li>法线纹理：</li>
+</ol>
+<ul>
+<li>法线方向的分量范围在[-1,1]，而像素的分量范围为[0,1]，所以需要做一个映射</li>
+<li>一般采用模型顶点的切线空间在存储法线，对于模型的每个顶点，都有属于它的切线空间，</li>
+</ul>
+<h3 id="渐变纹理"><a href="#渐变纹理" class="headerlink" title="渐变纹理"></a>渐变纹理</h3><p>用渐变纹理来控制漫反射光照</p>
+<h3 id="遮罩纹理"><a href="#遮罩纹理" class="headerlink" title="遮罩纹理"></a>遮罩纹理</h3><p>遮罩纹理允许我们保护某些范围，让它们免于修改。<br>流程：通过采样得到遮罩纹理的纹素值，然后用其中某个通道的值来与某种表面属性进行相乘，这样，当该通道的值为0时，可以保护表面不受该属性的影响。</p>
+<h1 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h1><p>要在实时渲染中实现透明效果，通常会在渲染模型时控制它的透明通道（Alpha Channel）<br>当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值以外，还有另一个属性–透明度。（1为完全不透明）<br>两种方法来实现透明效果：</p>
+<ul>
+<li>透明度测试：无法得到真正的半透明效果，有深度写入，要么完全透明，要么完全不透明。</li>
+<li>透明度混合：当前片元的透明度作为混合因子，与已经存储在颜色缓冲的颜色值进行混合，得到新的颜色。</li>
+</ul>
+<h3 id="渲染顺序"><a href="#渲染顺序" class="headerlink" title="渲染顺序"></a>渲染顺序</h3><p>在使用深度缓冲的情况下，可以不用担心不透明物体的渲染顺序，但是要实现透明效果，就需要使用透明度混合，同时关闭深度写入。<br>渲染引擎一般会先对物体进行排序，再渲染，常用的方法是：</p>
+<ol>
+<li>先渲染所以不透明物体，并开启它们的深度测试和深度写入</li>
+<li>再将半透明物体按它们的远近进行排序，然后按顺序依次渲染，开启深度测试，关闭深度写入</li>
+</ol>
+<h3 id="UnityShader的渲染顺序"><a href="#UnityShader的渲染顺序" class="headerlink" title="UnityShader的渲染顺序"></a>UnityShader的渲染顺序</h3><p>Queue标签决定模型归属于哪个渲染队列。</p>
+<h3 id="透明度测试"><a href="#透明度测试" class="headerlink" title="透明度测试"></a>透明度测试</h3><p>简单粗暴，透明度低于某个值就直接剔除掉。<br>无法得到真正的半透明效果，有深度写入，要么完全透明，要么完全不透明。</p>
+<h3 id="透明度混合"><a href="#透明度混合" class="headerlink" title="透明度混合"></a>透明度混合</h3><p>真正的实现半透明效果<br>当前片元的透明度作为混合因子，与已经存储在颜色缓冲的颜色值进行混合，得到新的颜色。</p>
+<h3 id="双面渲染"><a href="#双面渲染" class="headerlink" title="双面渲染"></a>双面渲染</h3><p>一个物体如果透明能透过它看见其他物体，那也能透过它看到自身的结构，但是由于性能优化， 看不见的一面默认不渲染。<br>需要看见自己需要开启双面渲染，使用Cull命令。<br>Cull Back | Front | Off<br>分别表示提出背面，正面，关闭剔除。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[1] [Unity-shader入门精要-冯乐乐]</p>
 
       
 
@@ -213,7 +358,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Shader</a>
         		</li>
       		
 		</ul>
@@ -269,7 +414,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -283,18 +428,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Unity UGUI源码阅读与解析
+          设计模式
         
       </div>
     </a>
   
   
-    <a href="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Unity Shader入门 初级</div>
+    <a href="/2022/05/27/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">网络编程</div>
       <i class="icon-circle-right"></i>
     </a>
   
