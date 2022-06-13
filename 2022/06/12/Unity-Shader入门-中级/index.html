@@ -15,17 +15,17 @@
 <meta property="og:site_name" content="武哥的博客">
 <meta property="og:description" content="更复杂的光照渲染路径在Unity里，渲染路径决定了光照是如何应用到Unity Shader中的，因此需要为每一个Pass指定它使用的渲染路径。（LightMode）设置了渲染路径，就可以让Unity给你提供对应的光照属性。Unity支持的渲染路径：  前向渲染路径 延迟渲染路径（有新版） 顶点照明渲染路径（被抛弃）  大多数情况下，一个项目只使用一种渲染路径，可以在项目设置中设置。相机也可以设置渲">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84.png">
-<meta property="og:image" content="http://example.com/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93%E7%9A%84%E4%B8%A4%E7%A7%8DPass.png">
-<meta property="og:image" content="http://example.com/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F.png">
-<meta property="og:image" content="http://example.com/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0.png">
-<meta property="og:image" content="http://example.com/%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE.png">
+<meta property="og:image" content="http://example.com/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84.png">
+<meta property="og:image" content="http://example.com/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93%E7%9A%84%E4%B8%A4%E7%A7%8DPass.png">
+<meta property="og:image" content="http://example.com/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F.png">
+<meta property="og:image" content="http://example.com/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0.png">
+<meta property="og:image" content="http://example.com/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE.png">
 <meta property="article:published_time" content="2022-06-12T08:24:30.000Z">
 <meta property="article:modified_time" content="2022-06-12T09:27:41.035Z">
 <meta property="article:author" content="iamsb">
 <meta property="article:tag" content="Shader">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84.png">
+<meta name="twitter:image" content="http://example.com/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84.png">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
   
@@ -187,7 +187,7 @@
 <li>延迟渲染路径（有新版）</li>
 <li>顶点照明渲染路径（被抛弃）</li>
 </ol>
-<p>大多数情况下，一个项目只使用一种渲染路径，可以在项目设置中设置。<br>相机也可以设置渲染路径。<br><img src="/%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84.png" alt="渲染路径"></p>
+<p>大多数情况下，一个项目只使用一种渲染路径，可以在项目设置中设置。<br>相机也可以设置渲染路径。<br><img src="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84.png" alt="渲染路径"></p>
 <span id="more"></span>
 
 <h5 id="前向渲染路径"><a href="#前向渲染路径" class="headerlink" title="前向渲染路径"></a>前向渲染路径</h5><p>前向渲染路径是传统、最常用的一种渲染路径。<br>每进行一次完整的前向渲染，需要渲染该对象的渲染图元，并计算两个缓冲区的信息，即<strong>颜色缓冲区</strong>和<strong>深度缓冲区</strong>，然后将结果放入<strong>帧缓冲</strong>。<br><strong>对于每个逐像素光源，都需要进行一次完整的渲染流程</strong>，如果在多个逐像素光源的影响区域内，则要执行多个Pass，然后在帧缓冲中把这些光照结果混合起来得到最终的颜色值，<strong>如果逐像素光源过多，会导致需要执行的Pass过多</strong>，因此，渲染引擎通常会限制每个物体的逐像素光照的数目。</p>
@@ -197,14 +197,14 @@
 <li>渲染模式设置为Not Important的光源，会按逐顶点或SH处理</li>
 <li>渲染模式设置为Important的光源，会按照逐像素处理<br>前向渲染的两种Pass：</li>
 <li>Base Pass</li>
-<li>Additional Pass<br><img src="/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93%E7%9A%84%E4%B8%A4%E7%A7%8DPass.png" alt="前向渲染的两种Pass"></li>
+<li>Additional Pass<br><img src="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93%E7%9A%84%E4%B8%A4%E7%A7%8DPass.png" alt="前向渲染的两种Pass"></li>
 </ul>
 <p>其它：</p>
 <ol>
 <li>在Base Pass和Additional Pass中，需要使用#pragma multi_compile_fwdbase和#pragmamulti_complie_fwdadd才能得到一些正确的光照变量。</li>
 <li>如果场景中包含多个平行光，Unity会寻找最亮的平行光传递给Base Pass进行逐像素处理，其它平行光按照逐顶点或在Additional Pass中按照逐像素的方式处理。<br>…</li>
 </ol>
-<p>内置的光照变量和函数：<br><img src="/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F.png" alt="前向渲染_内置变量"><br><img src="/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0.png" alt="前向渲染_内置函数"></p>
+<p>内置的光照变量和函数：<br><img src="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F.png" alt="前向渲染_内置变量"><br><img src="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0.png" alt="前向渲染_内置函数"></p>
 <h5 id="顶点照明渲染路径"><a href="#顶点照明渲染路径" class="headerlink" title="顶点照明渲染路径"></a>顶点照明渲染路径</h5><p>该渲染路径对硬件配置要求最少，运算性能最高，但效果最差。<br>它仅仅只是前向渲染的一个子集，该路径选择<strong>已被抛弃</strong>，不做过多解释。</p>
 <h5 id="延迟渲染路径"><a href="#延迟渲染路径" class="headerlink" title="延迟渲染路径"></a>延迟渲染路径</h5><p>前向渲染有个问题，当场景中包含大量实时光源时，性能会急速下降，因为需要计算过多的pass，而且其中有很多重复计算。<br>延迟渲染是一种古老的渲染方法，但是可以解决这个问题，它除了<strong>颜色缓冲</strong>和<strong>深度缓冲</strong>外，还有有个<strong>G缓冲（Geometry-Buffer</strong>）。<br><strong>G缓冲区存储了我们所关系的表面的信息（通常指的是离摄像机最近的表面），如法线、位置、材质</strong></p>
 <p>延迟渲染的原理：<br>延迟渲染包含了两个Pass：<br><strong>第一个Pass中，不进行任何光照计算，仅计算哪些片元时可见的（用深度缓冲实现），然后将该片元的相关信息存储到G缓冲区中</strong>。<br><strong>第二个Pass中，利用G缓冲区的各个片元信息（法线、视角、漫反射系数等），进行真正的光照计算</strong>。<br>延迟渲染的Pass数目通常就是两个，<strong>与场景中包含的光源数目无光，只与屏幕空间的大小有关</strong>。</p>
@@ -215,7 +215,7 @@
 </ol>
 <p>延迟渲染路径的优缺点：<br>优点：<strong>适合场景中光源数目很多的情况</strong>。<br>缺点：<strong>不支持真正的抗锯齿功能，不能处理半透明物体，对显卡有一定要求</strong>。</p>
 <p>其它：<br>第二个Pass计算光照，默认用的是内置的Standard光照模型，可以通过替换掉原有的Internal-DeferredShading.shader文件来更改。</p>
-<p>内置的变量和函数<br><img src="/%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE.png" alt="延迟渲染_内置"></p>
+<p>内置的变量和函数<br><img src="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93_%E5%86%85%E7%BD%AE.png" alt="延迟渲染_内置"></p>
 <h3 id="Unity中的光源"><a href="#Unity中的光源" class="headerlink" title="Unity中的光源"></a>Unity中的光源</h3><p>Unity一共支持4种光源类型：平行光、点光源、聚光灯、面光源（仅在烘培时才可发挥作用）<br>最常使用的光源属性有<strong>位置、方向、颜色、强度及衰减</strong>。</p>
 <h5 id="平行光"><a href="#平行光" class="headerlink" title="平行光"></a>平行光</h5><p>照亮范围无限制，几何属性只有方向，没有位置和衰减。</p>
 <h5 id="点光源"><a href="#点光源" class="headerlink" title="点光源"></a>点光源</h5><p>照亮空间有限，中心强度高，边界最弱，该有的属性都有。</p>
@@ -473,11 +473,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">C#</a>
+                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
+                <a href="javascript:void(0)" class="js-tag color3">C#</a>
               </li>
              
               <li class="article-tag-list-item">
