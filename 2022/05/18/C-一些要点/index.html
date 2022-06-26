@@ -16,7 +16,7 @@
 <meta property="og:description" content="List 实现原理：List内部是用数组实现的，而不是链表，并且当没有给予指定容量时，初始的容量为0，每次容量不够的时候，整个数组的容量都会扩充一倍。 Add：每次增加一个元素的数据，Add接口都会首先检查的是容量还够不够，如果不够则用 EnsureCapacity 来增加容量。 Remove：元素删除的原理其实就是用 Array.Copy 对数组进行覆盖。IndexOf 启用的是 Array.I">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-18T04:22:40.000Z">
-<meta property="article:modified_time" content="2022-06-06T13:38:29.256Z">
+<meta property="article:modified_time" content="2022-06-26T07:59:06.945Z">
 <meta property="article:author" content="iamsb">
 <meta property="article:tag" content="C#">
 <meta name="twitter:card" content="summary">
@@ -183,8 +183,9 @@
 <li>Contains：Contains 接口使用的是线性查找方式比较元素，对数组进行迭代，比较每个元素与参数的实例是否一致，如果一致则返回true，全部比较结束还没有找到，则认为查找失败。</li>
 <li>Enumerator枚举迭代：每次获取迭代器时，Enumerator 每次都是被new出来，如果大量使用迭代器的话，比如foreach就会造成大量的垃圾对象，所以尽量不要用 foreach，因为 List 的 foreach 会增加有新的 Enumerator 实例，最后由GC垃圾回收掉。</li>
 <li>Sort：Array.Sort 使用的是快速排序方式进行排序，从而我们明白了 List 的 Sort 排序的效率为O(nlogn)。</li>
-<li>总结：List 的效率并不高，只是通用性强而已，大部分的算法都使用的是线性复杂度的算法，这种线性算法当遇到规模比较大的计算量级时就会导致CPU的大量损耗。可以提前告知 List 对象最多会有多少元素在里面，这样的话 List 就不会因为空间不够而抛弃原有的数组，去重新申请数组了。<span id="more"></span>
-<h2 id="Dictionary"><a href="#Dictionary" class="headerlink" title="Dictionary"></a>Dictionary</h2></li>
+<li>总结：List 的效率并不高，只是通用性强而已，大部分的算法都使用的是线性复杂度的算法，这种线性算法当遇到规模比较大的计算量级时就会导致CPU的大量损耗。可以提前告知 List 对象最多会有多少元素在里面，这样的话 List 就不会因为空间不够而抛弃原有的数组，去重新申请数组了。<span id="more"></span></li>
+</ul>
+<h2 id="Dictionary"><a href="#Dictionary" class="headerlink" title="Dictionary"></a>Dictionary</h2><ul>
 <li>实现原理：<br>健值对的映射关系通过Hash函数（算法）来实现，但由于不同的key可能映射到相同的value，这种情况称为哈希冲突。<br>解决哈希冲突的方法有：开放定址法、再哈希法、链地址法、建立一个公共溢出区等，Dictionary用的便是拉链法。<br>拉链法的原理：将所有关键字为同义词的结点链接在同一个单链表中。若选定的散列表长度为n，则可将散列表定义为一个由n个头指针组成的指针数 组T[0..n-1]。凡是散列地址为i的结点，均插入到以T[i]为头指针的单链表中。T中各分量的初值均应为空指针。</li>
 <li>总结：从效率上看，同List一样最好在实例化对象时，即 new 时尽量确定大致数量会更加高效，另外用数值方式做Key比用类实例方式作为Key值更加高效率。<br>从内存操作上看，大小以3-&gt;7-&gt;17-&gt;37-&gt;….的速度，每次增加2倍多的顺序进行，删除时，并不缩减内存。</li>
 </ul>
@@ -228,11 +229,79 @@
 <h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><p>. NET提供了三种释放资源的方式：Dispose，Close，析构函数(也就是Finalize方法)<br>什么是托管资源，非托管资源：托管资源是由CLR全权负责的资源，CLR不负责的资源位非托管资源。<br>GC回收垃圾需要两次轮询，第一次调用析构函数，第二次才是内存回收（如果没有析构，则只需一次内存回收）<br>推荐一下：<a target="_blank" rel="noopener" href="https://kb.cnblogs.com/page/504684/">可视化垃圾回收算法</a></p>
 <h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><h4 id="什么是反射"><a href="#什么是反射" class="headerlink" title="什么是反射"></a>什么是反射</h4><p>是.NET Framework 的功能，并不是C#语言特有的功能。<br>简单理解：给我一个对象，我能在不用new操作符的情况下，也不知道是什么静态类型的情况下，创建一个同类型的对象，还能访问这个对象的各个成员。<br>注意：<br>这相当于进一步解耦（如果用new操作符，意味着类型依赖）<br>反射是托管语言（C#，Java）和原生语言（C，C++）的最大区别之一<br>单元测试、依赖注入、泛型编程都是基于反射机制的<br>一般情况下，我们在使用反射时并不能感觉到，因为大多数我们使用的都是封装好的反射</p>
 <h4 id="使用情况"><a href="#使用情况" class="headerlink" title="使用情况"></a>使用情况</h4><p>很多时候程序的逻辑并不是在写的时候就能确定，有时需要用户交互时才确定，此时程序已经属于运行状态（Dynamic，动态）。<br>如果要程序员在静态（static）编写时，去枚举用户可能做的操作，会让程序变得十分臃肿，可读性、可维护性都很烂，并且枚举用户可能做的操作这件事是很难实现的。<br>这是我们需要的这种：以不变应万变的能力，就是反射机制。<br>简单的说反射是为了方便动态地运行时加载。</p>
-<h2 id="关于-Net-Framework"><a href="#关于-Net-Framework" class="headerlink" title="关于.Net Framework"></a>关于.Net Framework</h2><h4 id="公共语言运行时-CLR"><a href="#公共语言运行时-CLR" class="headerlink" title="公共语言运行时 CLR"></a>公共语言运行时 CLR</h4><p>CLR（Common Language Runtime）是一个运行时环境，保证应用和底层操作系统之间必要的分离，是.NET Framework的主要执行引擎，是可由面向CLR的多种编程语言使用的“运行时”。<br>CLR的核心功能（内存管理、程序集加载、安全性、异常处理和线程同步等）由面向CLR的所有语言使用。</p>
+<h2 id="关于-Net-Framework的一些知识点"><a href="#关于-Net-Framework的一些知识点" class="headerlink" title="关于.Net Framework的一些知识点"></a>关于.Net Framework的一些知识点</h2><h4 id="公共语言运行时-CLR"><a href="#公共语言运行时-CLR" class="headerlink" title="公共语言运行时 CLR"></a>公共语言运行时 CLR</h4><p>CLR（Common Language Runtime）是一个运行时环境，保证应用和底层操作系统之间必要的分离，是.NET Framework的主要执行引擎，是可由面向CLR的多种编程语言使用的“运行时”。<br>CLR的核心功能（内存管理、程序集加载、安全性、异常处理和线程同步等）由面向CLR的所有语言使用。</p>
+<p>CLR的结构：</p>
+<ul>
+<li>CLS：公共语言规范，获取各种语言转换成统一的语法规范，是.Net跨语言开发的基础。</li>
+<li>CTS：通用类型系统，将各种语言中的数据类型转换成统一的类型。</li>
+<li>JIT：实时编译器（即时编译器）用于将转换之后的语言编译为二进制语言，交给CPU执行。</li>
+</ul>
 <h4 id="IL代码-（托管代码）"><a href="#IL代码-（托管代码）" class="headerlink" title="IL代码 （托管代码）"></a>IL代码 （托管代码）</h4><p>本地代码编译器是面向特定CPU架构的代码。<br>而每个面向CLR的编译器生成的都是IL代码 （中间语言代码 ）。IL代码有时称为托管代码，因为CLR要管理它的执行。<br>这提供了平台移植性。</p>
+<h4 id="JIT（即时编译器）"><a href="#JIT（即时编译器）" class="headerlink" title="JIT（即时编译器）"></a>JIT（即时编译器）</h4><p>JIT（Just-in-time compilation, JIT）编译器会使用即时编译，对不同架构的机器生成不同的机器码，大部分的代码优化都在这里完成。JIT 只有在运行时才会工作，当生成（Build）项目时，JIT 不会工作。编译器在编译时，会对代码进行检查，对于只调用过一次的代码，不会JIT优化。多次使用的代码（例如for循环)才会进行JIT。<br>通常，程序有两种运行方式：预先编译（AOT）与动态编译。预先编译的程序在执行前全部被翻译为机器码，而动态编译则是一句一句，边运行边翻译。即时编译则混合了这二者，一句句编译源代码，但是会将翻译过的代码缓存起来以降低性能损耗。</p>
+<h4 id="NET的运行机制"><a href="#NET的运行机制" class="headerlink" title=".NET的运行机制"></a>.NET的运行机制</h4><p>各种语言（c#,F#,j#等对应的源程序）-&gt; 经过CLS，CTS第一次编译 -&gt; 统一规范语言（中间语言）MSIL(.EXE,.DLL) -&gt; JIT第二次编译 -&gt; 二进制语言 -&gt; 运行在CPU中。</p>
 <h4 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h4><p>IL代码由面向CLR的编译器产生，但它并不是编译器产生的提供给运行时仅有的东西。编译器同样产生有关原始代码的元数据。它提供给CLR关于代码更多的东西，例如：各种类型的定义、各种类型成员的签名以及其他数据。基本上，元数据是类型库、注册表内容和其它用于COM的信息。尽管如此，元数据还是直接和执行代码合并在一起，并不处在 隔离的位置。<br>简单地说，元数据是整个microsoft .net framework开发平台的关键，它实现了编程语言、类型和对象的无缝集成。</p>
 <h4 id="程序集"><a href="#程序集" class="headerlink" title="程序集"></a>程序集</h4><p>程序集（assembly）是一个抽象的概念。<br>首先，他是一个或多个模块/资源文件的逻辑性分组。其次，程序集是重用、安全性以及版本控制的最小单元。取决于你对编译器或者工具的选择，即可以生成单文件程序集，也可以生成多文件程序集。在CLR的世界中，程序集相当于一个“组件”。利用“程序集”这个概念性的东西，可以将一组文件当成一个单独的实体来对待。<br>对于一个可重用的、可保护的、可版本控制的组件，程序集把它的逻辑表示和物理表示分开。具体如何将代码和资源划分到不同的文件中，完全取决于个人。程序集的模块中，还包含与引用的程序集有关的信息。这些信息使程序集能够自描述（self-describing）。换句话说，CLR能够判断出为了执行程序集中代码，程序集的直接依赖对象（immediate dependency）是什么。<br>托管程序集同时包含元数据和IL。IL是与CPU无关的机器语言，是Microsoft在请教了外面的几个商业及学术性语言/编译器的作者之后，费劲心思开发出来的。IL比大多数CPU机器语言都要高级。IL能访问和操作对象类型，并提供了指令来创建和初始化对象，调用对象上的虚方法以及直接操作数据元素。甚至可以提供抛出和捕捉异常的指令来实现错误处理。可将IL视为一种面向对象的机器语言。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] Unity3D高级编程: 主程手记 陆泽西<br>[2] CLR via C#(第4版)<br>[3] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/352725048">内存管理与CG优化 -曾志伟</a></p>
+<h2 id="《Effective-C-》中提高Unity中C-代码质量的22条准则"><a href="#《Effective-C-》中提高Unity中C-代码质量的22条准则" class="headerlink" title="《Effective C#》中提高Unity中C#代码质量的22条准则"></a>《Effective C#》中提高Unity中C#代码质量的22条准则</h2><p>借鉴于游戏开发领域大神毛星云。</p>
+<h4 id="原则1：尽可能地使用属性，而不是可直接访问的数据成员"><a href="#原则1：尽可能地使用属性，而不是可直接访问的数据成员" class="headerlink" title="原则1：尽可能地使用属性，而不是可直接访问的数据成员"></a>原则1：尽可能地使用属性，而不是可直接访问的数据成员</h4><p><strong>属性（property）</strong>概述：属性允许<strong>将数据成员作为共有接口的一部分暴露出去，同时仍旧提供面向对象环境下所需的封装</strong>。属性这个语言元素可以让你像访问数据成员一样使用，但其<strong>底层依旧是使用方法实现的</strong>。使用属性，可以非常轻松的在get和set代码段中加入检查机制。<br>正因为属性是用方法实现的，所以它拥有方法所拥有的一切语言特性：</p>
+<ul>
+<li>属性增加<strong>多线程</strong>的支持是非常方便的。你可以加强 get 和 set 访问器（accessors）的实现来提供数据访问的同步。</li>
+<li>属性可以被定义为<strong>virtual</strong>。</li>
+<li>可以把属性扩展为<strong>abstract</strong>。</li>
+<li>可以使用<strong>泛型</strong>版本的属性类型。</li>
+<li>属性也可以定义为<strong>接口</strong>。</li>
+<li>在C# 2.0之后，你可以给get和set定义不同的<strong>访问权限</strong>，来更好的控制类成员的可见性。</li>
+<li>为了和多维数组保持一致，我们可以创建<strong>多维索引器</strong>，在不同的维度上使用相同或不同类型。</li>
+</ul>
+<p>无论何时，需要在类型的公有或保护接口中暴露数据，都应该使用属性。如果可以也应该使用索引器来暴露序列或字典。</p>
+<h4 id="原则2：偏向于使用运行时常量而不是编译时常量"><a href="#原则2：偏向于使用运行时常量而不是编译时常量" class="headerlink" title="原则2：偏向于使用运行时常量而不是编译时常量"></a>原则2：偏向于使用运行时常量而不是编译时常量</h4><p>对于常量，C#里有两个不同的版本：<strong>运行时常量（readonly）</strong>和<strong>编译时常量（const）</strong>。<br>应该尽量使用运行时常量，而不是编译器常量。虽然编译器常量略快，但并没有运行时常量那么灵活。应仅仅在那些性能异常敏感，且常量的值在各个版本之间绝对不会变化时，再使用编译时常量。</p>
+<p>编译时常量与运行时常量不同之处表现在于他们的访问方式不同，因为Readonly值是运行时解析的：</p>
+<ul>
+<li>编译时常量（const）的值会被目标代码中的<strong>值直接取代</strong>。</li>
+<li>运行时常量（readonly）的值是在运行时进行求值。引用运行时生成的IL将<strong>引用到readonly变量</strong>，而不是变量的值。</li>
+</ul>
+<p>这个差别就带来了如下规则：</p>
+<ul>
+<li>编译时常量（const）仅能用于<strong>数值和字符串</strong>。</li>
+<li>运行时常量（readonly）可以为<strong>任意类型</strong>。运行时常量必须在构造函数或初始化器中初始化，因为在构造函数执行后不能再被修改。你可以让某个readonly值为一个DataTime结构，而不能指定某个const为DataTIme。</li>
+<li>可以用readonly值保存实例常量，为类的每个实例存放不同的值。而编译时常量就是静态的常量。</li>
+<li>有时候你需要让某个值在<strong>编译时才确定，就最好是使用运行时常量（readonly）</strong>。</li>
+<li>标记版本号的值就应该使用运行时常量，因为它的值会随着每个不同版本的发布而改变。</li>
+<li><strong>const优于readonly的地方仅仅是性能</strong>，使用已知的常量值要比访问readonly值略高一点，不过这其中的效率提升，可以说是微乎其微的。</li>
+</ul>
+<p>综上，在编译器必须得到确定数值时，一定要使用const。例如特性（attribute）的参数和枚举的定义，还有那些在各个版本发布之间不会变化的值。除此之外的所有情况，都应尽量选择更加灵活的readonly常量。</p>
+<h4 id="原则3：推荐使用is或as操作符而不是强制类型转换"><a href="#原则3：推荐使用is或as操作符而不是强制类型转换" class="headerlink" title="原则3：推荐使用is或as操作符而不是强制类型转换"></a>原则3：推荐使用is或as操作符而不是强制类型转换</h4><p>C#中，is和as操作符的用法概括如下：</p>
+<ul>
+<li><strong>is</strong> : 检查一个对象是否兼容于其他指定的类型,并返回一个<strong>Bool值</strong>,永远不会抛出异常。</li>
+<li><strong>as</strong>：作用与强制类型转换是一样,但是永远不会抛出异常,即如果转换不成功,会<strong>返回null</strong>。</li>
+</ul>
+<p>尽可能的使用as操作符，因为相对于强制类型转换来说，as更加安全，也更加高效。<br>as在转换失败时会返回null，在<strong>转换对象是null时也会返回null</strong>，所以使用as进行转换时，只需检查返回的引用是否为null即可。<br>as和is操作符都不会执行任何用户自定义的转换，它们<strong>仅当运行时类型符合目标类型时才能转换成功，也不会在转换时创建新的对象</strong>。<br><strong>as运算符对值类型是无效，此时可以使用is，配合强制类型转换进行转换</strong>。<br><strong>仅当不能使用as进行转换时，才应该使用is操作符，否则is就是多余的</strong>。</p>
+<h4 id="原则4：推荐使用条件属性而不是-if条件编译"><a href="#原则4：推荐使用条件属性而不是-if条件编译" class="headerlink" title="原则4：推荐使用条件属性而不是#if条件编译"></a>原则4：推荐使用条件属性而不是#if条件编译</h4><p>由于#if/#endif很容易被滥用，使得编写的代码难于理解且更难于调试。C#为此提供了一条件特性(Conditional attribute)。<br>使用条件特性可以将函数拆分出来，让其只有在定义了某些环境变量或设置了某个值之后才能编译并成为类的一部分。<strong>Conditional特性最常用的地方就是将一段代码变成调试语句</strong>。</p>
+<p><strong>Conditional特性只可应用在整个方法上，另外，任何一个使用Conditional特性的方法都只能返回void类型</strong>。不能再方法内的代码块上应用Conditional特性。也不可以在有返回值的方法上应用Conditional特性。但应用了Conditional特性的方法可以接受任意数目的引用类型参数。<br><strong>使用Conditional特性生成的IL要比使用#if/#Eendif时更有效率</strong>。同时，将其限制在函数层面上可以更加清晰地将条件性的代码分离出来，以便进一步保证代码的良好结构。</p>
+<h4 id="原则5：理解几个等同性判断之间的关系"><a href="#原则5：理解几个等同性判断之间的关系" class="headerlink" title="原则5：理解几个等同性判断之间的关系"></a>原则5：理解几个等同性判断之间的关系</h4><p>值类型和引用类型的相同判断不必多说。<br>当我们创建自己的类型时（无论是类还是struct），应为类型定义“等同性”的含义。</p>
+<p>C#提供了4种不同的函数来判断两个对象是否“相等”：</p>
+<ul>
+<li><strong>public static bool ReferenceEquals (object left, object right)<strong>：判断两个不同变量的</strong>对象标识（object identity）</strong>是否相等，无论比较的是引用类型还是值类型，该方法判断的依据都是对象标识，而不是对象内容。</li>
+<li><strong>public static bool Equals (object left, object right)<strong>：用于判断两个变量的</strong>运行时类型</strong>是否相等。</li>
+<li>**public virtual bool Equals(object right)**：用于重载</li>
+<li>**public static bool operator ==(MyClass left, MyClass right)**：用于重载</li>
+</ul>
+<p>不应该覆写Object.referenceEquals（）静态方法和Object.Equals（）静态方法，因为它们已经完美的完成了所需要完成的工作，提供了正确的判断，并且该判断与运行时的具体类型无关。**对于值类型，我们应该总是覆写Object.Equals（）实例方法和operatior==( ),以便为其提供效率更高的等同性判断。对于引用类型，仅当你认为相等的含义并非是对象标识相等时，才需要覆写Object.Equals( )实例方法。在覆写Equals( )时也要实现IEquatable<T>**。</p>
+<h4 id="原则6：了解GetHashCode-的一些坑"><a href="#原则6：了解GetHashCode-的一些坑" class="headerlink" title="原则6：了解GetHashCode( )的一些坑"></a>原则6：了解GetHashCode( )的一些坑</h4><p>GetHashCode( )方法在使用时会有不少坑，要谨慎使用。<strong>GetHashCode()函数仅会在一个地方用到，即为基于散列(hash)的集合定义键的散列值时，此类集合包括HashSet<T>和Dictionary&lt;K,V&gt;容器等</strong>。对引用类型来讲，索然可以正常工作，但是效率很低。对值类型来讲，基类中的实现有时甚至不正确。而且，编写的自己GetHashCode( )也不可能既有效率又正确。<br>在.NET中，每个对象都有一个散列码，其值由System.Object.GetHashCode()决定。</p>
+<p>实现自己的GetHashCode( )时，要遵循上述三条原则：</p>
+<ul>
+<li>如果两个对象相等（由operation==定义），那么他们必须生成相同的散列码。否则，这样的散列码将无法用来查找容器中的对象。</li>
+<li>对于任何一个对象A，A.GetHashCode()必须保持不变。</li>
+<li>对于所有的输入，散列函数应该在所有整数中按随机分别生成散列码。这样散列容器才能得到足够的效率提升。</li>
+</ul>
+<h4 id="原则7：理解短小方法的优势"><a href="#原则7：理解短小方法的优势" class="headerlink" title="原则7：理解短小方法的优势"></a>原则7：理解短小方法的优势</h4><p>将C#代码翻译成可执行的机器码需要两个步骤：</p>
+<ul>
+<li><strong>C#编译器将生成IL，并放在程序集中</strong>。</li>
+<li><strong>随后，JIT将根据需要逐一为方法（或是一组方法，如果涉及内联）生成机器码</strong>。</li>
+</ul>
+<p>短小的方法让JIT编译器能够更好地<strong>平摊编译的代价</strong>。短小的方法也更适合<strong>内联</strong>。<br>除了短小之外，简化控制流程也很重要。控制分支越少，JIT编译器也会越容易地找到最适合放在寄存器中的变量。<br>所以，短小方法的优势，并不仅体现在代码的<strong>可读性</strong>上，还关系到程序<strong>运行时的效率</strong>。</p>
+<h4 id="原则8：选择变量初始化而不是赋值语句"><a href="#原则8：选择变量初始化而不是赋值语句" class="headerlink" title="原则8：选择变量初始化而不是赋值语句"></a>原则8：选择变量初始化而不是赋值语句</h4><p>成员初始化器是保证类型中成员均被初始化的最简单的方法——无论调用的是哪一个构造函数。<br><strong>初始化器将在所有构造函数执行之前执行。使用这种语法也就保证了你不会再添加的新的构造函数时遗漏掉重要的初始化代码</strong>。<br>综上，若是所有的构造函数都要将某个成员变量初始化成同一个值，那么应该使用初始化器。</p>
+<h4 id="原则9：正确地初始化静态成员变量"><a href="#原则9：正确地初始化静态成员变量" class="headerlink" title="原则9：正确地初始化静态成员变量"></a>原则9：正确地初始化静态成员变量</h4><p>C#提供了有静态初始化器和静态构造函数来专门用于静态成员变量的初始化。<br>静态构造函数是一个特殊的函数，将在其他所有方法执行之前以及变量或属性被第一次访问之前执行。可以用这个函数来初始化静态变量，实现单例模式或执行类可用之前必须进行的任何操作。<br>和实例初始化一样，也可以使用初始化器语法来替代静态的构造函数。若只是需要为某个静态成员分配空间，那么不妨使用初始化器的语法。而若是要更复杂一些的逻辑来初始化静态成员变量，那么可以使用静态构造函数。<br>使用静态构造函数而不是静态初始化器最常见的理由就是处理异常。在使用静态初始化器时，我们无法自己捕获异常。而在静态构造函数中却可以做到。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] Unity3D高级编程: 主程手记 陆泽西<br>[2] CLR via C#(第4版)<br>[3] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/352725048">内存管理与CG优化 -曾志伟</a><br>[4] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24553860?utm_source=qq&utm_medium=social&utm_oi=1066544805097705472">【《Effective C#》提炼总结】提高Unity中C#代码质量的22条准则 -毛星云</a></p>
 
       
 
@@ -481,15 +550,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">热更新</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">热更新</a>
               </li>
              
               <li class="article-tag-list-item">
