@@ -152,35 +152,29 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Unity-Shader入门-中级" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Unity-Shader-代码模板" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/">Unity Shader入门 中级</a>
+      <a class="article-title" href="/2022/09/03/Unity-Shader-%E4%BB%A3%E7%A0%81%E6%A8%A1%E6%9D%BF/">Unity Shader 代码模板</a>
     </h1>
   
 
         
-        <a href="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/" class="archive-article-date">
-  	<time datetime="2022-06-12T08:24:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
+        <a href="/2022/09/03/Unity-Shader-%E4%BB%A3%E7%A0%81%E6%A8%A1%E6%9D%BF/" class="archive-article-date">
+  	<time datetime="2022-09-03T08:24:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-03</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="更复杂的光照"><a href="#更复杂的光照" class="headerlink" title="更复杂的光照"></a>更复杂的光照</h1><h3 id="渲染路径"><a href="#渲染路径" class="headerlink" title="渲染路径"></a>渲染路径</h3><p>在Unity里，渲染路径决定了光照是如何应用到Unity Shader中的，因此需要为每一个Pass指定它使用的渲染路径。（LightMode）<br>设置了渲染路径，就可以让Unity给你提供对应的光照属性。<br>Unity支持的渲染路径：</p>
-<ol>
-<li>前向渲染路径</li>
-<li>延迟渲染路径（有新版）</li>
-<li>顶点照明渲染路径（被抛弃）</li>
-</ol>
-<p>大多数情况下，一个项目只使用一种渲染路径，可以在项目设置中设置。<br>相机也可以设置渲染路径。<br><img src="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84.png" alt="渲染路径"></p>
+        <h1 id="Shader-Lab"><a href="#Shader-Lab" class="headerlink" title="Shader Lab"></a>Shader Lab</h1><p>在Unity中，所有的Unity Shader都是使用ShaderLab来编写的。<br>Shader Lab是Unity提供编写Unity Shader的一种说明性语言，使用嵌套在花括号内部的语义来描述Unity Shader文件的结构。</p>
         
-          <a class="article-more-a" href="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/#more">more >></a>
+          <a class="article-more-a" href="/2022/09/03/Unity-Shader-%E4%BB%A3%E7%A0%81%E6%A8%A1%E6%9D%BF/#more">more >></a>
         
       
 
@@ -204,7 +198,246 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/06/12/Unity-Shader%E5%85%A5%E9%97%A8-%E4%B8%AD%E7%BA%A7/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/09/03/Unity-Shader-%E4%BB%A3%E7%A0%81%E6%A8%A1%E6%9D%BF/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-C-回忆录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/02/C-%E5%9B%9E%E5%BF%86%E5%BD%95/">C# 回忆录</a>
+    </h1>
+  
+
+        
+        <a href="/2022/09/02/C-%E5%9B%9E%E5%BF%86%E5%BD%95/" class="archive-article-date">
+  	<time datetime="2022-09-02T07:16:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>tmd学的东西杂七杂八的，越来越多，脑子可不是无限大的硬盘，之前用烂的知识过一段时间可能也会手生。<br>为了能够在长时间未使用C#而又需要用到C#的时候能够快速回忆起来，故此做了该笔记。<br>（没错，就是为了应付笔试和面试！）<br>不过C#还真的是易学好懂又贼好用的语言啊…</p>
+        
+          <a class="article-more-a" href="/2022/09/02/C-%E5%9B%9E%E5%BF%86%E5%BD%95/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">C#</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/09/02/C-%E5%9B%9E%E5%BF%86%E5%BD%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-计算机图形学：点乘与叉乘" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%EF%BC%9A%E7%82%B9%E4%B9%98%E4%B8%8E%E5%8F%89%E4%B9%98/">计算机图形学：点乘与叉乘</a>
+    </h1>
+  
+
+        
+        <a href="/2022/09/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%EF%BC%9A%E7%82%B9%E4%B9%98%E4%B8%8E%E5%8F%89%E4%B9%98/" class="archive-article-date">
+  	<time datetime="2022-09-02T06:25:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h3 id="向量"><a href="#向量" class="headerlink" title="向量"></a>向量</h3><p>向量是用来表示既有大小又有方向的量，不过向量在空间中没有具体的位置，通常用一个加粗的小写字母来表示一个向量，或者不加粗顶上带有小箭头的小写字母来表示。<br><img src="/2022/09/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%EF%BC%9A%E7%82%B9%E4%B9%98%E4%B8%8E%E5%8F%89%E4%B9%98/%E5%90%91%E9%87%8F.png" alt="向量"></p>
+<ul>
+<li>由 A 点指向 B 点的一个有向线段，称为向量 a</li>
+<li>a = B - A 用有向线段的结束点B减去起始点A就得到这个向量 a</li>
+<li>|a| 表示向量a的长度</li>
+<li>â 表示单位向量：â = a / |a|
+        
+          <a class="article-more-a" href="/2022/09/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%EF%BC%9A%E7%82%B9%E4%B9%98%E4%B8%8E%E5%8F%89%E4%B9%98/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">图形学</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/09/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%EF%BC%9A%E7%82%B9%E4%B9%98%E4%B8%8E%E5%8F%89%E4%B9%98/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Unity-Shader理论（二）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/">Unity Shader 理论（二）</a>
+    </h1>
+  
+
+        
+        <a href="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2022-06-12T08:24:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="更复杂的光照"><a href="#更复杂的光照" class="headerlink" title="更复杂的光照"></a>更复杂的光照</h1><h2 id="渲染路径"><a href="#渲染路径" class="headerlink" title="渲染路径"></a>渲染路径</h2><p>在Unity里，渲染路径决定了光照是如何应用到Unity Shader中的，因此需要为每一个Pass指定它使用的渲染路径。（LightMode）<br>设置了渲染路径，就可以让Unity给你提供对应的光照属性。<br>Unity支持的渲染路径：</p>
+<ol>
+<li>前向渲染路径</li>
+<li>延迟渲染路径（有新版）</li>
+<li>顶点照明渲染路径（被抛弃）</li>
+</ol>
+<p>大多数情况下，一个项目只使用一种渲染路径，可以在项目设置中设置。<br>相机也可以设置渲染路径。<br><img src="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84.png" alt="渲染路径"></p>
+        
+          <a class="article-more-a" href="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Shader</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/">展开全文 >></a>
         </p>
       
 
@@ -256,9 +489,6 @@
       
         <h1 id="什么是IL2CPP？"><a href="#什么是IL2CPP？" class="headerlink" title="什么是IL2CPP？"></a>什么是IL2CPP？</h1><p>在Unity4.6.1 p5以后版本中，在PlayerSettings—&gt;Other Settings—&gt;Scripting Backend有mono和il2cpp两个选项，它们是<strong>Unity脚本后处理（Scripting Backend）</strong>的两种方式。</p>
 <p><strong>IL2CPP</strong>是Unity一种新的<strong>脚本后处理（Scripting Backend）</strong>方式，针对.Net平台编译输出的<strong>IL（中间语言）</strong>进行处理。</p>
-<h1 id="IL2CPP的组成"><a href="#IL2CPP的组成" class="headerlink" title="IL2CPP的组成"></a>IL2CPP的组成</h1><ol>
-<li>AOT静态编译编译器（il2cpp.exe）</li>
-<li>运行时库（libil2cpp）
         
           <a class="article-more-a" href="/2022/06/11/Unity-IL2CPP/#more">more >></a>
         
@@ -314,19 +544,19 @@
 
 
   
-    <article id="post-Unity-UGUI源码阅读与解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Unity-UGUI源码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/">Unity UGUI源码阅读与解析</a>
+      <a class="article-title" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/">Unity UGUI源码</a>
     </h1>
   
 
         
-        <a href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/" class="archive-article-date">
+        <a href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/" class="archive-article-date">
   	<time datetime="2022-06-11T08:15:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
 </a>
         
@@ -337,10 +567,10 @@
         <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>UGUI整体分成<strong>UnityEngine.EventSystems</strong>和<strong>UnityEngine.UI</strong>。</p>
 <h1 id="渲染系统"><a href="#渲染系统" class="headerlink" title="渲染系统"></a>渲染系统</h1><ol>
 <li>UI组件在渲染时，需要三部分数据：<strong>顶点，材质，Layout布局</strong>。</li>
-<li>UI组件在OnEnable或自身数据更改时，会把自己放入<strong>CanvasUpdateRegistry</strong>的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的数据（顶点、UV等）。<br><img src="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/UGUI%E6%B8%B2%E6%9F%93.png" alt="UGUI渲染"></li>
+<li>UI组件在OnEnable或自身数据更改时，会把自己放入<strong>CanvasUpdateRegistry</strong>的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的数据（顶点、UV等）。<br><img src="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/UGUI%E6%B8%B2%E6%9F%93.png" alt="UGUI渲染"></li>
 </ol>
         
-          <a class="article-more-a" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/#more">more >></a>
+          <a class="article-more-a" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/#more">more >></a>
         
       
 
@@ -364,7 +594,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/">展开全文 >></a>
         </p>
       
 
@@ -471,19 +701,98 @@
 
 
   
-    <article id="post-Unity-Shader入门-初级" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Effective Cpp 个人总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/">Unity Shader入门 初级</a>
+      <a class="article-title" href="/2022/06/01/Effective%20Cpp%20%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">Effective C++ 个人总结</a>
     </h1>
   
 
         
-        <a href="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/" class="archive-article-date">
+        <a href="/2022/06/01/Effective%20Cpp%20%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/" class="archive-article-date">
+  	<time datetime="2022-06-01T04:29:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><ol>
+<li><p>#define：宏的名称是不会进入符号表中（symbol table），宏在符号表中只是其对应的数值/表达式。</p>
+</li>
+<li><p>对于形似函数的宏，最好改用inline函数替换之。</p>
+        
+          <a class="article-more-a" href="/2022/06/01/Effective%20Cpp%20%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/06/01/Effective%20Cpp%20%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Unity-Shader理论（一）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/05/31/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%B8%80%EF%BC%89/">Unity Shader 理论（一）</a>
+    </h1>
+  
+
+        
+        <a href="/2022/05/31/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%B8%80%EF%BC%89/" class="archive-article-date">
   	<time datetime="2022-05-31T02:59:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-31</time>
 </a>
         
@@ -491,38 +800,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="渲染流水线"><a href="#渲染流水线" class="headerlink" title="渲染流水线"></a>渲染流水线</h1><h3 id="什么是渲染流水线"><a href="#什么是渲染流水线" class="headerlink" title="什么是渲染流水线"></a>什么是渲染流水线</h3><ul>
-<li>工作任务：由一个三维场景出发，生成（渲染）一张二维图像。</li>
-</ul>
-<h3 id="渲染流程的三个阶段"><a href="#渲染流程的三个阶段" class="headerlink" title="渲染流程的三个阶段"></a>渲染流程的三个阶段</h3><p>应用阶段（Application Stage）</p>
-<ul>
-<li>由CPU负责，开发者拥有绝对的控制权</li>
-<li>任务：</li>
-</ul>
-<ol>
-<li>准备好场景数据</li>
-<li>为了提高渲染性能，做粗粒度剔除，将不可见的物体剔除出去</li>
-<li>设置渲染状态，包括不限于材质、纹理、shader</li>
-</ol>
-<ul>
-<li>最后，输出渲染图元，即渲染所需要的几何信息。（可以是点、线、三角面）</li>
-</ul>
-<p>几何阶段（Geometry Stage）</p>
-<ul>
-<li>由GPU负责</li>
-<li>和每个渲染图元打交道，进行逐顶点、逐多边形的操作</li>
-<li>顶点坐标 ==&gt; 屏幕空间</li>
-<li>输出屏幕空间的二维顶点坐标，及对应的深度值，着色等相关信息</li>
-</ul>
-<p>光栅化阶段（Rasterizer Stage）</p>
-<ul>
-<li>由GPU负责</li>
-<li>决定每个渲染图元中的哪些像素应该被绘制</li>
-<li>对上一阶段得到的逐顶点数据进行插值运算，在进行逐像素处理</li>
-<li>生成屏幕上的像素，渲染出最终的图像</li>
-</ul>
+        <h1 id="什么是Shader？"><a href="#什么是Shader？" class="headerlink" title="什么是Shader？"></a>什么是Shader？</h1><p>Shader用来控制渲染流水线中的某些特定阶段。</p>
+<h1 id="渲染流水线"><a href="#渲染流水线" class="headerlink" title="渲染流水线"></a>渲染流水线</h1><p>工作任务：由一个三维场景出发，生成（渲染）一张二维图像。</p>
         
-          <a class="article-more-a" href="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/#more">more >></a>
+          <a class="article-more-a" href="/2022/05/31/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%B8%80%EF%BC%89/#more">more >></a>
         
       
 
@@ -546,7 +827,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/31/Unity-Shader%E5%85%A5%E9%97%A8-%E5%88%9D%E7%BA%A7/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/05/31/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%B8%80%EF%BC%89/">展开全文 >></a>
         </p>
       
 
@@ -664,332 +945,9 @@
 
 
   
-    <article id="post-Unity-热更新" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/">Unity 热更新</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/" class="archive-article-date">
-  	<time datetime="2022-05-26T07:48:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="什么是热更新？"><a href="#什么是热更新？" class="headerlink" title="什么是热更新？"></a>什么是热更新？</h1><p>热更新是指当游戏出现bug，或者需要修改，增加某个功能的时候，我们不需要重新下载安装包，就可以更新游戏内容。<br>游戏上线后，遇见bug或者需要更新内容，一般有两种做法：<br>第一种：重新打包上传一个新的安装包到应用商店（需要审核，费时间），然后让玩家下载新的客户端安装包（需要重新下载，费流量）<br>第二种：在游戏内更新，游戏启动时去下载需要更新的资源，即<strong>热更新</strong>。</p>
-<h1 id="实现热更新方案"><a href="#实现热更新方案" class="headerlink" title="实现热更新方案"></a>实现热更新方案</h1><ul>
-<li>ILRuntime：<br>是掌趣科技开发的开源unity热更框架，这个框架打破了C#不能做ios平台热更的规则(在ios平台中是以ILRuntime+dll的方式解释执行，当然是在IL2CPP下)。有了这个框架，开发者只需使用C#这一种语言即可，而不用在C#和lua之间切换。</li>
-<li>xLua：<br>腾讯开发的Lua插件，目前比较主流。</li>
-</ul>
-<h1 id="热更新原理"><a href="#热更新原理" class="headerlink" title="热更新原理"></a>热更新原理</h1><p>客户端和服务器上分别保存有配置文件，程序启动时使用http协议下载服务器的配置文件来与客户端的进行逐行对比，通过比较（比如md5码）找出不同的资源和脚本代码（需要更新的部分），把对应的资源和代码下载下来并将本地的覆盖。</p>
-        
-          <a class="article-more-a" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">热更新</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Unity-性能优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">Unity 性能优化</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="archive-article-date">
-  	<time datetime="2022-05-26T06:30:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="图集"><a href="#图集" class="headerlink" title="图集"></a>图集</h2><h4 id="什么是图集？"><a href="#什么是图集？" class="headerlink" title="什么是图集？"></a>什么是图集？</h4><p>首先，Unity会为场景中的每个纹理发出一次绘制调用，即DrawCall（CPU发出命令让GUP开始渲染）<br>一个个纹理进行绘制，那性能必须大消耗，所以，把多个纹理合并成一个，那么DrawCall也只会有一个，这就是合并纹理，即图集。<br>（补充一下Unity的Batches，即DrawCall的封装，代表每帧有多少DrawCall）</p>
-<h4 id="关于图集的渲染"><a href="#关于图集的渲染" class="headerlink" title="关于图集的渲染"></a>关于图集的渲染</h4><p>Unity的Canvas会按照深度Depth从下向上渲染，所以最下面的UI一般会渲染在最前面。 但是如果UI之间产生了交叉重叠的情况，图集的合批会在不同图集重叠的地方被打断（如果两个相同图集之间穿插了另一个不同的图集，则合批会被打断）</p>
-        
-          <a class="article-more-a" href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Unity-资源加载" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/25/Unity-%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/">Unity 资源加载</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/25/Unity-%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/" class="archive-article-date">
-  	<time datetime="2022-05-25T15:38:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>老生常谈了，反正就是提高性能，减少内存消耗，提升开发效率等等等。</p>
-<h2 id="资源加载的多种方式"><a href="#资源加载的多种方式" class="headerlink" title="资源加载的多种方式"></a>资源加载的多种方式</h2><h4 id="阻塞型（同步）"><a href="#阻塞型（同步）" class="headerlink" title="阻塞型（同步）"></a>阻塞型（同步）</h4><ul>
-<li>Resource.Load<br>Unity3D以Resources这个名字的文件夹作为根目录来加载资源其下面的资源文件。</li>
-</ul>
-<p>当Unity3D的项目被Build构建时，会根据Resources文件夹中的内容产生序列化文件，这个序列化文件包括了metadata和indexing information。</p>
-<p>indexing information包括了一个平衡的搜索树，可以通过Resources API 传递路径名字去找到资源在Resources下的位置，时间复杂度在O(n log(n))。</p>
-<p>缺点：增加包体大小，加载时需要解压，消耗时间和性能。</p>
-<ul>
-<li>File read + AssetBundle.CreateFromMemory + AssetBundle.Load</li>
-</ul>
-<p>睡觉了，明天写</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/25/Unity-%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Unity-数据存储与读取" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/">Unity 数据存储与读取</a>
-    </h1>
-  
-
-        
-        <a href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" class="archive-article-date">
-  	<time datetime="2022-05-23T14:27:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="存读档机制"><a href="#存读档机制" class="headerlink" title="存读档机制"></a>存读档机制</h2><h4 id="PlayerPrefs-数据持久化方法"><a href="#PlayerPrefs-数据持久化方法" class="headerlink" title="PlayerPrefs 数据持久化方法"></a>PlayerPrefs 数据持久化方法</h4><ul>
-<li>存储原理：采用键值对的方法，将游戏数据储存到本地，是一种Unity自带的储存方法。</li>
-<li>储存类型：仅支持int、float、string三种</li>
-<li>储存地址：详见官方文档 <a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/PlayerPrefs.html">PlayerPrefs - Unity Documentation</a></li>
-<li>优缺点：虽然以这种方式存储游戏数据方便快捷，但是当数据量庞大以后，键值对的大量创建使用，不仅脚本控制繁琐，也有可能造成资源的浪费。因此，只建议对一些基础数据，例如图像设置、声音设置等采用该方法存储。</li>
-</ul>
-<h4 id="Serialization-序列化方法"><a href="#Serialization-序列化方法" class="headerlink" title="Serialization 序列化方法"></a>Serialization 序列化方法</h4><p>存储原理：将对象(Object)转换为数据流(stream of bytes)，再经过文件流存储到本地的方法。<br>对象(Object)：可以是Unity中的任何文件或是脚本<br>数据流(stream of bytes)：<br>序列化反序列化：<br>    Serialization：对象–&gt;数据流<br>    Deserialization：数据流–&gt;对象<br>序列化的方法：<br>    二进制方法<br>    JSON方法<br>    XML方法</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/SouthBegonia/p/11616825.html">Unity - 存读档机制用法</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1084,11 +1042,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">C#</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1097,14 +1059,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">热更新</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">设计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1117,6 +1071,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -6,22 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Unity UGUI源码阅读与解析 | 武哥的博客</title>
+  <title>Unity UGUI基础 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述UGUI整体分成UnityEngine.EventSystems和UnityEngine.UI。 渲染系统 UI组件在渲染时，需要三部分数据：顶点，材质，Layout布局。 UI组件在OnEnable或自身数据更改时，会把自己放入CanvasUpdateRegistry的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的">
+  <meta name="description" content="基础知识UGUI是Unity自带的，一套成熟的UI系统，UGUI所有的UI组件都要作为Canvas的子物体而存在。 Canvas（画布）：渲染顺序：和层次结构中的显示顺序相同，也可由相机的深度、Layer级别决定（需要在子物体上单独添加Canvas组件） 渲染方式：屏幕空间、相机空间和世界空间。 交互方面：Canvas使用EventSystem对象来帮助消息传递系统。 Canvas Scaler（">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity UGUI源码阅读与解析">
-<meta property="og:url" content="http://example.com/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:title" content="Unity UGUI基础">
+<meta property="og:url" content="http://example.com/2022/05/23/Unity%20UGUI%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="武哥的博客">
-<meta property="og:description" content="概述UGUI整体分成UnityEngine.EventSystems和UnityEngine.UI。 渲染系统 UI组件在渲染时，需要三部分数据：顶点，材质，Layout布局。 UI组件在OnEnable或自身数据更改时，会把自己放入CanvasUpdateRegistry的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的">
+<meta property="og:description" content="基础知识UGUI是Unity自带的，一套成熟的UI系统，UGUI所有的UI组件都要作为Canvas的子物体而存在。 Canvas（画布）：渲染顺序：和层次结构中的显示顺序相同，也可由相机的深度、Layer级别决定（需要在子物体上单独添加Canvas组件） 渲染方式：屏幕空间、相机空间和世界空间。 交互方面：Canvas使用EventSystem对象来帮助消息传递系统。 Canvas Scaler（">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/UGUI%E6%B8%B2%E6%9F%93.png">
-<meta property="article:published_time" content="2022-06-11T08:15:27.000Z">
-<meta property="article:modified_time" content="2022-06-11T09:19:00.642Z">
+<meta property="article:published_time" content="2022-05-23T13:46:55.000Z">
+<meta property="article:modified_time" content="2022-06-11T09:09:54.636Z">
 <meta property="article:author" content="iamsb">
 <meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/UGUI%E6%B8%B2%E6%9F%93.png">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
   
@@ -157,88 +155,67 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Unity-UGUI源码阅读与解析" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Unity UGUI基础" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Unity UGUI源码阅读与解析
+      Unity UGUI基础
     </h1>
   
 
         
-        <a href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2022-06-11T08:15:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
+        <a href="/2022/05/23/Unity%20UGUI%E5%9F%BA%E7%A1%80/" class="archive-article-date">
+  	<time datetime="2022-05-23T13:46:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>UGUI整体分成<strong>UnityEngine.EventSystems</strong>和<strong>UnityEngine.UI</strong>。</p>
-<h1 id="渲染系统"><a href="#渲染系统" class="headerlink" title="渲染系统"></a>渲染系统</h1><ol>
-<li>UI组件在渲染时，需要三部分数据：<strong>顶点，材质，Layout布局</strong>。</li>
-<li>UI组件在OnEnable或自身数据更改时，会把自己放入<strong>CanvasUpdateRegistry</strong>的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的数据（顶点、UV等）。<br><img src="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/UGUI%E6%B8%B2%E6%9F%93.png" alt="UGUI渲染"></li>
+        <h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>UGUI是Unity自带的，一套成熟的UI系统，UGUI所有的UI组件都要作为Canvas的子物体而存在。</p>
+<h4 id="Canvas（画布）："><a href="#Canvas（画布）：" class="headerlink" title="Canvas（画布）："></a>Canvas（画布）：</h4><p>渲染顺序：和层次结构中的显示顺序相同，也可由相机的深度、Layer级别决定（需要在子物体上单独添加Canvas组件）</p>
+<p>渲染方式：屏幕空间、相机空间和世界空间。</p>
+<p>交互方面：Canvas使用EventSystem对象来帮助消息传递系统。</p>
+<h4 id="Canvas-Scaler（画布定标器）："><a href="#Canvas-Scaler（画布定标器）：" class="headerlink" title="Canvas Scaler（画布定标器）："></a>Canvas Scaler（画布定标器）：</h4><p>用于规范和调整画布上UI元素的整体缩放比例和像素密度。</p>
+<ul>
+<li>UI Scale Mode（UI缩放模式）：<ol>
+<li>constant pixel size：UI元素一直保持相同的像素大小，简而言之就是不会自适应</li>
+<li>scale with screen size：UI元素会根据屏幕进行自适应</li>
+<li>constant physical size：UI元素一直保持相同的物理尺寸</li>
 </ol>
+</li>
+</ul>
+<h4 id="EventSystem（事件系统）："><a href="#EventSystem（事件系统）：" class="headerlink" title="EventSystem（事件系统）："></a>EventSystem（事件系统）：</h4><p>一个场景内只有拥有一个EventSystem组件，它负责射线投射，处理输入，发送事件。<br>StandaloneInputModule和TouchInputModule组件是系统提供的标准输入模块和触摸输入模块，我们可以通过继承BaseInputModule实现自己的输入模块。</p>
+<p>要实现交互，还需要一个射线检测组件——Graph Raycaster，凡是继承了Graph类的UI，都能通过该组件进行射线检测，实现交互。<br>值得一提的是，EventSystem同样可以作用于3D物体，不过需要的射线检测组件是Physics Raycaster，一般将它挂载在Camera上，然后只需要在3D物体上挂载实现了交互接口的脚本，就可以实现交互控制。</p>
 <span id="more"></span>
-
-<h4 id="UI组件的渲染"><a href="#UI组件的渲染" class="headerlink" title="UI组件的渲染"></a>UI组件的渲染</h4><ol>
-<li>UI组件在渲染时，需要三部分数据：<strong>顶点，材质，Layout布局</strong>。</li>
-<li>UI组件在OnEnable或自身数据更改时，会把自己放入<strong>CanvasUpdateRegistry</strong>的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的数据（顶点、UV等）。</li>
-</ol>
-<h4 id="CanvasUpdateRegistry"><a href="#CanvasUpdateRegistry" class="headerlink" title="CanvasUpdateRegistry"></a>CanvasUpdateRegistry</h4><ol>
-<li>在这个类中，执行画布刷新注册事件。</li>
-<li>在Canvas更新时会调用<strong>将要刷新界面的委托–willRenderCanvases</strong>。</li>
-<li>willRenderCanvases委托注册了一个PerformUpdate方法，遍历缓存列表，进行Rebuild更新。</li>
-</ol>
-<h4 id="Graphic"><a href="#Graphic" class="headerlink" title="Graphic"></a>Graphic</h4><ul>
-<li><p>渲染部分<br>  在<strong>OnEnable</strong>中，执行了<strong>SerAllDirty()<strong>方法，更新自身的</strong>顶点，材质，Layout布局</strong>。<br>  Vertices更新：在**DoMeshGeneration()和DoLegacyMeshGeneration()**方法中，根据自己的情况生成Mesh。<br>  <strong>DoMeshGeneration调用了OnPopulateMesh，将VertexHelper数据实装到Mesh，然后赋值给CanvasRenderer进行渲染</strong>。</p>
+<h4 id="Rect-Transform："><a href="#Rect-Transform：" class="headerlink" title="Rect Transform："></a>Rect Transform：</h4><p><del>借鉴参考</del>抄袭了该文章的内容：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4592bf809c8b">Unity——RectTransform详解</a></p>
+<ul>
+<li>Anchor：<br>当anchorMax与anchorMin相等时，Anchor呈现为一个点，称为锚点。<br>当anchorMax与anchorMin不相等时，Anchor呈现为一个框，姑且称为锚框。</li>
+</ul>
+<p>绝对布局（即锚点状态）下：<br>    无论分辨率是多少，父物体多大，该UI元素的大小是恒定的。<br>    PosX,PosY,PosZ表征的就是Pivot到锚点的距离。<br>相对布局（即锚框状态下）：<br>    此时，RectTransform的属性变为Left,Top,Right,Bottom,PosZ，表示UI元素的每一条边距离父物体的每一条边的距离。</p>
+<ul>
+<li>Pivot：<br>  Pivot中心点，就是UI元素旋转缩放的中心点，左下角为(0,0)右上角为(1,1)。</li>
+</ul>
+<ul>
+<li><p>Offset：<br>  OffsetMax：就是UI元素的右上角的坐标，减去AnchorMax的值，得到一个从AnchorMax指向元素右上角的向量(vector2类型)。<br>  OffsetMin：就是UI元素的左上角的坐标，减去AnchorMin的值，得到一个从AnchorMin指向元素左上角的向量(vector2类型)。</p>
 </li>
-<li><p>流程<br>CanvasUpdateRegistry -&gt; Graphic -&gt; Rebuild -&gt; DoMeshGeneration -&gt; OnPopulateMesh</p>
+<li><p>sizeDelta：<br>  sizeDelta的值就是OffsetMax-OffsetMin的值。</p>
+</li>
+<li><p>rect：<br>  rect中的属性，不与UI元素所在的位置有关，只和其自身属性相关，所以其中的rect.width和rect.height属性就可以让我们在任何情况下取得元素的大小。</p>
+</li>
+<li><p>anchoredPosition：<br>  在使用锚点的情况下，anchoredPosition表征的是元素Pivot到Anchor的距离。<br>  在使用锚框的情况下，anchoredPosition表征的是元素Pivot到锚框中心点的距离。</p>
+</li>
+<li><p>BluePrintMode：<br>  在蓝图模式下，RectTransforms 的矩形句柄（就是包裹UI组件的那个框）会忽略本地旋转和缩放。</p>
+</li>
+<li><p>Raw edit Mode：<br>  轴心点和锚点是自由的。</p>
 </li>
 </ul>
-<h4 id="Image"><a href="#Image" class="headerlink" title="Image"></a>Image</h4><ul>
-<li>继承关系</li>
-</ul>
-<p><strong>MaskableGraphic</strong>，ISerializationCallbackReceiver，ILayoutElement，ICanvasRaycastFilter</p>
-<ul>
-<li>MaskableGraphic<br>MaskableGraphic主要是对Graphic基类中的几个成员对象进行重写。</li>
-</ul>
-<ol>
-<li>mainTexture属性：主要负责提供贴图</li>
-<li>material属性：主要提供材质</li>
-<li><strong>OnPopulateMesh函数</strong>：主要提供顶点以及UV信息（也就是Mesh信息）</li>
-</ol>
-<ul>
-<li>OnPopulateMesh函数<br>主要针对<strong>VertexHelper</strong>这么一个存放渲染Mesh信息的容器，对其填充，修改顶点等数据。<br>扩展：使用UGUI的时候其实每一个Image都是使用了PopulateMesh来进行Mesh生成之后进行合批，我们其实可以将这一步直接放在这一个函数里面，由我们自己来重写就可以了，这样我们就不需要调用N次PopulateMesh之后进行合并，而只需要调用一次自己编写的PopulateMesh函数就可以了。<br>此函数的调用时机：<strong>DoMeshGeneration调用了OnPopulateMesh</strong>。</li>
-</ul>
-<h1 id="事件系统"><a href="#事件系统" class="headerlink" title="事件系统"></a>事件系统</h1><h3 id="EventSystem"><a href="#EventSystem" class="headerlink" title="EventSystem"></a>EventSystem</h3><p>处理和管理点击、触摸、键盘输入等事件。<br>持有输入模块、每帧更新输入模块、执行输入模块的Process（每帧处理）方法。<br>每个场景只需要一个EventSystem。</p>
-<h5 id="方法解析"><a href="#方法解析" class="headerlink" title="方法解析"></a>方法解析</h5><ol>
-<li>UpdateModule()：在输入模块Enable、本身的Update中调用。该方法获取输入模块，并放入m_SystemInputModules缓存中。</li>
-<li>TickModules()：在Update中调用。遍历m_SystemInputModules缓存中输入模块并更新它们的状态，同时找到第一个启用并且在当前平台可用的输入模块，将该模块赋值给m_CurrentInputModule字段。</li>
-<li>Update()：每帧执行，调用TickModules()、m_CurrentInputModule的Process()；</li>
-<li>RaycastAll()：被输入模块调用。遍历所有的GraphicRaycaster对象并执行其Raycast方法，然后得到raycastResults列表（该列表中第一个就是被点击的对象）。</li>
-</ol>
-<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>EventSystem的主要功能就是持有输入模块，更新输入模块，驱动整个事件系统的运行。</p>
-<h3 id="StandaloneInputModule"><a href="#StandaloneInputModule" class="headerlink" title="StandaloneInputModule"></a>StandaloneInputModule</h3><p>生成和处理各种<strong>EventData</strong>，判断输入状态，调用<strong>ExecuteEvents</strong>执行注册的各种输入事件。</p>
-<h5 id="方法解析-1"><a href="#方法解析-1" class="headerlink" title="方法解析"></a>方法解析</h5><ol>
-<li>Process()：由EventSystem每帧调用，驱动整个输入系统。生成输入数据，调用射线检测，调用排序，判断操作模式（点击，拖拽等），调用操作模式对应的注册方法等。</li>
-<li>SendUpdateEventToSelectedObject()：对currentSlectedGameObject执行其OnUpdateSelected方法，更新选中的物体。</li>
-<li>ProcessTouchEvents()：处理触摸事件</li>
-</ol>
-<h3 id="GraphicRaycaster"><a href="#GraphicRaycaster" class="headerlink" title="GraphicRaycaster"></a>GraphicRaycaster</h3><p>获取哪些UI物体会被点击到。</p>
-<h3 id="EventInterface"><a href="#EventInterface" class="headerlink" title="EventInterface"></a>EventInterface</h3><p>各种操作事件的接口。</p>
-<h5 id="Button"><a href="#Button" class="headerlink" title="Button"></a>Button</h5><ul>
-<li>继承关系</li>
-</ul>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Button</span> : <span class="title">Selectable</span>, <span class="title">IPointerClickHandler</span>, <span class="title">ISubmitHandler</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li></li>
-</ul>
-<h1 id="动画部分"><a href="#动画部分" class="headerlink" title="动画部分"></a>动画部分</h1><p>这部分相对比较简单，用了<strong>tween补间动画</strong>的形式，对颜色，位置，大小做了渐进的操作。<br><strong>tween的原理是在启动一个协程，在协程里对元素的属性渐进式的修改</strong>，除了修改属性数值，tween还有多种曲线可以选择，比如内番曲线，外翻曲线等，一个数值从起点到终点的过程可以由曲线来控制。</p>
+<h2 id="UGUI运作机制"><a href="#UGUI运作机制" class="headerlink" title="UGUI运作机制"></a>UGUI运作机制</h2><p>UGUI是在<strong>3D网格下建立起来的UI系统</strong>，它的每个可显示的元素都是以3D模型网格的形式来构建起来的。<strong>当UI被实例化时，UGUI首先要做的事就是构建网格</strong>。</p>
+<p>也就是说当<strong>Unity3D制作一个图元，或者一个按钮，或者一个背景时，都会先构建一个方形网格，再将图片放入网格中。可以理解为制造了一个3D模型，用一个网格绑定一个材质球，材质球里存放了要显示的图片。</strong></p>
+<p>UGUI在这方面做了优化，它将一部分相同类型的图片都集合起来合成一个张图，然后将拥有相同图片相同shader的材质球合并成一个材质球，并且把分散开的模型网格也一起合并了，这样就生成了几个大网格和几个材质球，以及少许整张的图集。节省了很多材质球，图片，网格的渲染，UI的效率更高了很多，游戏在进行时才会顺畅。这就是我们常常在UI制作中提到的图集的概念，它把很多张图片都放置在一张图集上，导致大量的图片和材质球不需要重复的绘制，只要改变模型顶点上的uv即可。</p>
 
       
 
@@ -329,7 +306,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E8%A7%A3%E6%9E%90/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/23/Unity%20UGUI%E5%9F%BA%E7%A1%80/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -343,18 +320,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2022/06/11/Unity-IL2CPP/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Unity IL2CPP
+          Unity 数据存储与读取
         
       </div>
     </a>
   
   
-    <a href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">设计模式</div>
+    <a href="/2022/05/23/%E6%B8%B8%E6%88%8FAI/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">游戏AI</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -480,11 +457,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">C#</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Unity</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -493,14 +474,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">热更新</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">设计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -513,6 +486,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">图形学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">设计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
              
               <li class="article-tag-list-item">
