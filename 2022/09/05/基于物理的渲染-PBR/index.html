@@ -6,15 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives | 武哥的博客</title>
+  <title>基于物理的渲染(PBR) | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="武哥的博客">
-<meta property="og:url" content="http://example.com/archives/page/2/index.html">
+  <meta name="description" content="PBR概述（学不太懂，先简略地记着，试图理解）PBR，即基于物理的渲染(Physically Based Rendering)，它指的是一些在不同程度上都基于与现实世界的物理原理更相符的基本理论所构成的渲染技术的集合。由于它与物理性质非常接近，因此我们（尤其是美术师们）可以直接以物理参数为依据来编写表面材质，而不必依靠粗劣的修改与调整来让光照效果看上去正常。因为是基于物理参数编写的，所以不论光照条">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于物理的渲染(PBR)">
+<meta property="og:url" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/index.html">
 <meta property="og:site_name" content="武哥的博客">
+<meta property="og:description" content="PBR概述（学不太懂，先简略地记着，试图理解）PBR，即基于物理的渲染(Physically Based Rendering)，它指的是一些在不同程度上都基于与现实世界的物理原理更相符的基本理论所构成的渲染技术的集合。由于它与物理性质非常接近，因此我们（尤其是美术师们）可以直接以物理参数为依据来编写表面材质，而不必依靠粗劣的修改与调整来让光照效果看上去正常。因为是基于物理参数编写的，所以不论光照条">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%BE%AE%E5%B9%B3%E9%9D%A2.png">
+<meta property="og:image" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%BE%AE%E5%B9%B3%E9%9D%A2.png">
+<meta property="og:image" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%BE%AE%E5%B9%B3%E9%9D%A2-%E6%8A%98%E5%B0%84.png">
+<meta property="og:image" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E8%BE%90%E5%B0%84%E5%BA%A6%E9%87%8F%E5%AD%A6.png">
+<meta property="og:image" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%8F%8D%E5%B0%84%E7%8E%87%E6%96%B9%E7%A8%8B.png">
+<meta property="og:image" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%8F%8D%E5%B0%84%E7%8E%87%E6%96%B9%E7%A8%8B-%E7%BF%BB%E8%AF%91.png">
+<meta property="og:image" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E4%B8%BA%E4%BB%80%E4%B9%88%E9%99%A4%E6%B4%BE.png">
+<meta property="og:image" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E8%8F%B2%E6%B6%85%E5%B0%94%E6%96%B9%E7%A8%8B.png">
+<meta property="article:published_time" content="2022-09-05T08:20:57.000Z">
+<meta property="article:modified_time" content="2022-09-05T12:07:52.729Z">
 <meta property="article:author" content="iamsb">
+<meta property="article:tag" content="图形学">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%BE%AE%E5%B9%B3%E9%9D%A2.png">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
   
@@ -150,405 +164,206 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-基于物理的渲染-PBR" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      基于物理的渲染(PBR)
+    </h1>
+  
+
+        
+        <a href="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/" class="archive-article-date">
+  	<time datetime="2022-09-05T08:20:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-05</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="PBR概述"><a href="#PBR概述" class="headerlink" title="PBR概述"></a>PBR概述</h1><p>（学不太懂，先简略地记着，试图理解）<br>PBR，即基于物理的渲染(Physically Based Rendering)，它指的是一些在不同程度上都基于与现实世界的物理原理更相符的基本理论所构成的渲染技术的集合。<br>由于它与物理性质非常接近，因此我们（尤其是美术师们）可以直接以物理参数为依据来编写表面材质，而不必依靠粗劣的修改与调整来让光照效果看上去正常。<br>因为是基于物理参数编写的，所以不论光照条件如何，这些材质看上去都会是正确的。</p>
+<span id="more"></span>
+
+<p>判断一种PBR光照模型是否是基于物理的，必须满足以下三个条件：</p>
+<ol>
+<li>基于微平面(Microfacet)的表面模型。</li>
+<li>能量守恒。</li>
+<li>应用基于物理的BRDF。</li>
+</ol>
+<h1 id="微平面理论（Microfacet-Theory）"><a href="#微平面理论（Microfacet-Theory）" class="headerlink" title="微平面理论（Microfacet Theory）"></a>微平面理论（Microfacet Theory）</h1><p>微平面理论是将物体表面建模成做无数微观尺度上有随机朝向的理想镜面反射的小平面（microfacet）的理论。<br>方法：粗糙度贴图、高光度贴图。</p>
+<p><img src="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%BE%AE%E5%B9%B3%E9%9D%A2.png" alt="微平面"><br>在微观尺度下，没有任何平面是完全光滑的，可以假设一个粗糙度(Roughness)参数，然后用统计学的方法来概略的估算微平面的粗糙程度。<br>我们可以基于一个平面的粗糙度来计算出某个向量（光线向量和视线向量之间的中间向量）的方向与微平面平均取向方向一致的概率。<br>微平面的取向方向与中间向量的方向越是一致，镜面反射的效果就越是强烈越是锐利。</p>
+<p>出于着色的目的，我们通常会去用统计方法处理这种微观几何现象，并将表面视为在每个点处在多个方向上反射（和折射）光。<br>从宏观上看，非光学平面可以被视为在多个方向上反射（和折射）光:<br><img src="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%BE%AE%E5%B9%B3%E9%9D%A2.png" alt="微平面-宏观"></p>
+<p>反射的光懂得的都懂，这里讨论一下折射的光：<br>对于金属，折射光会立刻被吸收 - 能量被自由电子立即吸收。<br>对于非金属（也称为电介质或绝缘体），一旦光在其内部折射，就表现为常规的参与介质，表现出吸收和散射两种行为。<br><img src="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%BE%AE%E5%B9%B3%E9%9D%A2-%E6%8A%98%E5%B0%84.png" alt="微平面-折射"></p>
+<h1 id="能量守恒（Energy-Conservation）"><a href="#能量守恒（Energy-Conservation）" class="headerlink" title="能量守恒（Energy Conservation）"></a>能量守恒（Energy Conservation）</h1><p>微平面近似法使用了这样一种形式的能量守恒(Energy Conservation)：出射光线的能量永远不能超过入射光线的能量（发光面除外）。<br>为了遵守能量守恒定律，我们需要对漫反射光和镜面反射光之间做出明确的区分：入射光线的能量 &gt;= 反射光+折射光</p>
+<h1 id="反射率方程（The-Reflectance-Equation）"><a href="#反射率方程（The-Reflectance-Equation）" class="headerlink" title="反射率方程（The Reflectance Equation）"></a>反射率方程（The Reflectance Equation）</h1><h3 id="辐射度量学-Radiometry"><a href="#辐射度量学-Radiometry" class="headerlink" title="辐射度量学(Radiometry)"></a>辐射度量学(Radiometry)</h3><p>重要的单位：</p>
+<ul>
+<li>辐射率(Radiance)：又名光亮度，符号L，表示单位立体角、单位投影面积上的辐射通量。</li>
+<li>辐照度(Irradiance)：符号E，表示单位面积上的辐射通量。</li>
+</ul>
+<p><img src="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E8%BE%90%E5%B0%84%E5%BA%A6%E9%87%8F%E5%AD%A6.png" alt="辐射度量学"><br>辐射率和辐照度的区别：<br>一个微小平面，往四面八方吸收光能，其中某个方向吸收到的光能即辐射率(Radiance)，该平面吸收的所有光能即辐照度(Irradiance)，因此：<br>Irradiance，等于所有radiance的积分。</p>
+<h3 id="反射率方程"><a href="#反射率方程" class="headerlink" title="反射率方程"></a>反射率方程</h3><p>反射率方程即，一个拥有辐射强度的光源在单位面积，单位立体角上的辐射出的总能量。<br><img src="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%8F%8D%E5%B0%84%E7%8E%87%E6%96%B9%E7%A8%8B.png" alt="反射率方程"><br><img src="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E5%8F%8D%E5%B0%84%E7%8E%87%E6%96%B9%E7%A8%8B-%E7%BF%BB%E8%AF%91.png" alt="反射率方程-翻译"></p>
+<p>半球积分部分：表示多光源下光照的叠加。<br>lightDir • normal：辐射率受入射光线与平面法线间的夹角的余弦值的影响，如果将镜面反射系数设定为0，漫反射系数设定为1，公式就和单纯的Lambert漫反射基本一致。<br><img src="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E4%B8%BA%E4%BB%80%E4%B9%88%E9%99%A4%E6%B4%BE.png" alt="为什么除派"></p>
+<p>镜面反射部分：叫做Cook-Torrance的BRDF光照公式。（见BRDF）</p>
+<h1 id="Cook-Torrance-BRDF"><a href="#Cook-Torrance-BRDF" class="headerlink" title="Cook-Torrance BRDF"></a>Cook-Torrance BRDF</h1><p>BRDF即双向反射分布函数，它接受入射（光）方向，出射（观察）方向，平面法线以及一个用来表示微平面粗糙程度的参数作为函数的输入参数。<br>BRDF可以近似的求出每束光线对一个给定了材质属性的平面上最终反射出来的光线所作出的贡献程度。</p>
+<p>BRDF基于我们之前所探讨过的微平面理论来近似的求得材质的反射与折射属性。<br>（严格上来说，同样采用和作为输入参数的 Blinn-Phong光照模型也被认为是一个BRDF。然而由于Blinn-Phong模型并没有遵循能量守恒定律）</p>
+<p>Cook-Torrance BRDF的镜面反射部分包含三个函数，此外分母部分还有一个标准化因子。字母D，F与G分别代表着一种类型的函数，各个函数分别用来近似的计算出表面反射特性的一个特定部分。<br>三个函数分别为：<br>法线分布函数(Normal Distribution Function)<br>菲涅尔方程(Fresnel Rquation)<br>几何函数(Geometry Function)</p>
+<h3 id="正态分布函数-Normal-Distribution-Function"><a href="#正态分布函数-Normal-Distribution-Function" class="headerlink" title="正态分布函数 Normal Distribution Function"></a>正态分布函数 Normal Distribution Function</h3><p>(参数：normal，viewDir，lightDir，粗糙度)<br>法线分布函数，或者说镜面分布，从统计学上近似的表示了与某些（中间）向量取向一致的微平面的比率。<br>举例来说，假设给定向量，如果我们的微平面中有35%与向量取向一致，则法线分布函数或者说NDF将会返回0.35。<br>简单来说，描述这么多个微平面中，有多少个微平面的法线是正确朝向的，返回一个比例，代表了镜面高光部分。</p>
+<h3 id="菲涅尔方程-Fresnel-equation"><a href="#菲涅尔方程-Fresnel-equation" class="headerlink" title="菲涅尔方程 Fresnel equation"></a>菲涅尔方程 Fresnel equation</h3><p>(参数：normal，viewDir，金属度)<br>菲涅尔方程以前一般是用在水体上的，因为水体粗糙度低反光能力强，却又不是金属，是菲涅尔效应最明显的现实物体。<br><img src="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/%E8%8F%B2%E6%B6%85%E5%B0%94%E6%96%B9%E7%A8%8B.png" alt="菲涅尔方程"><br>法线和视线夹角越大（视线越接近水平），F的值也就越大，反射光的亮度也越高。</p>
+<h3 id="几何遮蔽-几何函数-Geometry-function"><a href="#几何遮蔽-几何函数-Geometry-function" class="headerlink" title="几何遮蔽 几何函数 Geometry function"></a>几何遮蔽 几何函数 Geometry function</h3><p>（参数：normal，viewDir，lightDir，粗糙度)<br>表示微平面自成阴影的属性，返回一个未被遮蔽的表面的百分比，代表了几何遮蔽部分。</p>
+<h3 id="分母"><a href="#分母" class="headerlink" title="分母"></a>分母</h3><p>校正因子，作为微观几何局部空间和宏观几何局部空间变换的校正。</p>
+<h1 id="IBL（Image-Based-Lighting-基于纹理的光照）"><a href="#IBL（Image-Based-Lighting-基于纹理的光照）" class="headerlink" title="IBL（Image-Based Lighting 基于纹理的光照）"></a>IBL（Image-Based Lighting 基于纹理的光照）</h1><p>待续…</p>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><h3 id="漫反射和次表面散射本质相同"><a href="#漫反射和次表面散射本质相同" class="headerlink" title="漫反射和次表面散射本质相同"></a>漫反射和次表面散射本质相同</h3><p>漫反射和次表面散射其实是相同物理现象，本质都是折射光的次表面散射的结果。<br>唯一的区别是相对于观察尺度的散射距离：<br>    像素 &gt; 散射距离：漫反射<br>    像素 &lt; 散射距离：次表面散射</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/11/Unity-IL2CPP/" class="archive-article-date">
-  	<time datetime="2022-06-11T08:23:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/11/Unity-IL2CPP/">Unity IL2CPP</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">图形学</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/" class="archive-article-date">
-  	<time datetime="2022-06-11T08:15:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Unity-内存与资源管理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/09/04/Bezier%E6%9B%B2%E7%BA%BF%E4%B8%8ECatmull-Rom%E6%9B%B2%E7%BA%BF/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Bezier曲线与Catmull-Rom曲线</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/">Unity UGUI源码</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2022-06-06T13:01:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/01/Effective%20Cpp%20%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  	<time datetime="2022-06-01T04:29:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/01/Effective%20Cpp%20%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">Effective C++ 个人总结</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/31/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%B8%80%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2022-05-31T02:59:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-31</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/31/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%B8%80%EF%BC%89/">Unity Shader 理论（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Shader</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/27/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2022-05-27T04:21:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/27/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/" class="archive-article-date">
-  	<time datetime="2022-05-26T07:48:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/">Unity 热更新</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">热更新</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="archive-article-date">
-  	<time datetime="2022-05-26T06:30:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">Unity 性能优化</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/25/Unity-%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/" class="archive-article-date">
-  	<time datetime="2022-05-25T15:38:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/25/Unity-%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/">Unity 资源加载</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" class="archive-article-date">
-  	<time datetime="2022-05-23T14:27:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/">Unity 数据存储与读取</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&amp;laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/3/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -572,8 +387,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

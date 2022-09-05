@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives | 武哥的博客</title>
+  <title>Unity-内存与资源管理 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="武哥的博客">
-<meta property="og:url" content="http://example.com/archives/page/2/index.html">
+  <meta name="description" content="内存基础CPU读取数据CPU进行数据处理时，从内存或缓存中取出指令，放入指令寄存器，并对指令译码进行分解，进而对数据进行处理。从内存中读取数据很慢，通常CPU会将之前读取的数据缓存在多级Cache中，提升数据访问效率。因此，CPU会先从Cache中查找数据，若没有找到（Cache Miss），才会访问内存。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity-内存与资源管理">
+<meta property="og:url" content="http://example.com/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="武哥的博客">
+<meta property="og:description" content="内存基础CPU读取数据CPU进行数据处理时，从内存或缓存中取出指令，放入指令寄存器，并对指令译码进行分解，进而对数据进行处理。从内存中读取数据很慢，通常CPU会将之前读取的数据缓存在多级Cache中，提升数据访问效率。因此，CPU会先从Cache中查找数据，若没有找到（Cache Miss），才会访问内存。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/U3d%E8%B5%84%E6%BA%90%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="http://example.com/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/AssetBundles%E7%BB%93%E6%9E%84.png">
+<meta property="article:published_time" content="2022-09-05T13:28:35.000Z">
+<meta property="article:modified_time" content="2022-09-05T14:11:01.055Z">
 <meta property="article:author" content="iamsb">
+<meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/U3d%E8%B5%84%E6%BA%90%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.png">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
   
@@ -150,36 +158,105 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Unity-内存与资源管理" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Unity-内存与资源管理
+    </h1>
+  
+
+        
+        <a href="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/" class="archive-article-date">
+  	<time datetime="2022-09-05T13:28:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-05</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/U3d%E8%B5%84%E6%BA%90%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.png" alt="U3d资源工作流程"></p>
+<h1 id="内存基础"><a href="#内存基础" class="headerlink" title="内存基础"></a>内存基础</h1><h3 id="CPU读取数据"><a href="#CPU读取数据" class="headerlink" title="CPU读取数据"></a>CPU读取数据</h3><p>CPU进行数据处理时，从内存或缓存中取出指令，放入指令寄存器，并对指令译码进行分解，进而对数据进行处理。从内存中读取数据很慢，通常CPU会将之前读取的数据缓存在多级Cache中，提升数据访问效率。因此，CPU会先从Cache中查找数据，若没有找到（Cache Miss），才会访问内存。</p>
+<span id="more"></span>
+<h3 id="移动设备与PC差异"><a href="#移动设备与PC差异" class="headerlink" title="移动设备与PC差异"></a>移动设备与PC差异</h3><ul>
+<li>没有独立显卡，显存与CPU数据会存储在同一区域。</li>
+<li>CPU的Cache与内存更小。因此移动端会严格限制资源大小。</li>
+<li>没有内存交换（IO速度慢、可擦写次数少）</li>
+<li>IOS可以进行内存压缩：将不活跃的内存压缩到特定空间。</li>
+</ul>
+<h1 id="Unity内存与GC"><a href="#Unity内存与GC" class="headerlink" title="Unity内存与GC"></a>Unity内存与GC</h1><ul>
+<li>Editor：只要打开Unity资源就会被加载</li>
+<li>Runtime：只有Load资源才会影响内存</li>
+</ul>
+<h3 id="Unity内存分布"><a href="#Unity内存分布" class="headerlink" title="Unity内存分布"></a>Unity内存分布</h3><p>Native堆内存：Unity底层管理的数据，如音频、视频、Texture、Mesh、GameObject等<br>第三方库：tolua、Wwise等<br>虚拟机：C#所产生的内存<br>GfxDriver：当前驱动使用的Texture、Shader、Mesh数据内存等</p>
+<h3 id="Mono与IL2CPP的跨平台"><a href="#Mono与IL2CPP的跨平台" class="headerlink" title="Mono与IL2CPP的跨平台"></a>Mono与IL2CPP的跨平台</h3><p>Mono与IL2CPP是U3D的两种跨平台解决方案。</p>
+<h5 id="Mono"><a href="#Mono" class="headerlink" title="Mono"></a>Mono</h5><p>概念：编译器mcs将代码编译为IL，通过Mono运行时中的编译器将IL编译成对应平台的原生码。<br>缺点：移植性差。<br>优点：开发编译时间较短，适用于开发过程。</p>
+<h5 id="IL2CPP"><a href="#IL2CPP" class="headerlink" title="IL2CPP"></a>IL2CPP</h5><p>概念：编译工程时，IL2CPP将代码编译为.NET DLL托管程序集，再将托管程序集转换为标准C++代码，再交给各平台的C++编译器进行编译。<br>优点：</p>
+<ol>
+<li>JIT编译 -&gt; AOT编译</li>
+<li>应用程序体积变小</li>
+<li>应用程序启动时间短<br>缺点：</li>
+<li>无法动态生成代码</li>
+<li>开发编译时间变长</li>
+</ol>
+<h3 id="Unity-VM-GC"><a href="#Unity-VM-GC" class="headerlink" title="Unity VM GC"></a>Unity VM GC</h3><p>当Unity VM需要分配内存的时候，会检查当前内存。若内存足够，可以直接分配内存，但内存不足时会触发GC，再次检测内存，若此时内存仍然不足，VM会向操作系统申请内存。</p>
+<p>触发GC时，VM会暂停所有线程，可能引起程序卡顿。<br>Unity采用标记清除算法开处理GC，管理内存。</p>
+<p>Unity的VM以Block管理内存，当一个Block连续6次GC没有被访问到（很难触发），这块内存会被返回给系统。<br>由于此种处理方式没有内存压缩，并且可能出现内存黑名单，因此容易出现内存碎片。在开发过程中，要尽量减少内存的申请，申请的内存尽量保持连续，对于资源加载应该优先加载较大的资源。</p>
+<h1 id="Editor-Asset"><a href="#Editor-Asset" class="headerlink" title="Editor Asset"></a>Editor Asset</h1><p>Unity中的资源通常是指3D模型、音频文件、图像等用于程序使用的数据（代码数据也是一种资源）。程序开发阶段，将外部资源导入或复制到Asset目录下，Unity会监听到所导入的数据，并生成相应的Unity默认资源。</p>
+<h3 id="创建Asset"><a href="#创建Asset" class="headerlink" title="创建Asset"></a>创建Asset</h3><p>Unity检测到新资源（文件夹）时会向此资源分配GUID，这是Unity在内部使用的ID，用于索引资源，以便Unity移动或重命名此资源不会破坏引用关系。</p>
+<p>Unity对导入的外部文件格式不会进行修改，对内置格式资源（prefab/material/unity等），Unity以YAML格式进行存储。</p>
+<h3 id="监听资源导入"><a href="#监听资源导入" class="headerlink" title="监听资源导入"></a>监听资源导入</h3><p>Unity提供了用于监听资源导入的基类，方便开发者对资源做标准化处理。</p>
+<h3 id="资源处理"><a href="#资源处理" class="headerlink" title="资源处理"></a>资源处理</h3><p>Unity在导入资源后，会在Library文件夹下生成真正用于Unity处理的资源。例如，Unity 将 .png 图像文件导入为纹理时，在运行时不会使用原始的 .png 格式数据，而是创建新的图形格式，将其存储在项目的Library文件夹中。</p>
+<h1 id="Running-Time-Asset"><a href="#Running-Time-Asset" class="headerlink" title="Running Time Asset"></a>Running Time Asset</h1><p>Unity提供了两种运行时资源：StreamingAssets和AssetBundles(Addressable也是对AssetBundles的封装)。</p>
+<h3 id="无压缩资源：StreamingAssets"><a href="#无压缩资源：StreamingAssets" class="headerlink" title="无压缩资源：StreamingAssets"></a>无压缩资源：StreamingAssets</h3><p>对于StreamingAssets文件夹下的资源，Unity在创建应用程序时，会直接保留。在目标平台中，此文件夹为只读模式，通常只会存放本地资源包或其它二进制数据（.dll 和脚本文件不参与脚本编译）。</p>
+<h3 id="打包资源：Resources"><a href="#打包资源：Resources" class="headerlink" title="打包资源：Resources"></a>打包资源：Resources</h3><p>在发布工程时，会将所有Resources文件夹一起打包。同样的在运行时使用Resources加载资源，也需要将整个Resources包体加载。虽然Resources使用十分便捷，但其弊端十分明显。首先其无法对资源进行粒度划分，并且难以支持外部的资源。</p>
+<h3 id="打包资源：AssetBundles"><a href="#打包资源：AssetBundles" class="headerlink" title="打包资源：AssetBundles"></a>打包资源：AssetBundles</h3><p>AssetBundles可以根据需求，对不同目录进行打包管理。因此在资源更新、包体加载、资源粒度划分等问题有更好的表现。</p>
+<h5 id="打包策略"><a href="#打包策略" class="headerlink" title="打包策略"></a>打包策略</h5><p>在拆分包体时，需要考虑包体大小、依赖关系、变动频率等方面进行综合考虑，需要开发者根据项目情况进行处理。</p>
+<p>官方给了一些实际处理方案：</p>
+<ul>
+<li>逻辑实体分组：通常是指根据模块功能分组，例如用户界面、角色的模型和动画、共享资源等。</li>
+<li>类型分组：通常是针对不同的发布版本进行分组。例如不同地区需要相应的语言包、不同平台需要不同的Shader。</li>
+<li>并发内容分组：将需要同时加载和使用的资源捆绑在一起。常见于场景资源的打包。</li>
+</ul>
+<h5 id="依赖加载"><a href="#依赖加载" class="headerlink" title="依赖加载"></a>依赖加载</h5><p>为了解决资源冗余问题，当多个包体使用了相同资源时，最佳的处理方案是将这部分资源单独打包。<br>因此在加载资源时，也需要注意资源的加载顺序。需要先加载被依赖的包体，再加载当前包体，否则会出现引用丢失。</p>
+<h5 id="AssetBundles结构"><a href="#AssetBundles结构" class="headerlink" title="AssetBundles结构"></a>AssetBundles结构</h5><p>在目标目录中每个包体对应一个资源数据文件以及manifest文件。资源数据文件时Unity对资源压缩加密后的二进制文件，同时还会有一个总的AssetBundles文件。<br><img src="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/AssetBundles%E7%BB%93%E6%9E%84.png" alt="AssetBundles结构"><br>AssetBundles.manifest记录了所有包体列表以及其依赖关系，单个manifest记录了包体文件列表、包体依赖关系和TypeTree（可选）。由于ui使用了image中的图片资源，因此可以看到其对image包体的依赖。</p>
+<h5 id="资源收集与打包"><a href="#资源收集与打包" class="headerlink" title="资源收集与打包"></a>资源收集与打包</h5><p>调用BuildPipeline.BuildAssetBundles接口，Unity会自动收集有AssetBundle标签的资源以及其依赖关系，并根据标签名称在目标位置生成包体。也可以指定文件打包。<br>为了缩短打包时间，Unity在5.0之后开放了增量式打包，会在原有包体基础上，比较manifest文件判断包体数据是否变化。Model文件夹添加一个模型后，再次打包，发现只有AssetBundles和model发生了变化。<br>默认情况下，Unity 通过 LZMA 压缩来创建 AssetBundle，然后通过 LZ4 压缩将其缓存。LZMA压缩后获得的是 AssetBundle数据流，如果需要从中加载某个资源，就必须将整个流文件解压缩。解压AssetBundle后，将使用 LZ4压缩再次生成资源，使得加载资源时不比加载整个AssetBundle。<br>一般本地AB建议以LZ4格式存储，对内存友好。远端AB用LZMA压缩，减少数据传输量。</p>
+<h1 id="性能检测"><a href="#性能检测" class="headerlink" title="性能检测"></a>性能检测</h1><h3 id="Unity性能检测工具"><a href="#Unity性能检测工具" class="headerlink" title="Unity性能检测工具"></a>Unity性能检测工具</h3><p>Unity Editor提供了4项性能检测工具：Unity Profiler、Profiling Core package、Memory Profiler、Profile Analyzer。</p>
+<h1 id="性能优化流程"><a href="#性能优化流程" class="headerlink" title="性能优化流程"></a>性能优化流程</h1><p>（1）确定测试场景<br>对整个游戏流程进行性能测试几乎无法实现，只能针对具体问题进行解决。因此就需要确定测试的硬件设备；测试的操作流程。<br>对于压力测试等情况，可以设计特定的场景；对于整体的应用测试来，只能分场景或功能模块进行测试。在测试过程中，可能出现动态内存问题（随着操作，内存增加）与静态内存问题（无操作情况下，内存增加），需要考虑到这两种情况进行处理。</p>
+<p>（2）收集数据<br>利用上述的性能检测工具，收集程序运行数据。通常会对比不同帧数据，根据内存分布情况，定位是哪些资源过大或者操作引起数据剧烈变化。</p>
+<p>（3）定位问题与优化<br>在发现外部测试指标问题后，就可以大致定位到产生瓶颈的过程，但在工程较为复杂的情况下，想精确定位问题也不会很容易。能精确定位问题最为关键，后续团队就可以针对性得优化。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/11/Unity-IL2CPP/" class="archive-article-date">
-  	<time datetime="2022-06-11T08:23:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/11/Unity-IL2CPP/">Unity IL2CPP</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -191,364 +268,105 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/" class="archive-article-date">
-  	<time datetime="2022-06-11T08:15:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">基于物理的渲染(PBR)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/">Unity UGUI源码</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2022-06-06T13:01:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/06/01/Effective%20Cpp%20%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  	<time datetime="2022-06-01T04:29:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/06/01/Effective%20Cpp%20%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">Effective C++ 个人总结</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/31/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%B8%80%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2022-05-31T02:59:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-31</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/31/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%B8%80%EF%BC%89/">Unity Shader 理论（一）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Shader</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/27/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2022-05-27T04:21:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/27/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/" class="archive-article-date">
-  	<time datetime="2022-05-26T07:48:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/">Unity 热更新</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">热更新</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="archive-article-date">
-  	<time datetime="2022-05-26T06:30:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/26/Unity-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">Unity 性能优化</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/25/Unity-%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/" class="archive-article-date">
-  	<time datetime="2022-05-25T15:38:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/25/Unity-%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/">Unity 资源加载</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/" class="archive-article-date">
-  	<time datetime="2022-05-23T14:27:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/23/Unity-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E4%B8%8E%E8%AF%BB%E5%8F%96/">Unity 数据存储与读取</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&amp;laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/3/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -572,8 +390,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

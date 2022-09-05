@@ -152,6 +152,159 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Unity-内存与资源管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/">Unity-内存与资源管理</a>
+    </h1>
+  
+
+        
+        <a href="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/" class="archive-article-date">
+  	<time datetime="2022-09-05T13:28:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/U3d%E8%B5%84%E6%BA%90%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.png" alt="U3d资源工作流程"></p>
+<h1 id="内存基础"><a href="#内存基础" class="headerlink" title="内存基础"></a>内存基础</h1><h3 id="CPU读取数据"><a href="#CPU读取数据" class="headerlink" title="CPU读取数据"></a>CPU读取数据</h3><p>CPU进行数据处理时，从内存或缓存中取出指令，放入指令寄存器，并对指令译码进行分解，进而对数据进行处理。从内存中读取数据很慢，通常CPU会将之前读取的数据缓存在多级Cache中，提升数据访问效率。因此，CPU会先从Cache中查找数据，若没有找到（Cache Miss），才会访问内存。</p>
+        
+          <a class="article-more-a" href="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-基于物理的渲染-PBR" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/">基于物理的渲染(PBR)</a>
+    </h1>
+  
+
+        
+        <a href="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/" class="archive-article-date">
+  	<time datetime="2022-09-05T08:20:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="PBR概述"><a href="#PBR概述" class="headerlink" title="PBR概述"></a>PBR概述</h1><p>（学不太懂，先简略地记着，试图理解）<br>PBR，即基于物理的渲染(Physically Based Rendering)，它指的是一些在不同程度上都基于与现实世界的物理原理更相符的基本理论所构成的渲染技术的集合。<br>由于它与物理性质非常接近，因此我们（尤其是美术师们）可以直接以物理参数为依据来编写表面材质，而不必依靠粗劣的修改与调整来让光照效果看上去正常。<br>因为是基于物理参数编写的，所以不论光照条件如何，这些材质看上去都会是正确的。</p>
+        
+          <a class="article-more-a" href="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">图形学</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/09/05/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E7%9A%84%E6%B8%B2%E6%9F%93-PBR/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Bezier曲线与Catmull-Rom曲线" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -613,6 +766,88 @@
 
 
   
+    <article id="post-C-对象模型-总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/08/29/C-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B-%E6%80%BB%E7%BB%93/">C++对象模型 总结</a>
+    </h1>
+  
+
+        
+        <a href="/2022/08/29/C-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B-%E6%80%BB%E7%BB%93/" class="archive-article-date">
+  	<time datetime="2022-08-29T14:04:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="C-成员种类"><a href="#C-成员种类" class="headerlink" title="C++成员种类"></a>C++成员种类</h2><p>数据成员：</p>
+<ol>
+<li>静态数据成员：存储在程序的数据段中，C++编译器会对不同类的静态数据成员采取特殊的编码方式。</li>
+<li>非静态数据成员：需要地址偏移<br>成员函数：</li>
+<li>静态函数</li>
+<li>非静态函数</li>
+<li>虚函数
+        
+          <a class="article-more-a" href="/2022/08/29/C-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B-%E6%80%BB%E7%BB%93/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/08/29/C-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B-%E6%80%BB%E7%BB%93/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Unity-Shader理论（二）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -666,239 +901,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Unity-IL2CPP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/06/11/Unity-IL2CPP/">Unity IL2CPP</a>
-    </h1>
-  
-
-        
-        <a href="/2022/06/11/Unity-IL2CPP/" class="archive-article-date">
-  	<time datetime="2022-06-11T08:23:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="什么是IL2CPP？"><a href="#什么是IL2CPP？" class="headerlink" title="什么是IL2CPP？"></a>什么是IL2CPP？</h1><p>在Unity4.6.1 p5以后版本中，在PlayerSettings—&gt;Other Settings—&gt;Scripting Backend有mono和il2cpp两个选项，它们是<strong>Unity脚本后处理（Scripting Backend）</strong>的两种方式。</p>
-<p><strong>IL2CPP</strong>是Unity一种新的<strong>脚本后处理（Scripting Backend）</strong>方式，针对.Net平台编译输出的<strong>IL（中间语言）</strong>进行处理。</p>
-        
-          <a class="article-more-a" href="/2022/06/11/Unity-IL2CPP/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/06/11/Unity-IL2CPP/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Unity-UGUI源码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/">Unity UGUI源码</a>
-    </h1>
-  
-
-        
-        <a href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/" class="archive-article-date">
-  	<time datetime="2022-06-11T08:15:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>UGUI整体分成<strong>UnityEngine.EventSystems</strong>和<strong>UnityEngine.UI</strong>。</p>
-<h1 id="渲染系统"><a href="#渲染系统" class="headerlink" title="渲染系统"></a>渲染系统</h1><ol>
-<li>UI组件在渲染时，需要三部分数据：<strong>顶点，材质，Layout布局</strong>。</li>
-<li>UI组件在OnEnable或自身数据更改时，会把自己放入<strong>CanvasUpdateRegistry</strong>的一个缓存的列表中，当UI组件所属的Canvas更新时，会遍历这个缓存中的列表，然后调用UI组件的各个方法来更新UI组件自身的数据（顶点、UV等）。<br><img src="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/UGUI%E6%B8%B2%E6%9F%93.png" alt="UGUI渲染"></li>
-</ol>
-        
-          <a class="article-more-a" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Unity</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/06/11/Unity-UGUI%E6%BA%90%E7%A0%81/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-设计模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-    </h1>
-  
-
-        
-        <a href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2022-06-06T13:01:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="面向对象的设计原则"><a href="#面向对象的设计原则" class="headerlink" title="面向对象的设计原则"></a>面向对象的设计原则</h1><p>单一职责原则：一个类，最好只做一件事，只有一个引起它的变化。<br>开放-封闭原则：对于扩展是开放的，对于更改是封闭的。<br>里氏替换原则：子类必须能够替换其基类。<br>依赖倒置原则：设计应该依赖于抽象而不是具体实现。<br>接口隔离原则：使用多个小的专门的接口而不要使用一个大的总接口。<br>合成复用原则：组合优于继承。（白盒复用&amp;&amp;黑盒复用）<br>最少知道原则：实体之间减少相互作用。</p>
-        
-          <a class="article-more-a" href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/06/06/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
         </p>
       
 
