@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: 热更新 | 武哥的博客</title>
+  <title>OpenGL学习笔记 | 武哥的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="武哥的博客">
-<meta property="og:url" content="http://example.com/tags/%E7%83%AD%E6%9B%B4%E6%96%B0/index.html">
+  <meta name="description" content="概念基础什么是OpenGL？OpenGL本身并不是一个API，它仅仅是一个由Khronos组织制定并维护的规范(Specification)。 OpenGL规范严格规定了每个函数的执行流程，其内部的实现由OpenGL库的开发者决定，通常是显卡的生产商。  OepnGL如何执行渲染？OpenGL本身是一个状态机(State Machine)，OpenGL的状态通常被称为OpenGL上下文(Conte">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenGL学习笔记">
+<meta property="og:url" content="http://example.com/2022/12/02/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="武哥的博客">
+<meta property="og:description" content="概念基础什么是OpenGL？OpenGL本身并不是一个API，它仅仅是一个由Khronos组织制定并维护的规范(Specification)。 OpenGL规范严格规定了每个函数的执行流程，其内部的实现由OpenGL库的开发者决定，通常是显卡的生产商。  OepnGL如何执行渲染？OpenGL本身是一个状态机(State Machine)，OpenGL的状态通常被称为OpenGL上下文(Conte">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-02T10:51:34.000Z">
+<meta property="article:modified_time" content="2022-12-02T11:20:03.051Z">
 <meta property="article:author" content="iamsb">
+<meta property="article:tag" content="图形学">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="武哥的博客" type="application/atom+xml">
@@ -150,60 +155,181 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-OpenGL学习笔记" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/" class="archive-article-date">
-  	<time datetime="2022-05-26T07:48:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-26</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/05/26/Unity-%E7%83%AD%E6%9B%B4%E6%96%B0/">Unity 热更新</a>
+    <h1 class="article-title" itemprop="name">
+      OpenGL学习笔记
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2022/12/02/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="archive-article-date">
+  	<time datetime="2022-12-02T10:51:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-12-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概念基础"><a href="#概念基础" class="headerlink" title="概念基础"></a>概念基础</h1><h3 id="什么是OpenGL？"><a href="#什么是OpenGL？" class="headerlink" title="什么是OpenGL？"></a>什么是OpenGL？</h3><pre><code>OpenGL本身并不是一个API，它仅仅是一个由Khronos组织制定并维护的规范(Specification)。
+OpenGL规范严格规定了每个函数的执行流程，其内部的实现由OpenGL库的开发者决定，通常是显卡的生产商。
+</code></pre>
+<h3 id="OepnGL如何执行渲染？"><a href="#OepnGL如何执行渲染？" class="headerlink" title="OepnGL如何执行渲染？"></a>OepnGL如何执行渲染？</h3><pre><code>OpenGL本身是一个状态机(State Machine)，OpenGL的状态通常被称为OpenGL上下文(Context)。我们通常使用如下途径去更改OpenGL状态：设置选项，操作缓冲。最后，我们使用当前OpenGL上下文来渲染。
+</code></pre>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><pre><code>基元类型：使用OpenGL时，建议使用OpenGL定义的基元类型，GL基元类型是平台无关的。
+最流行的几个库有GLUT，SDL，SFML和GLFW。
+双缓冲(Double Buffer)：图像不是一下子被绘制出来的，而是按照从左到右，由上而下逐像素地绘制而成的。最终图像不是在瞬间显示给用户，而是通过一步一步生成的，这会导致渲染的结果很不真实。前缓冲保存着最终输出的图像，它会在屏幕上显示；而所有的的渲染指令都会在后缓冲上绘制。当所有的渲染指令执行完毕后，我们交换(Swap)前缓冲和后缓冲，这样图像就立即呈显出来，不会出现不真实感。
+</code></pre>
+<span id="more"></span>
+<h1 id="绘制一个三角形"><a href="#绘制一个三角形" class="headerlink" title="绘制一个三角形"></a>绘制一个三角形</h1><h3 id="GLFW和GLEW"><a href="#GLFW和GLEW" class="headerlink" title="GLFW和GLEW"></a>GLFW和GLEW</h3><pre><code>GLFW是一个专门针对OpenGL的C语言库，它提供了一些渲染物体所需的最低限度的接口。它允许用户创建OpenGL上下文，定义窗口参数以及处理用户输入。
+GLEW也是一个库，它能自动识别你的平台所支持的全部OpenGL高级扩展函数。也就是说，只要包含一个glew.h头文件，你就能使用gl,glu,glext,wgl,glx的全部函数。
+</code></pre>
+<h3 id="创建窗口"><a href="#创建窗口" class="headerlink" title="创建窗口"></a>创建窗口</h3><p>标准模板：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">GLFWwindow* window;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Initialize the library */</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="built_in">glfwInit</span>())</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Create a windowed mode window and its OpenGL context */</span></span><br><span class="line">window = <span class="built_in">glfwCreateWindow</span>(<span class="number">640</span>, <span class="number">480</span>, <span class="string">&quot;Hello World&quot;</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">if</span> (!window)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">glfwTerminate</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Make the window&#x27;s context current */</span></span><br><span class="line"><span class="built_in">glfwMakeContextCurrent</span>(window);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Initialize the glew */</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">glewInit</span>() != GLEW_OK) &#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Error!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (!<span class="built_in">glfwWindowShouldClose</span>(window))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* Render here */</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Swap front and back buffers */</span></span><br><span class="line">    <span class="built_in">glfwSwapBuffers</span>(window);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Poll for and process events */</span></span><br><span class="line">    <span class="built_in">glfwPollEvents</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Release resources */</span></span><br><span class="line"><span class="built_in">glfwTerminate</span>();</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h3>
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">热更新</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">图形学</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/12/02/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2022/09/05/Unity-%E5%86%85%E5%AD%98%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Unity-内存与资源管理</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -226,9 +352,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

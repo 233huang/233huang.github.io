@@ -152,6 +152,90 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-OpenGL学习笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/12/02/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">OpenGL学习笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2022/12/02/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="archive-article-date">
+  	<time datetime="2022-12-02T10:51:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-12-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概念基础"><a href="#概念基础" class="headerlink" title="概念基础"></a>概念基础</h1><h3 id="什么是OpenGL？"><a href="#什么是OpenGL？" class="headerlink" title="什么是OpenGL？"></a>什么是OpenGL？</h3><pre><code>OpenGL本身并不是一个API，它仅仅是一个由Khronos组织制定并维护的规范(Specification)。
+OpenGL规范严格规定了每个函数的执行流程，其内部的实现由OpenGL库的开发者决定，通常是显卡的生产商。
+</code></pre>
+<h3 id="OepnGL如何执行渲染？"><a href="#OepnGL如何执行渲染？" class="headerlink" title="OepnGL如何执行渲染？"></a>OepnGL如何执行渲染？</h3><pre><code>OpenGL本身是一个状态机(State Machine)，OpenGL的状态通常被称为OpenGL上下文(Context)。我们通常使用如下途径去更改OpenGL状态：设置选项，操作缓冲。最后，我们使用当前OpenGL上下文来渲染。
+</code></pre>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><pre><code>基元类型：使用OpenGL时，建议使用OpenGL定义的基元类型，GL基元类型是平台无关的。
+最流行的几个库有GLUT，SDL，SFML和GLFW。
+双缓冲(Double Buffer)：图像不是一下子被绘制出来的，而是按照从左到右，由上而下逐像素地绘制而成的。最终图像不是在瞬间显示给用户，而是通过一步一步生成的，这会导致渲染的结果很不真实。前缓冲保存着最终输出的图像，它会在屏幕上显示；而所有的的渲染指令都会在后缓冲上绘制。当所有的渲染指令执行完毕后，我们交换(Swap)前缓冲和后缓冲，这样图像就立即呈显出来，不会出现不真实感。
+</code></pre>
+        
+          <a class="article-more-a" href="/2022/12/02/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">图形学</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/12/02/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Unity-内存与资源管理" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -428,6 +512,82 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2022/09/04/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%EF%BC%9AMVP%E7%9F%A9%E9%98%B5%E6%8E%A8%E5%AF%BC/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-3D数学" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/09/04/3D%E6%95%B0%E5%AD%A6/">3D数学</a>
+    </h1>
+  
+
+        
+        <a href="/2022/09/04/3D%E6%95%B0%E5%AD%A6/" class="archive-article-date">
+  	<time datetime="2022-09-04T03:23:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-09-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="坐标系"><a href="#坐标系" class="headerlink" title="坐标系"></a>坐标系</h1><h3 id="左手坐标系与右手坐标系"><a href="#左手坐标系与右手坐标系" class="headerlink" title="左手坐标系与右手坐标系"></a>左手坐标系与右手坐标系</h3><p><img src="/2022/09/04/3D%E6%95%B0%E5%AD%A6/%E5%B7%A6%E5%8F%B3%E6%89%8B%E5%9D%90%E6%A0%87%E7%B3%BB.png" alt="左右手坐标系"></p>
+        
+          <a class="article-more-a" href="/2022/09/04/3D%E6%95%B0%E5%AD%A6/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">3D数学</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/09/04/3D%E6%95%B0%E5%AD%A6/">展开全文 >></a>
         </p>
       
 
@@ -766,170 +926,6 @@
 
 
   
-    <article id="post-C-对象模型-总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/29/C-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B-%E6%80%BB%E7%BB%93/">C++对象模型 总结</a>
-    </h1>
-  
-
-        
-        <a href="/2022/08/29/C-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B-%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  	<time datetime="2022-08-29T14:04:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-08-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="C-成员种类"><a href="#C-成员种类" class="headerlink" title="C++成员种类"></a>C++成员种类</h2><p>数据成员：</p>
-<ol>
-<li>静态数据成员：存储在程序的数据段中，C++编译器会对不同类的静态数据成员采取特殊的编码方式。</li>
-<li>非静态数据成员：需要地址偏移<br>成员函数：</li>
-<li>静态函数</li>
-<li>非静态函数</li>
-<li>虚函数
-        
-          <a class="article-more-a" href="/2022/08/29/C-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B-%E6%80%BB%E7%BB%93/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/08/29/C-%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B-%E6%80%BB%E7%BB%93/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Unity-Shader理论（二）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/">Unity Shader 理论（二）</a>
-    </h1>
-  
-
-        
-        <a href="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2022-06-12T08:24:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="更复杂的光照"><a href="#更复杂的光照" class="headerlink" title="更复杂的光照"></a>更复杂的光照</h1><h2 id="渲染路径"><a href="#渲染路径" class="headerlink" title="渲染路径"></a>渲染路径</h2><p>在Unity里，渲染路径决定了光照是如何应用到Unity Shader中的，因此需要为每一个Pass指定它使用的渲染路径。（LightMode）<br>设置了渲染路径，就可以让Unity给你提供对应的光照属性。<br>Unity支持的渲染路径：</p>
-<ol>
-<li>前向渲染路径</li>
-<li>延迟渲染路径（有新版）</li>
-<li>顶点照明渲染路径（被抛弃）</li>
-</ol>
-<p>大多数情况下，一个项目只使用一种渲染路径，可以在项目设置中设置。<br>相机也可以设置渲染路径。<br><img src="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84.png" alt="渲染路径"></p>
-        
-          <a class="article-more-a" href="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Shader</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/06/12/Unity-Shader%E7%90%86%E8%AE%BA%EF%BC%88%E4%BA%8C%EF%BC%89/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1027,15 +1023,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">3D数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">图形学</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">C#</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color3">C#</a>
               </li>
              
               <li class="article-tag-list-item">
