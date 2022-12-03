@@ -16,7 +16,7 @@
 <meta property="og:description" content="概念基础什么是OpenGL？OpenGL本身并不是一个API，它仅仅是一个由Khronos组织制定并维护的规范(Specification)。 OpenGL规范严格规定了每个函数的执行流程，其内部的实现由OpenGL库的开发者决定，通常是显卡的生产商。  OepnGL如何执行渲染？OpenGL本身是一个状态机(State Machine)，OpenGL的状态通常被称为OpenGL上下文(Conte">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-02T10:51:34.000Z">
-<meta property="article:modified_time" content="2022-12-02T11:20:03.051Z">
+<meta property="article:modified_time" content="2022-12-03T15:11:32.068Z">
 <meta property="article:author" content="iamsb">
 <meta property="article:tag" content="图形学">
 <meta name="twitter:card" content="summary">
@@ -181,7 +181,7 @@ OpenGL规范严格规定了每个函数的执行流程，其内部的实现由Op
 <h3 id="OepnGL如何执行渲染？"><a href="#OepnGL如何执行渲染？" class="headerlink" title="OepnGL如何执行渲染？"></a>OepnGL如何执行渲染？</h3><pre><code>OpenGL本身是一个状态机(State Machine)，OpenGL的状态通常被称为OpenGL上下文(Context)。我们通常使用如下途径去更改OpenGL状态：设置选项，操作缓冲。最后，我们使用当前OpenGL上下文来渲染。
 </code></pre>
 <h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><pre><code>基元类型：使用OpenGL时，建议使用OpenGL定义的基元类型，GL基元类型是平台无关的。
-最流行的几个库有GLUT，SDL，SFML和GLFW。
+库：最流行的几个库有GLUT，SDL，SFML和GLFW。
 双缓冲(Double Buffer)：图像不是一下子被绘制出来的，而是按照从左到右，由上而下逐像素地绘制而成的。最终图像不是在瞬间显示给用户，而是通过一步一步生成的，这会导致渲染的结果很不真实。前缓冲保存着最终输出的图像，它会在屏幕上显示；而所有的的渲染指令都会在后缓冲上绘制。当所有的渲染指令执行完毕后，我们交换(Swap)前缓冲和后缓冲，这样图像就立即呈显出来，不会出现不真实感。
 </code></pre>
 <span id="more"></span>
@@ -190,7 +190,18 @@ GLEW也是一个库，它能自动识别你的平台所支持的全部OpenGL高�
 </code></pre>
 <h3 id="创建窗口"><a href="#创建窗口" class="headerlink" title="创建窗口"></a>创建窗口</h3><p>标准模板：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">GLFWwindow* window;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Initialize the library */</span></span><br><span class="line"><span class="keyword">if</span> (!<span class="built_in">glfwInit</span>())</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Create a windowed mode window and its OpenGL context */</span></span><br><span class="line">window = <span class="built_in">glfwCreateWindow</span>(<span class="number">640</span>, <span class="number">480</span>, <span class="string">&quot;Hello World&quot;</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">if</span> (!window)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">glfwTerminate</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Make the window&#x27;s context current */</span></span><br><span class="line"><span class="built_in">glfwMakeContextCurrent</span>(window);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Initialize the glew */</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">glewInit</span>() != GLEW_OK) &#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Error!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (!<span class="built_in">glfwWindowShouldClose</span>(window))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* Render here */</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Swap front and back buffers */</span></span><br><span class="line">    <span class="built_in">glfwSwapBuffers</span>(window);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Poll for and process events */</span></span><br><span class="line">    <span class="built_in">glfwPollEvents</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Release resources */</span></span><br><span class="line"><span class="built_in">glfwTerminate</span>();</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h3>
+<h3 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h3><p>顶点数组：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GLfloat vertices[] = &#123;</span><br><span class="line">    <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">    <span class="number">0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">    <span class="number">0.0f</span>,  <span class="number">0.5f</span>, <span class="number">0.0f</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>顶点缓冲对象(Vertex Buffer Objects, VBO)：<br>在GPU内存(通常被称为显存)中储存大量顶点，使用这些缓冲对象的好处是我们可以一次性的发送一大批数据到显卡上，而不是每个顶点发送一次。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GLuint VBO;</span><br><span class="line"><span class="comment">//使用一个缓冲ID生成一个VBO对象</span></span><br><span class="line"><span class="built_in">glGenBuffers</span>(<span class="number">1</span>, &amp;VBO); </span><br><span class="line"><span class="comment">//OpenGL有很多缓冲对象类型，顶点缓冲对象的缓冲类型是GL_ARRAY_BUFFER</span></span><br><span class="line"><span class="built_in">glBindBuffer</span>(GL_ARRAY_BUFFER, VBO);  </span><br><span class="line"><span class="comment">//把之前定义的顶点数据复制到缓冲的内存中</span></span><br><span class="line"><span class="built_in">glBufferData</span>(GL_ARRAY_BUFFER, <span class="built_in">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+<p>第四个参数：</p>
+<ul>
+<li>GL_STATIC_DRAW ：数据不会或几乎不会改变。</li>
+<li>GL_DYNAMIC_DRAW：数据会被改变很多。</li>
+<li>GL_STREAM_DRAW ：数据每次绘制时都会改变</li>
+</ul>
+<p>用着色器语言GLSL(OpenGL Shading Language)编写顶点着色器，然后编译这个着色器：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GLuint vertexShader;</span><br><span class="line">vertexShader = <span class="built_in">glCreateShader</span>(GL_VERTEX_SHADER);</span><br><span class="line"><span class="built_in">glShaderSource</span>(vertexShader, <span class="number">1</span>, &amp;vertexShaderSource, <span class="literal">NULL</span>);</span><br><span class="line"><span class="built_in">glCompileShader</span>(vertexShader);</span><br></pre></td></tr></table></figure>
       
 
       
@@ -430,11 +441,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color3">C#</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">C#</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -450,11 +461,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">设计</a>
+                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">AI</a>
+                <a href="javascript:void(0)" class="js-tag color3">设计</a>
               </li>
              
               <li class="article-tag-list-item">

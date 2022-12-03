@@ -515,7 +515,19 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="架构设计的目的"><a href="#架构设计的目的" class="headerlink" title="架构设计的目的"></a>架构设计的目的</h2><p>简单来说，就是避免屎山代码，解耦合，优化性能，提高开发效率。</p>
+        <h1 id="架构设计的目的"><a href="#架构设计的目的" class="headerlink" title="架构设计的目的"></a>架构设计的目的</h1><p>简单来说，就是避免屎山代码，解耦合，优化性能，提高开发效率。</p>
+<h1 id="常用GOF设计模式"><a href="#常用GOF设计模式" class="headerlink" title="常用GOF设计模式"></a>常用GOF设计模式</h1><h2 id="命令模式-Command-Pattern"><a href="#命令模式-Command-Pattern" class="headerlink" title="命令模式 Command Pattern"></a>命令模式 Command Pattern</h2><pre><code>定义：命令模式将“请求”封装成对象，以便使用不同的请求、队列或者日志来参数化其他对象，同时支持可撤消的操作。
+要点：将一组行为抽象为对象，这个对象和其他对象一样可以被存储和传递，从而实现行为请求者与行为实现者之间的松耦合，这就是命令模式。
+</code></pre>
+<h2 id="享元模式-Flyweight-Pattern"><a href="#享元模式-Flyweight-Pattern" class="headerlink" title="享元模式 Flyweight Pattern"></a>享元模式 Flyweight Pattern</h2><pre><code>定义：享元模式，以共享的方式高效地支持大量的细粒度的对象。通过复用内存中已存在的对象，降低系统创建对象实例的性能消耗。
+要点：享元模式通过共享内蕴状态，区分外蕴状态，有效隔离系统中的变化部分和不变部分。
+</code></pre>
+<h2 id="观察者模式-Observer-Pattern"><a href="#观察者模式-Observer-Pattern" class="headerlink" title="观察者模式 Observer Pattern"></a>观察者模式 Observer Pattern</h2><pre><code>定义：观察者模式定义了对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。
+其它：C#直接将其嵌入了语法（event关键字）中。
+</code></pre>
+<h2 id="原型模式-Prototype-Pattern"><a href="#原型模式-Prototype-Pattern" class="headerlink" title="原型模式 Prototype Pattern"></a>原型模式 Prototype Pattern</h2><pre><code>定义：用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。
+要点：实现一个接口，重写一个方法即完成了原型模式。
+</code></pre>
         
           <a class="article-more-a" href="/2022/05/23/%E3%80%8A%E6%B8%B8%E6%88%8F%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F%E3%80%8B%E7%AC%94%E8%AE%B0/#more">more >></a>
         
@@ -1004,11 +1016,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color3">C#</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">C#</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1024,11 +1036,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">设计</a>
+                <a href="javascript:void(0)" class="js-tag color3">AI</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">AI</a>
+                <a href="javascript:void(0)" class="js-tag color3">设计</a>
               </li>
              
               <li class="article-tag-list-item">
